@@ -12,3 +12,5 @@ CXXCPP = g++ -E
 CXXFLAGS = -pg -O2 -Wall -Wpedantic -std=gnu++11 -fpermissive
 LDFLAGS = -Xlinker -rpath -Xlinker /usr/local/lib
 LDLIBS =  -L/usr/local/lib -liRRAM -lmpfr -lm -lgmp -lpthread
+
+shadowing1: dyadic_interval.o
