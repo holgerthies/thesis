@@ -69,8 +69,16 @@ dyadic_interval logistic_map(const dyadic_interval& x){
 }
 
 //  computes the logistic map for a dyadic number x
-DYADIC logistic_map(const DYADIC& x){
-	return a*x*(1-x);
+REAL logistic_map(const REAL& x){
+	return REAL(a)*x*(1-x);
+}
+
+// cuts all bits after 2^-prec
+DYADIC force_approx(const REAL& x, const int prec){
+	DYADIC ans = approx(x, prec);
+	ans = INTEGER(scale(ans, -prec)); // multiply by 2^(prec) and round to integer
+	ans = scale(ans, prec); // scale back
+	return ans;
 }
 
 // computes a pseudo orbit (noisy orbit).
@@ -79,9 +87,9 @@ DYADIC logistic_map(const DYADIC& x){
 // The output is a vector of the result after each step
 vector<DYADIC> pseudo_orbit(const int N, const int prec){
 	vector<DYADIC> ans(N+1);
-	ans[0] = approx(p0, prec);
+	ans[0] = p0;
 	for(int i=1; i<=N; i++){
-		ans[i] = logistic_map(ans[i-1]);
+		ans[i] = force_approx(logistic_map(REAL(ans[i-1])),prec);
 	}
 	return ans;
 }
@@ -97,18 +105,24 @@ DYADIC shadowing_bound(DYADIC p0, int p){
 
 template DYADIC iRRAM_exec <DYADIC,int,DYADIC> 
 (DYADIC (*) (DYADIC,int),DYADIC,int);
-// main routine that internally calls iRRAM three times:
+
+
+template vector<DYADIC> iRRAM_exec <int,int,vector<DYADIC>> 
+(vector<DYADIC> (*) (int,int),int,int);
+
+// main routine that internally calls iRRAM:
 int main (int argc,char **argv)
 {
 	iRRAM_initialize(argc,argv);
 	DYADIC d2;
 	
 	int p=-1000;
-
-	d2=iRRAM_exec(shadowing_bound,p0,p);
+	auto po = iRRAM_exec(pseudo_orbit, 1000, -10000);
 
 	cout << setRwidth(100);
-	cout << iRRAM_exec(shadowing_bound,p0,p)<<"\n";
+	cout << po[1000] << "\n";
+	//for(DYADIC x : po)
+	//	cout << x <<"\n";
 
 }
 
