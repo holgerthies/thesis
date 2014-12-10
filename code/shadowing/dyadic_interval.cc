@@ -85,3 +85,40 @@ dyadic_interval dyadic_interval::operator*(const DYADIC& d) const{
 dyadic_interval operator*(const DYADIC& x, const dyadic_interval& y){
 	return y*x;
 }
+
+// computes the sqrt of an interval.
+// Uses the real sqrt function to compute the end points
+dyadic_interval sqrt(const dyadic_interval& x){
+	dyadic_interval ans;
+	DYADIC p1 = sqrt(REAL(x.left));
+	DYADIC p2 = sqrt(REAL(x.right));
+	ans.left = std::min(p1, p2);
+	ans.right = std::max(p1,p2);
+	return ans;
+}
+
+// checks if the other interval is contained in the other
+bool dyadic_interval::contains(const dyadic_interval& x) const{
+	return this->left <= x.left && this->right >= x.right;
+}
+
+// checks if point is contained in the other
+bool dyadic_interval::contains(const DYADIC& x) const{
+	return this->left <= x && this->right >= x;
+}
+
+// returns interval length
+DYADIC dyadic_interval::size() const{
+	return this->right - this->left;
+}
+
+// distance of dyadic point from interval
+DYADIC dyadic_interval::dist(const DYADIC& x) const{
+	if(this->contains(x)) return 0;
+	return std::min(abs(this->left-x), abs(this->right-x));
+}
+
+// max distance of dyadic point from any point inside the interval
+DYADIC dyadic_interval::max_dist(const DYADIC& x) const{
+	return std::max(abs(this->left-x), abs(this->right-x));
+}

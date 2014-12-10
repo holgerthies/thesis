@@ -19,7 +19,12 @@ class dyadic_interval {
 		dyadic_interval operator*(const iRRAM::DYADIC& x) const;
 		friend dyadic_interval operator*(const iRRAM::DYADIC& x, const dyadic_interval& y);
 		//dyadic_interval operator/(const dyadic_interval& x);
-		//friend dyadic_interval sqrt(const dyadic_interval& x);
+		friend dyadic_interval sqrt(const dyadic_interval& x);
+		bool contains(const dyadic_interval& x) const;
+		bool contains(const iRRAM::DYADIC& x) const;
+		iRRAM::DYADIC size() const;
+		iRRAM::DYADIC dist(const iRRAM::DYADIC& x) const;
+		iRRAM::DYADIC max_dist(const iRRAM::DYADIC& x) const;
 		
 };
 #endif

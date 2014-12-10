@@ -2,27 +2,22 @@
 ** Simulate Computations of Cray X-MP
 ** 
 **/
-#include "iRRAM/lib.h"
-#include "iRRAM/core.h"
-#include "dyadic_interval.h"
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <boost/multiprecision/mpfr.hpp>  // Defines the Backend type that wraps MPFR
+#include "fixed_precision_interval.h"
 
-namespace mp = boost::multiprecision;     // Reduce the typing a bit later...
+namespace mp = boost::multiprecision;    
 
-typedef mp::number<mp::mpfr_float_backend<10>>  clay_float;
+typedef mp::number<mp::mpfr_float_backend<30>>  clay_float;
 typedef mp::number<mp::mpfr_float_backend<10>>  clay_double;
 
-
-using namespace iRRAM;
-using std::vector;
-
-
-const DYADIC a = 3.6;
-const DYADIC p0 = 0.4;
+using std::cout;
+using std::vector; 
 
 
+/*
 // thicken the given interval
 // i.e. enlarge both sides of the interval by the 
 // dyadic number given in the second parameter
@@ -50,23 +45,15 @@ dyadic_interval inverse_logistic_map(const dyadic_interval& x, bool left){
 	else{
 		return 0.5+sqrt(0.25-x*(1/a));
 	}
-}
+}*/
 
 
 //  computes the logistic map for a dyadic number x
-REAL logistic_map(const REAL& x){
-	return REAL(a)*x*(1-x);
+clay_float logistic_map(const clay_float& x, const clay_float& a){
+	return a*x*(1-x);
 }
 
-// cuts all bits after 2^-prec
-DYADIC force_approx(const REAL& x, const int prec){
-	DYADIC ans = approx(x, prec);
-	ans = INTEGER(scale(ans, -prec)); // multiply by 2^(prec) and round to integer
-	ans = scale(ans, prec); // scale back
-	return ans;
-}
-
-
+/*
 // compute the previous interval to a given interval
 // using the algorithm from the paper
 dyadic_interval prev_interval(dyadic_interval x, bool left){
@@ -82,21 +69,20 @@ dyadic_interval prev_interval(dyadic_interval x, bool left){
 	}
 	//x_prev = thicken(x_prev, error_constant);
 	return x_prev;
-}
+}*/
 
 // computes a pseudo orbit (noisy orbit).
 // Applies the logistic map N times. 
-// The precision for all calculations is given by the input parameter p.
 // The output is a vector of the result after each step
-vector<DYADIC> pseudo_orbit(const int N, const int prec){
-	vector<DYADIC> ans(N+1);
+vector<clay_float> pseudo_orbit(const clay_float& p0, const clay_float& a, const int N){
+	vector<clay_float> ans(N+1);
 	ans[0] = p0;
 	for(int i=1; i<=N; i++){
-		ans[i] = force_approx(logistic_map(REAL(ans[i-1])),-48);
+		ans[i] = logistic_map(ans[i-1],a);
 	}
 	return ans;
 }
-
+/*
 // Computes an upper bound for the distance of the 
 // shadow orbit x_n to the noisy orbit p_n for N iterates
 DYADIC shadowing_bound(int N, int prec){
@@ -111,27 +97,15 @@ DYADIC shadowing_bound(int N, int prec){
 	}
 	return beta;
 }
+*/
 
-
-template DYADIC iRRAM_exec <DYADIC,int,DYADIC> 
-(DYADIC (*) (DYADIC,int),DYADIC,int);
-
-
-template vector<DYADIC> iRRAM_exec <int,int,vector<DYADIC>> 
-(vector<DYADIC> (*) (int,int),int,int);
 
 // main routine that internally calls iRRAM:
 int main (int argc,char **argv)
 {
-	iRRAM_initialize(argc,argv);
-	DYADIC d2;
-	
-	auto bound = iRRAM_exec(shadowing_bound, 1000000, -200);
-
-	cout << setRwidth(100);
-	cout << bound << "\n";
-	//for(DYADIC x : po)
-	//	cout << x <<"\n";
+	vector<clay_float> po = pseudo_orbit(0.4,3.6, 100);
+	for(clay_float x : po)
+		std::cout << x <<"\n";
 
 }
 
