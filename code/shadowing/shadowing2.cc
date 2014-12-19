@@ -70,7 +70,7 @@ clay_float logistic_map(const clay_float& x){
 clay_interval prev_interval(clay_interval x, bool left){
 
 	clay_interval x_thick = thicken(x, thickening_constant);
-	clay_interval x_prev = inverse_logistic_map(x, left);
+	clay_interval x_prev = inverse_logistic_map(x_thick, left);
 	while(!logistic_map(x_prev).contains(x_thick)){
 		x_prev = thicken(x_prev, thickening_constant);
 	}
@@ -97,11 +97,8 @@ clay_double shadowing_bound(const int N){
 	clay_interval x = clay_interval(static_cast<clay_double>(orbit[N]), static_cast<clay_double>(orbit[N]));
 	clay_double beta = 0; // max distance between the p_n and the shadow orbit
 	for(int i=N-1; i>=0; i--){
-		//if(i % 100000 == 0) std::cout <<i << std::endl;
 		bool left= (orbit[i] <= clay_double(0.5));
-		//cout << orbit[i] << endl;
 		x = prev_interval(x, left);
-		//cout << x.left << ","<<x.right<<endl;
 		beta = std::max(beta, x.max_dist(static_cast<clay_double>(orbit[i])));
 	}
 	return beta;

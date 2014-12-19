@@ -1,8 +1,11 @@
+// Class template for interval arithmetic.
+// The interval endpoints are saved as fixed precision floating point number
+// with precision given by the template parameter. 
 #ifndef _FIXED_PRECISION_INTERVAL_H
 #define _FIXED_PRECISION_INTERVAL_H
 #include <boost/multiprecision/mpfr.hpp>  // Defines the Backend type that wraps MPFR 
 #include <boost/multiprecision/cpp_bin_float.hpp> 
-namespace mp = boost::multiprecision;   
+namespace mp = boost::multiprecision;  
 template <unsigned int precision>
 class fixed_precision_interval { 
 	template <unsigned int p>

@@ -1,137 +1,131 @@
-/***
-** Simulate Computations of Cray X-MP
-** 
-**/
-#include "iRRAM/lib.h"
-#include "iRRAM/core.h"
-#include "dyadic_interval.h"
+#include "iRRAM.h"
 #include <vector>
 #include <algorithm>
-#include <boost/multiprecision/mpfr.hpp>  // Defines the Backend type that wraps MPFR
-
-namespace mp = boost::multiprecision;     // Reduce the typing a bit later...
-
-typedef mp::number<mp::mpfr_float_backend<10>>  clay_float;
-typedef mp::number<mp::mpfr_float_backend<10>>  clay_double;
 
 
+const float a=3.8;
+const float p0=0.4;
 using namespace iRRAM;
+using std::endl;
 using std::vector;
+using std::max;
 
-
-const DYADIC a = 3.6;
-const DYADIC p0 = 0.4;
-
-
-// thicken the given interval
-// i.e. enlarge both sides of the interval by the 
-// dyadic number given in the second parameter
-dyadic_interval thicken(const dyadic_interval& x, const DYADIC& d){
-	return dyadic_interval(x.left-d, x.right+d);
+//  computes the logistic map for a dyadic number x
+float logistic_map(const float x){
+	return a*x*(1-x);
 }
-
-// computes the logistic map f(x) = a*x(1-x).
-// Given the dyadic interval x outputs a dyadic_interval I  
-// so that f(t) is in I for all t in x
-dyadic_interval logistic_map(const dyadic_interval& x){
-	dyadic_interval x_inv; // 1-x
-	x_inv.left=1-x.right;
-	x_inv.right = 1-x.left;
-	return a*x*x_inv;
-}
-
-// computes one solution of the inverse logistic map of the dyadic_interval x
-// Which solution is chosen is decided by the parameter left. 
-// If left is through the solution left of 0.5 is chosen.
-dyadic_interval inverse_logistic_map(const dyadic_interval& x, bool left){
-	if(left){
-		return 0.5-sqrt(0.25-x*(1/a));
-	}
-	else{
-		return 0.5+sqrt(0.25-x*(1/a));
-	}
-}
-
 
 //  computes the logistic map for a dyadic number x
 REAL logistic_map(const REAL& x){
-	return REAL(a)*x*(1-x);
+	return REAL(a)*x*(REAL(1)-x);
 }
 
-// cuts all bits after 2^-prec
-DYADIC force_approx(const REAL& x, const int prec){
-	DYADIC ans = approx(x, prec);
-	ans = INTEGER(scale(ans, -prec)); // multiply by 2^(prec) and round to integer
-	ans = scale(ans, prec); // scale back
-	return ans;
-}
-
-
-// compute the previous interval to a given interval
-// using the algorithm from the paper
-dyadic_interval prev_interval(dyadic_interval x, bool left){
-	DYADIC thickening_constant = approx(REAL(pow(REAL(2),-90)),-90);
-	//cout << thickening_constant << std::endl;
-	DYADIC error_constant =approx(10*REAL(pow(REAL(2), -25)), -90);
-	dyadic_interval x_thick = thicken(x, thickening_constant);
-	cout << setRwidth(100);
-	//cout << x_thick.left << " " << x_thick.right << std::endl;
-	dyadic_interval x_prev = inverse_logistic_map(x, left);
-	while(!logistic_map(x_prev).contains(x_thick)){
-		x_prev = thicken(x_prev, thickening_constant);
+// computes one solution of the inverse logistic map of the REAL x
+// Which solution is chosen is decided by the parameter left. 
+// If left is through the solution left of 0.5 is chosen.
+REAL inverse_logistic_map(const REAL& x, bool left){
+	if(left){
+		return REAL(0.5)-sqrt(REAL(0.25)-x*1/REAL(a));
 	}
-	//x_prev = thicken(x_prev, error_constant);
-	return x_prev;
+	else{
+		return REAL(0.5)+sqrt(REAL(0.25)-x*1/REAL(a));
+	}
 }
 
 // computes a pseudo orbit (noisy orbit).
 // Applies the logistic map N times. 
-// The precision for all calculations is given by the input parameter p.
 // The output is a vector of the result after each step
-vector<DYADIC> pseudo_orbit(const int N, const int prec){
-	vector<DYADIC> ans(N+1);
+vector<float> pseudo_orbit(const int N){
+	vector<float> ans(N+1);
 	ans[0] = p0;
 	for(int i=1; i<=N; i++){
-		ans[i] = force_approx(logistic_map(REAL(ans[i-1])),-48);
+		ans[i] = logistic_map(ans[i-1]);
 	}
 	return ans;
-}
+} 
 
-// Computes an upper bound for the distance of the 
-// shadow orbit x_n to the noisy orbit p_n for N iterates
-DYADIC shadowing_bound(int N, int prec){
-	//const int N=1000;
-	vector<DYADIC> orbit = pseudo_orbit(N, prec);
-	dyadic_interval x = dyadic_interval(orbit[N], orbit[N]);
-	DYADIC beta = 0; // max distance between the p_n and the shadow orbit
-	for(int i=N-1; i>=0; i--){
-		bool left= (orbit[i] <= 0.5);
-		x = prev_interval(x, left);
-		beta = std::max(beta, x.max_dist(orbit[i]));
+
+void compute(){
+	const int N=1000000;
+	// max distance between pseudo orbit and closest of the real orbits currently computed
+	REAL max_dist = 1000.0;
+	vector<float> orbit = pseudo_orbit(N);
+	REAL grid_size = power(REAL(2), -45);
+	REAL left = REAL(orbit[N])-grid_size;
+	REAL best_p = orbit[0];
+	int n=2;
+	while(!bound(max_dist, -18)){
+		cout << n << endl;
+		for(int i=0; i<n; i++){
+			// max distance between real and pseudo orbit for current start point
+			REAL start_point_dist=0.0; 
+			// start point
+			REAL p = left+i*grid_size;
+			for(int j=N-1;j>=0; j--){
+				bool left= (orbit[j] <= 0.5);
+				p = inverse_logistic_map(p, left);
+				REAL dist = abs(p-REAL(orbit[j]));
+				// multivalued version of dist > start_point_dist
+				if(positive(dist-start_point_dist,-100))
+					start_point_dist = dist;
+				if(!bound(dist, -15)) 
+					break;
+			}
+			// multivalued version of max_dist > start_point_dist
+			if(positive(max_dist-start_point_dist,-100)){
+				best_p = p; // this is now p0
+				max_dist = start_point_dist;
+			}
+		}
+		cout<<best_p<<" "<<orbit[0]<<endl;
+		grid_size /= 2;
+		n *= 2;
+		rshow(max_dist, 500);
+		cout << endl;
 	}
-	return beta;
+	cout<<best_p<<endl;
+	REAL x=best_p;
+	REAL md = 0.0;
+	for(int i=0;i<=N;i++){
+		REAL dist = abs(x-REAL(orbit[i]));
+		if(positive(dist-md,-100))
+			md = dist;
+		x = logistic_map(x);
+	}
+	cout<<md<<endl;
+	/*
+	best_p=orbit[0];
+	grid_size = power(REAL(2), -20);
+	left = REAL(orbit[0])-grid_size;
+	n=3;
+	while(!bound(max_dist, -11)){
+		cout << n << endl;
+		for(int i=1; i<n; i++){
+			REAL start_point_dist = 0.0;
+			REAL p0=left+i*grid_size;
+			REAL p=p0;
+			for(int j=0;j<=N;j++){
+				REAL dist = abs(p-REAL(orbit[j]));
+				if(positive(dist-start_point_dist,-100))
+					start_point_dist = dist;
+			//cout << p << " "<<orbit[j]<<endl;
+				p = logistic_map(p);
+				if(positive(dist-power(REAL(2),-10),-100)){
+					//cout<<"upto"<<j<<endl;
+					break;
+				}
+
+			}
+			if(positive(max_dist-start_point_dist,-100)){
+				best_p = p0; // this is now p0
+				max_dist = start_point_dist;
+			}
+			//return 0;
+		}
+		cout<<best_p<<" "<<orbit[0]<<endl;
+		grid_size /= 2;
+		n *= 2;
+		rshow(max_dist, 500);
+		cout << endl;
+	}*/
 }
-
-
-template DYADIC iRRAM_exec <DYADIC,int,DYADIC> 
-(DYADIC (*) (DYADIC,int),DYADIC,int);
-
-
-template vector<DYADIC> iRRAM_exec <int,int,vector<DYADIC>> 
-(vector<DYADIC> (*) (int,int),int,int);
-
-// main routine that internally calls iRRAM:
-int main (int argc,char **argv)
-{
-	iRRAM_initialize(argc,argv);
-	DYADIC d2;
-	
-	auto bound = iRRAM_exec(shadowing_bound, 1000000, -200);
-
-	cout << setRwidth(100);
-	cout << bound << "\n";
-	//for(DYADIC x : po)
-	//	cout << x <<"\n";
-
-}
-
