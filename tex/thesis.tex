@@ -1,14 +1,54 @@
 \documentclass[tudarticle,type=msc,colorback,accentcolor=tud9c]{tudthesis}
-\usepackage{ngerman}
 
-\newcommand{\getmydate}{%
-  \ifcase\month%
-    \or Januar\or Februar\or M\"arz%
-    \or April\or Mai\or Juni\or Juli%
-    \or August\or September\or Oktober%
-    \or November\or Dezember%
-  \fi\ \number\year%
-}
+  \usepackage[utf8]{inputenc}
+  \usepackage[thmmarks]{ntheorem}
+  \usepackage{xspace,cleveref,xcolor}
+  \usepackage{amsmath}
+  \usepackage{graphicx,url}
+  \usepackage[font=small]{caption}
+% new commands
+  \newcommand{\QQ}{\mathbb Q}
+  \newcommand{\RR}{\mathbb R}
+  \newcommand{\CC}{\mathbb C}
+  \newcommand{\NN}{\mathbb N}
+  \newcommand{\ZZ}{\mathbb Z}
+  \newcommand{\A}{\mathcal A}
+  \newcommand{\B}{\mathcal B}
+  \newcommand{\C}{\mathcal C}
+  \newcommand{\D}{\mathcal D}
+  \newcommand{\R}{\mathcal R}
+  \newcommand{\M}{\mathcal M}
+  \newcommand{\laplace}{\operatorname\Delta}
+  \bibliographystyle{plain}
+
+  \newcommand{\p}{\ensuremath{\mathcal P}\xspace}
+  \newcommand{\np}{\ensuremath{\mathcal{NP}}\xspace}
+  \newcommand{\fp}{\ensuremath{\mathcal{FP}}\xspace}
+  \newcommand{\abs}[1]{\left|#1\right|}
+  \newcommand{\sharpp}{\ensuremath{\# \mathcal{P}}\xspace}
+  \newcommand{\code}{\texttt}
+  \newcommand{\cc}{\code{C++}\xspace}
+  \newcommand{\irram}{\code{iRRAM}\xspace}
+  \newcommand{\MPFR}{\code{MPFR}\xspace}
+  \newcommand{\baana}{\code{BA\_ANA}\xspace}
+  \newcommand{\anarect}{\code{ANA\_RECT}\xspace}
+  \newcommand{\powerseries}{\code{POWERSERIES}\xspace}
+  \newcommand{\real}{\code{REAL}\xspace}
+  \newcommand{\temp}{\textcolor{red}}
+  \newcommand{\seq}{\mathbf}
+  \DeclareMathOperator{\lb}{lb}
+  \DeclareMathOperator{\bigo}{O}
+  \newcommand{\sprec}{prec\xspace}
+  \newcommand{\demph}{\textbf}
+  \newcommand{\sdzero}{\texttt{0}}
+% ntheorem environments
+  \theoremseparator{:}
+  \theorembodyfont{\itshape}
+  \newtheorem{definition}{Definition}
+  \theorembodyfont{\upshape}
+  \theoremsymbol{\ensuremath{\blacksquare}}
+  \newtheorem{theorem}[definition]{Theorem}
+  \newtheorem{corollary}[definition]{Corollary}
 
 \begin{document}
   \thesistitle{Case Studies in Exact Real Arithmetic - Implementations and empirical Evaluation}{Fallstudien in exakter reeller Arithmetik: Implementation und empirische Evaluation}
@@ -39,9 +79,7 @@
 
   \chapter{Case Studies}
   \section{Dynamic Systems and the Shadowing Lemma}
-  \subsection{Introduction}
-  \subsection{Implementation}
-  \subsection{Evaluation}
+  \include{dynamic_systems}
   \section{A Data Structure for Analytic Functions}
   \subsection{Introduction}
   \subsection{Representation of Analytic Functions}
@@ -55,4 +93,5 @@
   \subsection{Evaluation}
   \chapter{Conclusion}
   \section{Future Work}
+  \bibliography{thesis}
 \end{document}
