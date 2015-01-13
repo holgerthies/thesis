@@ -1,0 +1,58 @@
+\documentclass[tudarticle,type=msc,colorback,accentcolor=tud9c]{tudthesis}
+\usepackage{ngerman}
+
+\newcommand{\getmydate}{%
+  \ifcase\month%
+    \or Januar\or Februar\or M\"arz%
+    \or April\or Mai\or Juni\or Juli%
+    \or August\or September\or Oktober%
+    \or November\or Dezember%
+  \fi\ \number\year%
+}
+
+\begin{document}
+  \thesistitle{Case Studies in Exact Real Arithmetic - Implementations and empirical Evaluation}{Fallstudien in exakter reeller Arithmetik: Implementation und empirische Evaluation}
+  \author{Holger Thies}
+  \referee{Prof. Dr. Martin Ziegler}{tba}[tba]
+  \department{Mathematics}
+  \group{Mathematical Logic}
+  \dateofexam{\today}{\today}
+  \makethesistitle
+  \affidavit{H. Thies}
+\dedication{Danksagung...}
+\begin{abstract}
+    Abstract...
+\end{abstract}  
+\tableofcontents
+  \chapter{Introduction}
+
+  \chapter{Theoretical Background}
+  \section{Floating Point Arithmetic and Real Numbers}
+  \section{Real Computability Theory}
+  \section{Real Complexity Theory}
+
+  \chapter{iRRAM}
+  \section{Real Number representation}
+  \section{Overview of Classes}
+  \section{Multivalued Functions}
+  \section{Similiar Frameworks}
+
+  \chapter{Case Studies}
+  \section{Dynamic Systems and the Shadowing Lemma}
+  \subsection{Introduction}
+  \subsection{Implementation}
+  \subsection{Evaluation}
+  \section{A Data Structure for Analytic Functions}
+  \subsection{Introduction}
+  \subsection{Representation of Analytic Functions}
+  \subsection{Class Overview}
+  \subsection{Implementation Details}
+  \subsection{Evaluation}
+  \subsection{Applications}
+  \section{Root Refinement for Real Polynomials}
+  \subsection{Introduction}
+  \subsection{Implementation}
+  \subsection{Evaluation}
+  \chapter{Conclusion}
+  \section{Future Work}
+\end{document}
