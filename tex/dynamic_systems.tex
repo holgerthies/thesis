@@ -1,5 +1,5 @@
   \subsection{Introduction}
-  \cite{Hammel1987}
+ 
   A chaotic system is a dynamical system, that is highly sensitive to initial conditions.
   A consequence of that is that even relatively small numerical errors in the computation grow exponentially fast.
   A prototypical example of a chaotic system is the logistic map:
@@ -7,10 +7,28 @@
   The \textbf{logistic map} is given by the recurrence relation 
   $ x_{n+1} = ax_n(1-x_n) \text{ with } a, x_0 \in \R$.
   \end{definition} 
+
  \subsubsection{The Shadowing Lemma}
+ The term pseudo-orbit is used to describe numerically generated noisy orbits. 
  \begin{definition}\label{def:pseudoorbit}
  A sequence $(x_i)$ is called an \textbf{$\alpha$-pseudo-orbit} for a map $f$ if
  $ \| x_{i+1} - f(x_i) \| < \alpha $  
  \end{definition}
+
+  \begin{definition}\label{def:shadowing}
+	A real orbit $(y_i)$ \textbf{$\beta$-shadows} the pseudo-orbit $(x_i)$ if 
+	$\| x_i - y_i \| < \beta$.  
+ \end{definition}
+  For systems that are uniformly hyperbolic Anosov and Bowen could show the following result:
+  \begin{lemma}[Shadowing Lemma]
+  For all $\beta > 0$ there exists an $\alpha > 0$ so that for every $\alpha$-pseudo-orbit $(x_i)$ there is a point $y_0$ so that the real orbit starting at $y_0$ $\beta$-shadows $(x_i)$.
+  \end{lemma} 
+  The logistic map is not hyperbolic...\\
+  The following case study deals with the case of non-hyperbolic $f$. 
+  As stated above, for this case we can not expect to find an orbit that shadows the numerical orbit forever. 
+  Instead, there will be an orbit shadowing $(x_i)$ up to some point $n_0$ and then starting to diverge. 
+  We want to invesitgate where this $n_0$ is.
+  
+   \cite{Hammel1987}
   \subsection{Implementation}
   \subsection{Evaluation}
