@@ -44,6 +44,11 @@
   Then the maximal distance between all points in $I_n$ and $x_n$ is computed.
   This gives a shadowing bound.
   \subsection{Implementation}
-
-
+  The first part of the case study was to simulate the computations that were made on the Cray X-MP supercomputer on a modern computer. 
+  The cray double precision data type used for the computations in the paper has machine epsilon $\eps_\mu = 2^{-95}$.
+  To compute the intervals $I_n$ from $I_{n+1}$ the inverse of the interval is computed as described above (using floating point arithmetic).
+  Then as long as $I_{n+1} \not \subseteq f(I_n)$, $I_n$ is enlarged on both sides by the minimal possible quantity $\eps_\mu$. 
+  Since also the computation of $f(I_n)$ is done using floating point arithmetics, the condition might still not be fulfilled.
+  This can, however, be compensated by further enlargening the interval on both sides by the constant $10^{-25}$.
+  
   \subsection{Evaluation}
