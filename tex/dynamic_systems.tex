@@ -35,6 +35,15 @@
   All their computations are done on a Cray X-MP supercomputer. 
   For the case study, first their algorithm was implemented on a modern computer in the \cc programming language, both using fixed precision floating point numbers and \irram. 
   As a second step \irram was used to compute the shadowing orbit exactly.
+    \subsubsection{The algorithm}
+  A shadowing orbit $(y_n)$ of size $N$ for a pseudo orbit $(x_n)$ of the logistic map $f$ can be computed by setting $y_N = x_N$ and then iteratively applying the inverse map $y_{n-1} = f^{-1}(y_n)$. Since the logistic map is not injective, there is not a unique choice of which inverse to use (In the case of the logistic map there are two possible points to choose). 
+  To stay close to the pseudo orbit, in every step the point on the same side of $0.5$ as $x_n$ is chosen.   
+  Since the original work had to do all the computations using floating point arithmetics, the inverse could not be computed exactly.
+  Instead of the points $y_n$, a sequence of intervals $(I_n)$ that bound the location of $y_n$ is computed, i.e. so that $y_n \in I_n \text{ for } 0 \leq n \leq N$.
+  The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is selected so that $I_n \subseteq f(I_{n-1})$ holds and $I_n$ is chosen as small as possible. 
+  Then the maximal distance between all points in $I_n$ and $x_n$ is computed.
+  This gives a shadowing bound.
   \subsection{Implementation}
+
 
   \subsection{Evaluation}
