@@ -1,5 +1,5 @@
   \subsection{Introduction}
- 
+  By the term dynamic system we here only mean maps of the form $x_{n+1} = f(x_n)$.
   A chaotic system is a dynamical system, that is highly sensitive to initial conditions.
   A consequence of that is that even relatively small numerical errors in the computation grow exponentially fast.
   A prototypical example of a chaotic system is the logistic map:
@@ -20,15 +20,21 @@
 	$\| x_i - y_i \| < \beta$.  
  \end{definition}
   For systems that are uniformly hyperbolic Anosov and Bowen could show the following result:
-  \begin{lemma}[Shadowing Lemma]
+  \begin{theorem}[Shadowing Lemma]
   For all $\beta > 0$ there exists an $\alpha > 0$ so that for every $\alpha$-pseudo-orbit $(x_i)$ there is a point $y_0$ so that the real orbit starting at $y_0$ $\beta$-shadows $(x_i)$.
-  \end{lemma} 
+  \end{theorem} 
   The logistic map is not hyperbolic...\\
   The following case study deals with the case of non-hyperbolic $f$. 
   As stated above, for this case we can not expect to find an orbit that shadows the numerical orbit forever. 
   Instead, there will be an orbit shadowing $(x_i)$ up to some point $n_0$ and then starting to diverge. 
   We want to invesitgate where this $n_0$ is.
-  
-   \cite{Hammel1987}
+  The basis for this case study is a paper by Hammel, Yorke and Grebogi  \cite{Hammel1987}. 
+  The paper deals with the question, how long numerical orbits of the logitstic map can be shadowed by true orbits.
+  The authors show that for $a = 3.8$ and $x_0 = 0.4$, there is a true orbit $(y_n)$ of the logistic map, so that $\| x_n - y_n \| < 10^{-7}$ for $n \leq 10^7$.
+  Their proof method is to compute bounds on the points of the true orbit by using a form of interval arithmetic and letting a computer do the computations. 
+  All their computations are done on a Cray X-MP supercomputer. 
+  For the case study, first their algorithm was implemented on a modern computer in the \cc programming language, both using fixed precision floating point numbers and \irram. 
+  As a second step \irram was used to compute the shadowing orbit exactly.
   \subsection{Implementation}
+
   \subsection{Evaluation}
