@@ -59,8 +59,13 @@
   For the case study, first their algorithm was implemented on a modern computer in the \cc programming language, both using fixed precision floating point numbers and \irram. 
   As a second step \irram was used to compute the shadowing orbit exactly.
     \subsubsection{The algorithm}
-  A shadowing orbit $(y_n)$ of size $N$ for a pseudo orbit $(x_n)$ of the logistic map $f$ can be computed by setting $y_N = x_N$ and then iteratively applying the inverse map $y_{n-1} = f^{-1}(y_n)$. Since the logistic map is not injective, there is not a unique choice of which inverse to use (In the case of the logistic map there are two possible points to choose). 
-  To stay close to the pseudo orbit, in every step the point on the same side of $0.5$ as $x_n$ is chosen.   
+    The goal of the algorithm is to compute a shadowing orbit $(y_n)$ of size $N$ for a pseudo orbit $(x_n)$ of the logistic map $f$.
+  Instead of computing the shadowing orbit from the first point, the algorithm computes the inverse orbit by starting with the last point and then iteratively computing the predecessor. 
+  Since the logistic map is not injective, there is not a unique choice for this predecessor. 
+  For some point $f(x)$ there are normally two possible values for the inverse given by $f^{-1}_{1,2}(x) = 0.5 \pm \sqrt{0.25 + \frac{x}{a}} $.
+  An orbit can be computed by setting $y_N = x_N$ and then iteratively applying one of the inverse map $y_{n-1} = f^{-1}(y_n)$.   To stay close to the pseudo orbit, in every step the point on the same side of $0.5$ as $x_n$ is chosen (the index of $f^{-1}$ will from now on be omitted). 
+  This works since the inverse function on $(0,1)$ is a contraction, thus
+  $$ \| x_{n-1} - y_{n-1} \| = \| x_{n-1} - f^{-1}(y_n) \| \leq \| f^{-1}(x_n) - f^{-1}{y_n} \| + \| f^{-1}(x_n) - x_{n-1} \| \leq \| x_n - y_n \| + \delta $$   
   Since the original work had to do all the computations using floating point arithmetics, the inverse could not be computed exactly.
   Instead of the points $y_n$, a sequence of intervals $(I_n)$ that bound the location of $y_n$ is computed, i.e. so that $y_n \in I_n \text{ for } 0 \leq n \leq N$.
   The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is selected so that $I_n \subseteq f(I_{n-1})$ holds and $I_n$ is chosen as small as possible. 
