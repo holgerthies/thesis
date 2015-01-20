@@ -4,15 +4,15 @@
   $\Phi(0,x) = x$ and $\Phi(n,\Phi(m,x)) = \Phi(n+m, x)$. 
   Thus, a discrete dynamical system is the model of a system, that evolves over discrete time steps.
   \end{definition}
-  The simplest case of a discrete dynamical system, is when the state space is 1-dimensional (say $X \subseteq \R$) and 
-  the transition function only depends on the previous value, i.e. $\Phi(1,x) = f(x)$ for some $f : \R \to \R$. 
-  Then the dynamical system can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \R$.
+  The simplest case of a discrete dynamical system, is when the state space is 1-dimensional (say $X \subseteq \RR$) and 
+  the transition function only depends on the previous value, i.e. $\Phi(1,x) = f(x)$ for some $f : \RR \to \RR$. 
+  Then the dynamical system can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \RR$.
   A chaotic system is a dynamical system, that is highly sensitive to initial conditions.
   A consequence of that is that even relatively small numerical errors in the computation grow exponentially fast.
   A prototypical example of a chaotic system is the logistic map:
   \begin{definition}\label{def:logmap}
   The \textbf{logistic map} is given by the recurrence relation 
-  $ x_{n+1} = ax_n(1-x_n) \text{ with } a, x_0 \in \R$.
+  $ x_{n+1} = ax_n(1-x_n) \text{ with } a, x_0 \in \RR$.
   \end{definition} 
   \begin{table}
   \begin{tabular}{ | c | c | }
@@ -29,6 +29,7 @@
   \end{table}
   The logistic map behaves differently for different values of the parameter $a$ as can be seen in Table \ref{table:logmapbehaviour}. 
   The for this thesis interesting case is for $a \in (3.544, 4)$ where the iteration of the map leads to chaotic behaviour.
+  The \irram framework is very well suited to invesitgate this chaotic behaviour \footnote{what could also be shown in a contest in 2000 \cite{competition:2001}}. 
  \subsubsection{The Shadowing Lemma}
  The term pseudo-orbit is used to describe numerically generated noisy orbits. 
  \begin{definition}\label{def:pseudoorbit}
@@ -41,9 +42,9 @@
 	$\| x_i - y_i \| < \beta$.  
  \end{definition}
  \begin{definition}
- A dynamic system is called unformly hyperbolic if...
+ A dynamic system is called \textbf{uniformly hyperbolic} if ...
  \end{definition}
-  For systems that are uniformly hyperbolic Anosov and Bowen could show the following result \cite{anosov1967} \cite{Bowen1975}:
+  For systems that are uniformly hyperbolic Anosov and Bowen could show the following result \cite{anosov1967} \cite{Bowen1975} \cite{Hasselblatt:2008}:
   \begin{theorem}[Shadowing Lemma]
   For all $\beta > 0$ there exists an $\alpha > 0$ so that for every $\alpha$-pseudo-orbit $(x_i)$ there is a point $y_0$ so that the real orbit starting at $y_0$ $\beta$-shadows $(x_i)$.
   \end{theorem} 
@@ -51,7 +52,7 @@
   So for non-hyperbolic $f$, it can not be expected, that there is a real orbit that stays close to the pseudo orbit forever.
   Instead, there will be an orbit staying close to $(x_i)$ for some time, say up to some point $n_0$, and then starting to diverge. 
   The goal of this the case study is to investigate such orbits, in particular to find out how long there is an orbit staying close to the pseudo orbit,
-  The basis for this case study is a paper by Hammel, Yorke and Grebogi  \cite{Hammel1987}. 
+  The basis for this case study is a paper by Hammel, Yorke and Grebogi from 1987 \cite{Hammel1987}.
   The paper deals with the question, how long numerical orbits of the logitstic map can be shadowed by true orbits.
   The authors show that for $a = 3.8$ and $x_0 = 0.4$, there is a true orbit $(y_n)$ of the logistic map, so that $\| x_n - y_n \| < 10^{-7}$ for $n \leq 10^7$.
   Their proof method is to compute bounds on the points of the true orbit by using a form of interval arithmetic and letting a computer do the computations. 
@@ -94,7 +95,9 @@
   One has to be a little careful though, when computing this maximum, since comparing two real numbers is not computable. 
   This problem can, however, easily be solved by the use of multi valued functions. 
   \subsection{Evaluation}
-  Comparison with original work
+  \subsubsection{Comparison with original work}
+  The original work mainly deals with the case $a=3.8$ and $x_0 = $.
+
   Shadowing bound for different parameters
   Breaking point for different precisions
   Real orbit?
