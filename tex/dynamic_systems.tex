@@ -1,12 +1,12 @@
   \subsection{Introduction}
   \begin{definition}
-  A discrete dynamical system is a triple $(\NN,X,\Phi)$ with $X$ a non empty set (the state space) and an operation $\Phi : \NN \times X \to X$, so that
+  A \textbf{discrete dynamical system} is a triple $(\NN,X,\Phi)$ with $X$ a non empty set (the state space) and an operation $\Phi : \NN \times X \to X$, so that
   $\Phi(0,x) = x$ and $\Phi(n,\Phi(m,x)) = \Phi(n+m, x)$. 
+  Thus, a discrete dynamical system is the model of a system, that evolves over discrete time steps.
   \end{definition}
-  As the following theorem shows, discrete dynamical systems are closely related to function iterations.
-  \begin{theorem}
-
-  \end{theorem} 
+  The simplest case of a discrete dynamical system, is when the state space is 1-dimensional (say $X \subseteq \R$) and 
+  the transition function only depends on the previous value, i.e. $\Phi(1,x) = f(x)$ for some $f : \R \to \R$. 
+  Then the dynamical system can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \R$.
   A chaotic system is a dynamical system, that is highly sensitive to initial conditions.
   A consequence of that is that even relatively small numerical errors in the computation grow exponentially fast.
   A prototypical example of a chaotic system is the logistic map:
