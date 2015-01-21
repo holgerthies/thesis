@@ -30,6 +30,17 @@
   The logistic map behaves differently for different values of the parameter $a$ as can be seen in Table \ref{table:logmapbehaviour}. 
   The for this thesis interesting case is for $a \in (3.544, 4)$ where the iteration of the map leads to chaotic behaviour.
   The \irram framework is very well suited to invesitgate this chaotic behaviour \footnote{what could also be shown in a contest in 2000 \cite{competition:2001}}. 
+
+\begin{figure}\label{fig:logmaperror1}
+\centering
+\includegraphics[width=0.5\textwidth]{dynamic_systems/logmap1}
+\caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
+\end{figure}
+\begin{figure}\label{fig:logmapprec}
+\centering
+\includegraphics[width=0.5\textwidth]{dynamic_systems/logmap2}
+\caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
+\end{figure}
  \subsubsection{The Shadowing Lemma}
  The term pseudo-orbit is used to describe numerically generated noisy orbits. 
  \begin{definition}\label{def:pseudoorbit}
