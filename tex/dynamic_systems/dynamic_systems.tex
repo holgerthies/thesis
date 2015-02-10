@@ -1,3 +1,4 @@
+  \section{Dynamic Systems and the Shadowing Lemma}
   \subsection{Introduction}
   \begin{definition}
   A \textbf{discrete dynamical system} is a triple $(\NN,X,\Phi)$ with $X$ a non empty set (the state space) and an operation $\Phi : \NN \times X \to X$, so that
@@ -29,16 +30,22 @@
   \end{table}
   The logistic map behaves differently for different values of the parameter $a$ as can be seen in Table \ref{table:logmapbehaviour}. 
   The for this thesis interesting case is for $a \in (3.544, 4)$ where the iteration of the map leads to chaotic behaviour.
-  The \irram framework is very well suited to invesitgate this chaotic behaviour \footnote{what could also be shown in a contest in 2000 \cite{competition:2001}}. 
 
+  Since the \irram framework can be used to compute iterations of the logistic map exactly, it is very well suited to invesitgate this chaotic behaviour \footnote{what could also be shown in a contest in 2000 \cite{competition:2001}}. 
+
+  Figure \ref{fig:logmaperror1} shows how sensitive the map is to small errors that occur because of finite precision computations. 
+  When using 10 significant digits for the computation, it can be seen that after around 50 iterations the finite precision version diverges from the \irram version and then behaves completely differently. 
+
+  \irram can also be used to approximate the complexity in terms of needed computation precision. Since \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits, the internal precision at the end of the computation gives a measure of this complexity. As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
+  To compute 10 significant digits of the $20000$-th iterate, \irram interally computes already with precision nearly $2^{-50000}$, which is of course far from any standard floating point datatype.   
 \begin{figure}\label{fig:logmaperror1}
 \centering
-\includegraphics[width=0.5\textwidth]{dynamic_systems/logmap1}
+\includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
 \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
 \end{figure}
 \begin{figure}\label{fig:logmapprec}
 \centering
-\includegraphics[width=0.5\textwidth]{dynamic_systems/logmap2}
+\includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
 \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
 \end{figure}
  \subsubsection{The Shadowing Lemma}
