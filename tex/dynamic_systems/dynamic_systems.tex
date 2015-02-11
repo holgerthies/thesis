@@ -29,6 +29,16 @@
     \end{tabular}
     \caption{behaviour of iterating the logistic map for different values of the parameter $a$}\label{table:logmapbehaviour}
   \end{table}
+    \begin{figure}\label{fig:logmaperror1}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
+    \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
+    \end{figure}
+    \begin{figure}\label{fig:logmapprec}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
+    \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
+  \end{figure}
   The logistic map behaves differently for different values of the parameter $a$ as can be seen in Table \ref{table:logmapbehaviour}. 
   The for this thesis interesting case is for $a \in (3.544, 4)$ where the iteration of the map leads to chaotic behaviour.
 
@@ -39,16 +49,6 @@
 
   \irram can also be used to approximate the complexity in terms of needed computation precision. Since \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits, the internal precision at the end of the computation gives a measure of this complexity. As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
   To compute 10 significant digits of the $20000$-th iterate, \irram interally computes already with precision nearly $2^{-50000}$, which is of course far from any standard floating point datatype.   
-  \begin{figure}\label{fig:logmaperror1}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
-    \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
-    \end{figure}
-    \begin{figure}\label{fig:logmapprec}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
-    \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
-  \end{figure}
   \subsubsection{The Shadowing Lemma}
     The term pseudo-orbit is used to describe numerically generated noisy orbits. 
     \begin{definition}\label{def:pseudoorbit}
@@ -78,7 +78,7 @@
     All their computations are done on a Cray X-MP supercomputer. 
     For the case study, first their algorithm was implemented on a modern computer in the \cc programming language, both using fixed precision floating point numbers and \irram. 
     As a second step \irram was used to compute the shadowing orbit exactly.
-  \subsubsection{The algorithm}
+  \subsubsection{Backward Algorithm}
     The goal of the algorithm is to compute a shadowing orbit $(y_n)$ of size $N$ for a pseudo orbit $(x_n)$ of the logistic map $f$.
     Instead of computing the shadowing orbit from the first point, the algorithm computes the inverse orbit by starting with the last point and then iteratively computing the predecessor. 
     Since the logistic map is not injective, there is not a unique choice for this predecessor. 
@@ -91,7 +91,10 @@
     The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is selected so that $I_n \subseteq f(I_{n-1})$ holds and $I_n$ is chosen as small as possible. 
     Then the maximal distance between all points in $I_n$ and $x_n$ is computed.
     This gives a shadowing bound.
-    An alternative to this algorithm, that instead computes the orbit in forward direction can be found in \cite{chow1991}.
+    \subsubsection{Forward Algorithm}
+    An alternative to the algorithm descriped above can be found in \cite{chow1991}.
+    Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
+    
 \subsection{Implementation}
   The first part of the case study was to simulate the computations that were made on the Cray X-MP supercomputer on a modern computer. 
   The cray double precision data type used for the computations in the paper has machine epsilon $\varepsilon_\mu = 2^{-95}$.
@@ -105,17 +108,19 @@
   For the interval arithmetic an interval class was implemented, having the following methods:\\
   CLASS DIAGRAM \\
   The same algorithm was also implemented in a different way. 
-  Instead of using intervals with fixed precision floating point end points, \irram's \code(INTERVAL) type can be used. 
+  Instead of using intervals with fixed precision floating point end points, \irram's \code{INTERVAL} type can be used. 
   The data type provides interval arithmetic for intervals with real numbered end points.
   Then, the inverse of an interval can be computed exactly.
   The next step, was to compute the shadowing orbit exactly.
   For that, only the pseudo orbit was calculated using floating point arithmetics. 
-  Then, starting with the last point of the pseudo orbit the inverse was conputed exactly and the distance to the corresponding point in the pseudo orbit calculated.
+  Then, starting with the last point of the pseudo orbit the inverse was computed exactly and the distance to the corresponding point in the pseudo orbit calculated.
   The maximum of all those distances is the distance of the shadow orbit and the pseudo orbit.
   One has to be a little careful though, when computing this maximum, since comparing two real numbers is not computable. 
   This problem can, however, easily be solved by the use of multi valued functions. 
 \subsection{Evaluation}
-  \subsubsection{Comparison with original work}
+  \subsubsection{Breakdown points}
+  Since the inverse of the logistic map is only defined for points $x < \frac{a}{4}$, the above procedure fails, if at some point $i$ $x_i > \frac{a}{4}$. The first $N$ for that such an $i$ exists, is called the breakdown point.
+  The breakdown point depends on the precision that are used to compute the pseudo orbit. 
   The original work mainly deals with the case $a=3.8$ and $x_0 = $.
 
   Shadowing bound for different parameters
