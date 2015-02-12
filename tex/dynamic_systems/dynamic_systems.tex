@@ -94,7 +94,26 @@
     \subsubsection{Forward Algorithm}
     An alternative to the algorithm descriped above can be found in \cite{chow1991}.
     Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
-    
+    They define the two quantities
+    \begin{eqnarray*}
+    \sigma & = & \sup^N_{n=0} \sum_{m=n}^N  \prod_{j=n}^{m} | Df(y_j)^{-1} |  \\
+    \tau & = & \sup^N_{n=0} | \sum_{m=n}^N (y_{m+1}-f(y_m)\prod_{j=n}^{m} Df(y_j)^{-1}  |
+    \end{eqnarray*}
+    and show the following theorem:
+    \begin{theorem}
+    Let $f: [0,1] \to [0,1] \in C^2$ and $M = sup \{|D^2f(x)| \,:\, x \in [0,1] \}$.
+    For a pseudo orbit $(y_n)_{n=0}^{N+1}$ with $2M\sigma\tau \leq 1$, there is an exact orbit $(x_n)_{n=0}^N$  with 
+    $$sup_{n=0}^N |x_n - y_n| \in [\frac{tau}{1+0.5(1+\sqrt{1-2M\sigma \tau})}, \frac{2\tau}{1+\sqrt {1-2M\sigma \tau}}]$$
+    \end{theorem}
+    Then they derive the following esitmations for $\sigma$ and $\tau$:
+    The procedure to determine how closely a given pseudo orbit $(y_n)$ is shadowed by a true orbit is then given as follows:
+    \begin{enumerate}
+      \item Find upper bounds for $M$, $\delta$ and $\Delta$.
+      \item Compute 
+      \begin{eqnarray*}
+      
+      \end{eqnarray*}
+    \end{enumerate}
 \subsection{Implementation}
   The first part of the case study was to simulate the computations that were made on the Cray X-MP supercomputer on a modern computer. 
   The cray double precision data type used for the computations in the paper has machine epsilon $\varepsilon_\mu = 2^{-95}$.
@@ -121,7 +140,11 @@
   \subsubsection{Breakdown points}
   Since the inverse of the logistic map is only defined for points $x < \frac{a}{4}$, the above procedure fails, if at some point $i$ $x_i > \frac{a}{4}$. The first $N$ for that such an $i$ exists, is called the breakdown point.
   The breakdown point depends on the precision that are used to compute the pseudo orbit. 
-  The original work mainly deals with the case $a=3.8$ and $x_0 = $.
+  \subsubsection{Shadowing bound and computation precision}
+  The original work also deals with the question, how the computation precision is related to the shadowing bound. 
+  Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed. Instead, the noise was artificially increased by setting $x_{n+1} = ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the shadowing distance in relation to $\delta_p$ measured.
+  However, using the boost multiprecision library's \code{cpp\_bin\_float} data type, an arbitrary number of binary digits can be used for the precision.
+
 
   Shadowing bound for different parameters
   Breaking point for different precisions
