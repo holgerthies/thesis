@@ -29,15 +29,17 @@
     \end{tabular}
     \caption{behaviour of iterating the logistic map for different values of the parameter $a$}\label{table:logmapbehaviour}
   \end{table}
-    \begin{figure}\label{fig:logmaperror1}
+  \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
     \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
-    \end{figure}
-    \begin{figure}\label{fig:logmapprec}
+    \label{fig:logmaperror1}  
+  \end{figure}
+    \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
     \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
+    \label{fig:logmapprec}
   \end{figure}
   The logistic map behaves differently for different values of the parameter $a$ as can be seen in Table \ref{table:logmapbehaviour}. 
   The for this thesis interesting case is for $a \in (3.544, 4)$ where the iteration of the map leads to chaotic behaviour.
@@ -111,7 +113,9 @@
       \item Find upper bounds for $M$, $\delta$ and $\Delta$.
       \item Compute 
       \begin{eqnarray*}
-      
+      \mu_p &=& \sup_{n=0}^{N-p} \prod_{m=n}^{n+p} |Df(y_m)^-1| \\
+      \sigma_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
+      \tau_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
       \end{eqnarray*}
     \end{enumerate}
 \subsection{Implementation}
@@ -144,6 +148,16 @@
   The original work also deals with the question, how the computation precision is related to the shadowing bound. 
   Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed. Instead, the noise was artificially increased by setting $x_{n+1} = ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the shadowing distance in relation to $\delta_p$ measured.
   However, using the boost multiprecision library's \code{cpp\_bin\_float} data type, an arbitrary number of binary digits can be used for the precision.
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/shadowing_distance_dep_on_prec}
+    \caption{Shadowing distance for different parameters $a$ and $p_0$ of the logistic map. The distance is bound by $\frac1{\sqrt \delta}$ where $\delta = 2^{-n}$ is the precision.}
+    \label{fig:shadowingdistance1}
+  \end{figure}
+
+  The shadowing distance for $N=10^7$ iterates was computed for several different parameters $a$ and starting points $p_0$. The result can be seen in Figure \ref{fig:shadowingdistance1}. A complete table of all the starting values and parameters can be found in the Appendix. Hammel, Yorke and Grebogi conjecture that for $2M$-digit accuracy, that the orbit stays close to $10^{-M}$ for around $10^M$ iterates. As can be seen in the graph, for up to $10^7$ iterates the conjecture holds for all the tested values.
+
 
 
   Shadowing bound for different parameters
