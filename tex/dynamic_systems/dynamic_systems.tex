@@ -134,12 +134,17 @@
   Instead of using intervals with fixed precision floating point end points, \irram's \code{INTERVAL} type can be used. 
   The data type provides interval arithmetic for intervals with real numbered end points.
   Then, the inverse of an interval can be computed exactly.
-  The next step, was to compute the shadowing orbit exactly.
-  For that, only the pseudo orbit was calculated using floating point arithmetics. 
-  Then, starting with the last point of the pseudo orbit the inverse was computed exactly and the distance to the corresponding point in the pseudo orbit calculated.
-  The maximum of all those distances is the distance of the shadow orbit and the pseudo orbit.
-  One has to be a little careful though, when computing this maximum, since comparing two real numbers is not computable. 
-  This problem can, however, easily be solved by the use of multi valued functions. 
+  
+  Instead of computing only an upper bound to the shadowing bound \irram can also be used to compute the exact shadowing orbit. 
+  To do that, one has to compute the pseudo orbit by computing an orbit using floating point arithmetic of a certain fixed precision.
+  Then, starting with the last point of the pseudo orbit the inverses can be computed exactly until the initial point is reached.
+  Then the distance of this real orbit and the pseudo orbit can be computed and the maximum of all those distances taken to find the shadowing distance.
+  The \irram code to compute the exact orbit is extremely simple.
+  For finding the shadowing bound, however, one has to be a little more careful, since the maximum of two real numbers is not computable and can lead to infinite recursion in \irram. 
+  Since there only had to be found a qualitative behavior of the shadowing bound depending on the various parameters instead of finding the exact distance as a real number, it does not really matter if the maximum distance was chosen or only a number that is close enough to the maximum, so that it does not matter for the analysis. 
+  \irram's support for multivalued functions yields an easy solution to this problem: 
+  The maximum computation may be wrong, when two numbers are very close to each other (their distance is orders of magnitude lower than the result we expect). 
+  This program will always terminate and give a very accurate approximation to the shadowing distance.  
 \subsection{Evaluation}
   \subsubsection{Breakdown points}
   Since the inverse of the logistic map is only defined for points $x < \frac{a}{4}$, the above procedure fails, if at some point $i$ $x_i > \frac{a}{4}$. The first $N$ for that such an $i$ exists, is called the breakdown point.
@@ -151,13 +156,23 @@
 
   \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/shadowing_distance_dep_on_prec}
+    \begin{subfigure}{.45\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{img/dynamic_systems/dist_prec_N_1000}
+      \caption{$10^3$ iterations}
+    \end{subfigure}
+     \begin{subfigure}{.45\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{img/dynamic_systems/dist_prec_N_10000000}
+      \caption{$10^7$ iterations}
+    \end{subfigure}   
     \caption{Shadowing distance for different parameters $a$ and $p_0$ of the logistic map. The distance is bound by $\frac1{\sqrt \delta}$ where $\delta = 2^{-n}$ is the precision.}
     \label{fig:shadowingdistance1}
   \end{figure}
 
-  The shadowing distance for $N=10^7$ iterates was computed for several different parameters $a$ and starting points $p_0$. The result can be seen in Figure \ref{fig:shadowingdistance1}. A complete table of all the starting values and parameters can be found in the Appendix. Hammel, Yorke and Grebogi conjecture that for $2M$-digit accuracy, that the orbit stays close to $10^{-M}$ for around $10^M$ iterates. As can be seen in the graph, for up to $10^7$ iterates the conjecture holds for all the tested values.
-
+  The shadowing distance was computed for several different parameters $a$ and starting points $p_0$. THe number of iterations $N$ were also varied. 
+  The result can be seen in Figure \ref{fig:shadowingdistance1}. A complete table of all the starting values and parameters can be found in the Appendix. Hammel, Yorke and Grebogi conjecture that for $2M$-digit accuracy, that the orbit stays close to $10^{-M}$ for around $10^M$ iterates. As can be seen in the graph, for up to $10^7$ iterates the conjecture holds for all the tested values.
+  The results obtained by the \irram version and the version working with fixed precision interval arithmetic were nearly identical. 
 
 
   Shadowing bound for different parameters
