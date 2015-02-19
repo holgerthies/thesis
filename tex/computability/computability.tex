@@ -4,6 +4,8 @@
  Since in real computability theory many aspects of classical computability theory are extended, 
  a very brief overview is given in the following section.
  Turing-Machines are great...
+ decidability
+ semi-decidability
 \subsection{Computability of real numbers}
 The previous section showed how to define computability over finite alphabets $\Sigma^* \to \Sigma^*$. 
 That is enough to define computability for finite structures. The following section defines how to extend 
@@ -13,5 +15,20 @@ In contrast to the classical case, where the definition given in the previous se
 generally accepted model for real complexity theory.
 The model used in this thesis is the so called \textbf{Type 2 Theory of Effectivity} (TTE). 
 Because... 
-The general definition is by Type-2 Turing Machines...
 
+This section gives an overview of the framework used to define computability on real numbers and is therefore 
+a little more general then needed in the rest of the thesis, that focuses more on implementations of subsets of this framework.
+However,...
+
+The general definition is by Type-2 Turing Machines...
+To talk about computability over some set, the notion of encoding this set to $\sigma^\omega$ has to be formalized.
+\begin{definiton}\label{def:representation}
+A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
+$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. \\
+$x \in X$ is \textbf{$\alpha$-computable} if it has a decidable $\alpha$-name.
+\end{definition}
+
+Of course, the definition of representations is very wide and can lead to many different more or less useful definitions of computability.
+
+
+Examples...
