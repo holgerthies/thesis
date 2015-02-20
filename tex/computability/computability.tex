@@ -4,8 +4,20 @@
  Since in real computability theory many aspects of classical computability theory are extended, 
  a very brief overview is given in the following section.
  Turing-Machines are great...
- decidability
- semi-decidability
+ \begin{definition}
+ 	A possibly partial function $f:\subseteq \Sigma^* \to \Sigma^*$ is called \textbf{computable} if there exists 
+ 	a Turing-Machine, so that for all $x \in dom(f)$ the machine terminates after finitely many steps with $f(x)$ on its 
+ 	tape and for $x \not \in dom(f)$ the machine does not terminate.
+ \end{definition}
+
+ Church-Turing-Thesis...
+ \begin{definition}
+ 	A set $A \subseteq \Sigma^*$ is called \textbf{decidable}, if its characteristic function is computable. 
+ \end{definition}
+ \begin{definition}
+ 	A set $A \subseteq \Sigma^*$ is called \textbf{recursively enumerable} (r.e.) or \textbf{computably enumerable} (c.e.) if 
+ 	it is empty or if $A$ is the domain of a computable function.   
+ \end{definition}
 \subsection{Computability of real numbers}
 The previous section showed how to define computability over finite alphabets $\Sigma^* \to \Sigma^*$. 
 That is enough to define computability for finite structures. The following section defines how to extend 
@@ -22,13 +34,40 @@ However,...
 
 The general definition is by Type-2 Turing Machines...
 To talk about computability over some set, the notion of encoding this set to $\sigma^\omega$ has to be formalized.
-\begin{definiton}\label{def:representation}
-A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
-$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. \\
-$x \in X$ is \textbf{$\alpha$-computable} if it has a decidable $\alpha$-name.
+\begin{definition}\label{def:representation}
+	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
+	$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. \\
+	$x \in X$ is \textbf{$\alpha$-computable} if it has a decidable $\alpha$-name.
 \end{definition}
 
-Of course, the definition of representations is very wide and can lead to many different more or less useful definitions of computability.
-
-
+Of course, the definition of representations is open wide and can lead to many different more or less useful definitions of computability.
+Some possible representations for real numbers are as follows
+\begin{enumerate}
+\item A $\rho$-name of $x \in \RR$ is a sequence $a_n \in \ZZ$ s.t. $| x - a_n | \leq 2^{-n}$
+\item  A $\rho_C$-name of $x \in \RR$ consists of two sequences rational $(q_n)_{n \in \NN}$ and $(\varepsilon_n)_{n \in \NN}$, so that 
+$| x_n - q_n | < \varepsilon_n$ and $\lim_{n \to \infty} \varepsilon_n = 0$  
+\item $\rho_<$-name, $\rho_>$-name
+\item $\rho_n$-name 
+\end{enumerate}
+\begin{example}
+Specker-Sequence
+\end{example}
+\begin{definition}
+	A function $f: \subseteq X \to Y$ is called \textbf{$(\alpha, \beta)$}-computable, 
+	if there exists a computable function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ such that 
+	$\beta(F(\sigma)) \in f(\alpha(\sigma))$ for all $\sigma \in dom(f \circ \alpha) $.  
+\end{definition}
+The Diagram in ... shows computability.
 Examples...
+\begin{theorem}
+	Comnputable functions are continuous...
+	\begin{proof}
+		Maybe I will do the proof later...
+	\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Composition of computable functions is computable.
+\end{theorem}
+\subsection{Uniformity}
+Intermediate Value Theorem

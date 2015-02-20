@@ -48,10 +48,10 @@
   \theorembodyfont{\itshape}
   \newtheorem{definition}{Definition}
   \theorembodyfont{\upshape}
-  \theoremsymbol{\ensuremath{\blacksquare}}
   \newtheorem{theorem}[definition]{Theorem}
   \newtheorem{corollary}[definition]{Corollary}
-
+  \newtheorem{example}{Example}[section]
+  \newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
 \begin{document}
   \thesistitle{Case Studies in Exact Real Arithmetic - Implementations and empirical Evaluation}{Fallstudien in exakter reeller Arithmetik: Implementation und empirische Evaluation}
   \author{Holger Thies}
