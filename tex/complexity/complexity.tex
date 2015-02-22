@@ -1,0 +1,17 @@
+%!TEX root = ../../thesis.tex
+\section{Real Computability Theory}
+  \section{Real Complexity Theory}
+  \subsection{Classical Complexity Theory}
+  \begin{definition}
+  For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ is the number of head movements 
+  the Turing Machine on input $w$ exectues before it terminates. \\
+  For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in \Sigma^* and M terminates on input w \}$.\\
+  Analogously, one can define space constraints.
+  \end{definition}
+ \begin{definition}
+  For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$ if there are constants $M \in \RR$, $n_0 \in \NN$, such that
+  $ f(n) \leq M \cdot g(n)$ for all $n > n_0$. 
+  \end{definition}
+  $O$-notation is usually used when describing the complexity of algorithms. \\
+  Usually, complexity theory does not deal with the complexity of specific algorithms, but with the complexity of problems. 
+
