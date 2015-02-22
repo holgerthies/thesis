@@ -25,6 +25,7 @@ the classical notion to uncountable objects such as real or complex numbers, fun
 There are several non equivalent ways, to define computability on such objects. 
 In contrast to the classical case, where the definition given in the previous section is widely accepted, there is no 
 generally accepted model for real complexity theory.
+
 The model used in this thesis is the so called \textbf{Type 2 Theory of Effectivity} (TTE). 
 Because... 
 
@@ -33,6 +34,12 @@ a little more general then needed in the rest of the thesis, that focuses more o
 However,...
 
 The general definition is by Type-2 Turing Machines...
+From now on the term Turing-Machine is used both for classical and type 2 machines, when it is clear by context which model is meant.
+\begin{definition}\label{def:computability_ttt}
+A function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ is called computable if there is a Turing-Machine  
+that for all infinite strings $\sigma in dom(F)$ writes the infinite string $F(\sigma)$ on its output tape. 
+For $\sigma \not \in dom(f)$ the machine writes only finitely many symbols on the output tape.  
+\end{definition}
 To talk about computability over some set, the notion of encoding this set to $\sigma^\omega$ has to be formalized.
 \begin{definition}\label{def:representation}
 	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
@@ -43,16 +50,32 @@ To talk about computability over some set, the notion of encoding this set to $\
 Of course, the definition of representations is open wide and can lead to many different more or less useful definitions of computability.
 Some possible representations for real numbers are as follows
 \begin{enumerate}
+\item A $\rho_{10}$-name of $x$ is the usual decimal expansion of $x$.
 \item A $\rho$-name of $x \in \RR$ is a sequence $a_n \in \ZZ$ s.t. $| x - a_n | \leq 2^{-n}$
 \item  A $\rho_C$-name of $x \in \RR$ consists of two sequences rational $(q_n)_{n \in \NN}$ and $(\varepsilon_n)_{n \in \NN}$, so that 
 $| x_n - q_n | < \varepsilon_n$ and $\lim_{n \to \infty} \varepsilon_n = 0$  
 \item $\rho_<$-name, $\rho_>$-name
 \item $\rho_n$-name 
 \end{enumerate}
+\begin{theorem}
+The following are equivalent
+\item $x \in \RR$ is computable in the sense of Definiton 
+\item $x \in \RR$ is $\rho_{10}$ computable
+\item $x \in \RR$ is $\rho$-computable
+\end{theorem}
 \begin{example}
 Specker-Sequence
+\begin{definition}\label{def:representation_composition}
+Composition of representations
+\end{definition}
 \end{example}
-\begin{definition}
+This thesis does not deal with the problem of computing single real numbers, but rather with computing real functions and real functionals.
+For a function $f:\subseteq \RR \to \RR$ to be computable means, that is it possible to compute $f(x)$ arbitrarily good. 
+Also a machine can not read $x$ with infinite precision, but it can ask to get $x$ as exact as it needs it to compute the output.
+\begin{definition}\label{def:computability_oracle_tm}
+\end{definition}
+This concept can be generalized by the following definiton  
+\begin{definition}\label{def:computability_function_representation}
 	A function $f: \subseteq X \to Y$ is called \textbf{$(\alpha, \beta)$}-computable, 
 	if there exists a computable function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ such that 
 	$\beta(F(\sigma)) \in f(\alpha(\sigma))$ for all $\sigma \in dom(f \circ \alpha) $.  
@@ -60,14 +83,36 @@ Specker-Sequence
 The Diagram in ... shows computability.
 Examples...
 \begin{theorem}
-	Comnputable functions are continuous...
+Multiplication is not $(\rho_{10}, \rho_{10})$-computable.
+\end{theorem}
+From now on the term computable will be used to describe computability w.r.t. the Cauchy representation.
+Then all of the following functions are computable
+\begin{enumerate}
+\item Arithmetical operations $+,-,x,/ : \subseteq \RR^2 \to \RR$
+\item The absolute value function
+\item The minimum and maximum functions
+\item constant functions with computable constant
+\item Projections $\RR^k \to \RR$ 
+\item polynomials with computable coefficients
+\item $exp, sin, cos$
+\item The square-root function and the logarithm function
+\end{enumerate}
+\begin{theorem}
+	Computable functions are continuous...
 	\begin{proof}
 		Maybe I will do the proof later...
 	\end{proof}
 \end{theorem}
 
 \begin{theorem}
-Composition of computable functions is computable.
+Computability is preserved under function composition, i.e.
+For sets $X,Y,Z$ with representations $\delta_X, \delta_Y, \delta_Z$, 
+$f:\subseteq X \to Y$ $(\delta_X, \delta_Y)$-computable and $g:\subseteq Y \to Z$ $(\delta_Y, \delta_Z)$-computable,
+$g \circ f$ is $(\delta_X, \delta_Z)$-computable.
 \end{theorem}
 \subsection{Uniformity}
 Intermediate Value Theorem
+\subsection{Other models for comoutable reals}
+Markov Computability \\ 
+Sequential Computabilty \\
+Computable invariance \\
