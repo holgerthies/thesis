@@ -110,7 +110,37 @@ For sets $X,Y,Z$ with representations $\delta_X, \delta_Y, \delta_Z$,
 $f:\subseteq X \to Y$ $(\delta_X, \delta_Y)$-computable and $g:\subseteq Y \to Z$ $(\delta_Y, \delta_Z)$-computable,
 $g \circ f$ is $(\delta_X, \delta_Z)$-computable.
 \end{theorem}
-\subsection{Uniformity}
+\begin{definition}
+A multi-valued function $f: \subseteq X \rightrightarrows Y$ is just an other name for a relation $f \subseteq X \times Y$.
+A multi-valued function is $(\rho_X, \rho_Y)$ computable, if there is a a comnputable (single valued) function 
+$F: \subseteq \Sigma^\omega \to \Sigma^\omega$ such that for all $\sigma \in dom(f \circ \rho_X)$, $\rho_Y(F(\sigma)) \in f(\rho_X(\sigma))$. 
+\end{definition}
+\subsection{Computability of real operators and functionals}
+A real operator maps functions $\RR \to \RR$ to functions $\RR \to \RR$and a functional maps functions $\RR \to \RR$ to real numbers $\RR$.
+For that, a representation for the space to work on is needed.
+Continuous functions on a compact subset $X \subseteq R^d$ can be uniformly approximated by polynomials arbitrarily close.
+A possible representation for real valued functions is thus given by the following definition 
+\begin{definition}
+A $[\rho^d \to \rho]$-name of a function $f \in C([0,1]^d, \\R)$ is given by a sequence $P_n \in \\D[x1, \dots, x_d]$ of polnomials (i.e. degree and list of coefficients), such that $\vert f - P_n \vert_\infty < 2^{-n}$   
+\begin{theorem}[name?]
+The integration operator 
+$$I: C[0,1] \ to C[0,1], f \to (x \to \int_0^x f(t) dt$$   
+is computable.
+\end{theorem}
+\begin{theorem}[Myhill 1971]
+There is a computable function $f: [0,1] \to \R$ with continuous but uncomputable derivative. 
+\end{theorem}
+\begin{theorem}
+The operator 
+$$ D: C^1[0,1] \to C[0,1], f \to f'$$
+is computable.
+\end{theorem}
+\end{definition}
+\subsection{Uniformity and Non-Uniformity}
+When talking about computability one has to distinguish between two types of computability, \textbf{uniform} and \textbf{non-uniform}.
+FOr non-uniform computability it suffices, that for every input, there is an algorithm that computes the output. 
+The algorithm may however depend on the input in a non-computable way.
+In contrast, a problem is uniformly computable only if there is one algorithm, that computes the output for every valid input. 
 Intermediate Value Theorem
 \subsection{Other models for comoutable reals}
 Markov Computability \\ 
