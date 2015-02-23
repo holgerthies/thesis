@@ -1,17 +1,79 @@
 %!TEX root = ../../thesis.tex
-\section{Real Computability Theory}
-  \section{Real Complexity Theory}
-  \subsection{Classical Complexity Theory}
-  \begin{definition}
-  For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ is the number of head movements 
-  the Turing Machine on input $w$ exectues before it terminates. \\
-  For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in \Sigma^* and M terminates on input w \}$.\\
-  Analogously, one can define space constraints.
-  \end{definition}
- \begin{definition}
-  For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$ if there are constants $M \in \RR$, $n_0 \in \NN$, such that
-  $ f(n) \leq M \cdot g(n)$ for all $n > n_0$. 
-  \end{definition}
-  $O$-notation is usually used when describing the complexity of algorithms. \\
-  Usually, complexity theory does not deal with the complexity of specific algorithms, but with the complexity of problems. 
+\section{Real Complexity Theory}
+	\subsection{Classical Complexity Theory}
+		\begin{definition}
+			For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ is the number of head movements 
+			the Turing Machine on input $w$ exectues before it terminates. \\
+			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in \Sigma^* and M terminates on input w \}$.\\
+			Analogously, one can define space constraints.
+		\end{definition}
+		\begin{definition}
+			For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$ if there are constants $M \in \RR$, $n_0 \in \NN$, such that
+			$ f(n) \leq M \cdot g(n)$ for all $n > n_0$. 
+		\end{definition}
+			$O$-notation is usually used when describing the complexity of algorithms. \\
+			Usually, complexity theory does not deal with the complexity of specific algorithms, but with the complexity of problems, 
+			i.e. the complexity of deciding subsets of $\Sigma^*$. Problems can be divided into classes depending on their running time.
+		\begin{definition}
+			For a function $t: \NN \to \NN$ let 
+			$$ DTIME(t) = \{ A \subseteq \Sigma^* \,|\, \text{There is a Turingmachine } M \text{ deciding } A \text{ with } time_M(n) \in O(t(n)) \} $$
+		\end{definition}
+		The above definitions suffice to define the most important complexity classes
+		\begin{definition}
+			The complexity classes $P, NP, PSPACE$ and $EXPTIME$ are defined as follows:
+			\begin{eqnarray*}
+				P & := & \bigcup_{k \in N} DTIME(n^k) \\
+				NP & := & \{A \subseteq \Sigma^* \,|\, \exists n \in \NN  \dots \} \\
+				PSPACE & := & \bigcup_{n \in N} DSPACE(n^k) \\
+				EXPTIME & := & \bigcup_{k \in N} DTIME(2^{n^k}) \\
+			\end{eqnarray*}
+		\end{definition}
+		It holds $P \subseteq NP \subseteq PSPACE \subseteq EXPTIME$. 
+		It is $P \neq EXPTIME$ and for all other inclusions it is not known if equality holds, but most 
+		complexity theorists consider it as extremely unlikely.
+		Wheter $P = NP$ is one of the Millenium problems and one of the biggest unsolved problems in Computer Science.
+		One can also consider function problems instead of decision problems. This leads to a dual hierarchy.
+		\begin{definition}
+			A functional problem $F: \Sigma^* \rightrightarrows \Sigma^*$, is solved by a Turing-Machine in if it writes on every $x \in \Sigma^*$ an output $z \in F(x)$ or decides that no such output exists.  \\
+			Time- and Space-Complexity can be defined accordingly. \\
+			The classes $FP$ and $FPSPACE$ are defined as the class of polynomial time resp. space computable functions. \\
+			The class $\#P$ is defined as the the class of functions that give the number of solutions to a problem in $NP$. 
+		\end{definition}
+		It holds $FP \subseteq \#P \subseteq FPSPACE$ and if $FP = \#P$ would hold, it would follow that $P = NP$.
+		Problems that are known to be in $P$ are often considered as the feasible functions, 
+		for which it is possible to find an efficient algorithm. \\
+		To compare the difficulty of problems reductions are used
+		\begin{definition}
+			$A \subset \Sigma^*$ is \textbf{polynomial time reducible} to $B \subseteq \Sigma^*$ ($A \leq_P B)$, 
+			if there is a polynomial time computable function $f; \Sigma^* \to \Sigma^*$, such that
+			$$ w \in A \Leftrightarrow f(w) \in B.$$
+		\end{definition}
+		Other types of reductions exist, e.g. to compare complexity classes lower then $P$, but they are not needed in this thesis. \\
+		The hardest problems in a complexity class are called complete for this class
+		\begin{definition}
+			A set $A \subseteq \Sigma^*$ is called \textbf{$\C$-hard} (w.r.t. $\leq_P$) for a complexity class $\C$, if for all $B \in \C$ $B \leq_P A$. \\
+			$A$ is called \textbf{$\C$-complete} (w.r.t. $\leq_P$), if $A$ is $\C-hard$ and $A \in \C$.  
+		\end{definition}
+		If one would show for a single $\C$-complete problem that it is in $P$, it would follow that all problems in $\C$ are in $P$.
+		Consequently a way to show that there is most likely no efficient algorithm to a problem, is to show that the problem is $NP$-hard.
 
+	\subsection{Complexity Theory on real numbers}
+	In classical complexity theory the time complexity is usually measured in terms of the input size.
+	However, when considering continuous peoblems, the input is an infinite string and thus can not 
+	be used to measure the running time of an algorithm.
+	In numerical computations an important parameter is the desired output precision.
+	Thus, it seems reasonable to analyze the running time as a function depending on the desired output precision.
+	The complexity of a real number can be defined as follows:
+	\begin{definition}
+		A real number $x \in \RR$ is computable in time $t$ if there is a Turing Machine $M$ that with input $n \in \NN$ in binary, 
+		outputs the binary expansion of a dyadic rational number $d$ with $| x - d | \leq 2^{-n}$.  
+	\end{definition}
+	Again this notion can be generalized by using representations, i.e. by considering the time that is needed to write the first $n$ symbols
+	of the name of the output.
+	One has to be careful, however, since representations that are computationally equivalent, do not necessary lead to the same complexity bounds.
+	For example, one can construct arbitrarily long Cauchy names for any rational number, so that it is not even possible to define the complexity 
+	of a real number by its Cauchy name.
+	A representation that is often considered is the signed digit representation
+	\begin{definition}
+		
+	\end{definition}
