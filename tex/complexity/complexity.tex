@@ -64,7 +64,7 @@
 	In numerical computations an important parameter is the desired output precision.
 	Thus, it seems reasonable to analyze the running time as a function depending on the desired output precision.
 	The complexity of a real number can be defined as follows:
-	\begin{definition}
+	\begin{definition}\label{def:complexity_real_number}
 		A real number $x \in \RR$ is computable in time $t$ if there is a Turing Machine $M$ that with input $n \in \NN$ in binary, 
 		outputs the binary expansion of a dyadic rational number $d$ with $| x - d | \leq 2^{-n}$.  
 	\end{definition}
@@ -75,5 +75,26 @@
 	of a real number by its Cauchy name.
 	A representation that is often considered is the signed digit representation
 	\begin{definition}
-		
+		The \textbf{signed digit representation} $\rho_sd$ is defined as follows: \\
+		A $\rho_d$-name of a real number $x$ is a sequence 
+		$$a_n a_{n-1} \dots a_0 . a_{-1} a_{-2} \dots \text{ with } a_i \in \{-1,0,1\}, n \geq -1, a_n \neq 0, a_n + a_{n-1} \neq 0$$
+		$$ \text{ and } x = \sum_{i=n}^{-\infty} a_i \cdot 2^i $$  
 	\end{definition}
+	As with the binary expansion, the number digits after the binary point correspond to the precision.
+	The advantage to the binary expansion is that, the signed digit representation is symmetric, ,,,
+	It can be shown that the signed digit representation is computably equivalent to the Cauchy representation.
+	Definition \ref{def:complexity_real_number} can be adjusted to the signed digit representation in the obvious way.\\
+	When extending the complexity notion to functions, an additional parameter might be interesting, the precision of the input
+	needed to compute the output up to the demanded precision.
+	It should also be noted, that the definition of complexity is only possible on compact sets, since otherwise the machine can already
+	spend arbitrarily much time to read the digits before the point.
+	\begin{definition}
+		A function $f: \subseteq \RR \to \RR$ is computed on a compact set $K \subseteq dom(f)$ in time $t$ with lookahead $l$ if for all $\rho_{sd}$-names of elements $ x \in K$ by a Turing Machine $M$ if $M$ computes a $\rho_{sd}$-name of $f(x)$ and after t steps and with reading at most $l$ symbols of the input string outputs the $n$-th symbol of the output.   
+	\end{definition} 
+	\begin{theorem}[Ko and Friedmann]
+		The set of polynomial time computable real numbers forms a real algebraically closed field.
+	\end{theorem}
+	\begin{example}
+	Polynomial time computable functions...
+	\end{example}
+	
