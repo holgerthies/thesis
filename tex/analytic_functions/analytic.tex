@@ -103,6 +103,32 @@
 	 		\item Parametric maximization
 	 	\end{enumerate}
 	 \end{theorem}
+	Now consider functions analytic on some other domain, e.g. on the real line $[0,1]$.
+	Such functions can be represented by a finite number of powerseries covering the domain. 
+	That leads to the following representation
+	\begin{definition}
+		A \textbf{series-name} for a function $f \in C^\omega([0,1])$ is a 5-tuple $(M, (x_m), (a_{n, j}), k, A)$ where $M \in \NN$
+		$1 \leq j \leq M$, $n \in \NN$, $x_m \in [0,1]$ and it holds
+		\begin{enumerate}
+			\item $[0,1] \subseteq \bigcup_{m=1}^M [x_m - \frac{i}{4k}, x_m + \frac{1}{4k}]$
+			\item $(a_{n,i})_{n \in \NN}$ is the series expansion of $f$ around $x_0 + \frac{i}{4k}$
+			\item $|a_{n,i}| \leq Ak^n$ for all $n \in N$, $1 \leq i \leq M$
+		\end{enumerate}
+	\end{definition}
+	A function name as in Definition \ref{def:function_name_ball} can also be defined
+	\begin{definition}
+		Let $R_l := [-\frac{1}{l}, 1+frac{1}{l}] \times [-\frac{1}{l}, frac{1}{l}]$ the closed rectangle around $[-1,1]$ 
+		with distance $\frac{1}{l}$ around the line $[0,1]$.
+		A \textbf{function-name} for a function $f \in C^\omega([0,1])$ is a 3-tuple $(f|_{[-1,1]}, B, l)$ with $B, l \in \NN$ such that 
+		\begin{enumerate}
+			\item $f \in C^\omega(R_l)$
+			\item $B$ is an upper bound for $f$ on $R_l$
+		\end{enumerate}
+		Again, $l$ is coded in unary and $B$ in binary.
+	\end{definition}
+	Again it can be shown that the two representations are polynomial time equivalent.
+	
+	\subsection{Analytic Continuation}
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
 	\subsection{Evaluation}
