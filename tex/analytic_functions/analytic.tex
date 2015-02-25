@@ -1,7 +1,90 @@
 %!TEX root = ../../thesis.tex
 \section{A Data Structure for Analytic Functions}
+	Acknowledgment: Florian, Akitoshi
 	\subsection{Introduction}
+		As seen in Chapter \ref{section:real_complexity} many important operators 
+		on real functions have been shown to be computationally hard.
+		On the other hand, numerical scientists can quickly compute maxima or anti-derivatives of functions.
+		To analyze this mismatch one should ask the follwing questions
+		\begin{enumerate}
+			\item What subset of real functions is usually considered in numerical analysis?
+			\item Are there implicit assumptions made about the functions, that allow faster computations? 
+		\end{enumerate}
+		One class of functions that has been considered in computable analysis is the analytic functions.
+		Although not at all sufficent as the class of functions considered interesting for numerical analysis, 
+		many computations become tractable when one restricts the attention to analytic functions.
+		\begin{definition}
+			For $z \in \CC$ and $r \in \RR, r > 0$, let $B(z,r) := \{ x \in \CC \,\, | x - z | < r\}$. \\
+			A function $f: D \to \CC$ with $D \subseteq CC$ is called \textbf{analytic} if for every $x_0 \in D$ 
+			the function given by the Taylor-series around $x_0$ converges to $f(x)$ for every $x$ in a neighborhood of 
+			$x_0$. 
+			That is, for every $x_0 \in \D$ there is a $\varepsilon > 0$, such that for all $x \in B(x_0, \varepsilon)$ and for 
+			$$ T(x) := \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n  \text{, } T(x) \rightarrow f(x)$$.
+			The set of functions analytic on $D$ is denoted as $C^\infty(D)$. \\
+			The coefficients of the Taylor expansion is denoted by the series $(a_n)_{n \in \NN}$, i.e. 
+			$$ a_n = \frac{f^{(n)}(x_0)}{n!}. $$    
+			For the sake of simplicity, it will w.l.o.g. be assumed that $x_0 = 0$  and $D = [0,1]$ if not stated otherwise.
+		\end{definition}
+		Note: The above definition can be easily generalized to higher dimension. \\
+		Some properties of analytic functions...
+		The complexity of analytic functions is much better then for the general case.
+		\begin{theorem}[Pour-El, Richards, Ko, Friedman, Müller] 
+			The following are equivalent
+			\begin{enumerate}
+				\item $f$ is computable 
+				\item The series $(a_n)_{n \in \NN}$ is computable. 
+ 			\end{enumerate}
+ 			The equivalence also holds, when computable is replaced by polynomial time computable.
+		\end{theorem}
+		From that it follows
+		\begin{corollary}
+			If $f$ is polynomial time computable the following functions are
+			\begin{enumerate}
+				\item $I: [0,1] \to \RR$, $I(x) = \int_0^x f(t) dt$
+				\item $D: [0,1] \to \RR$, $D(x) = f'(x)$ 
+			\end{enumerate}
+			\begin{proof}
+				Taylor-series
+			\end{proof}
+		\end{corollary}
+		Even tough the above results are nice, those theorems are non-uniform.
+		The theorems only say that, when $f$ is polynomial time computable, then there exists 
+		a polynomial time computable coefficient sequence and if there is a polynomial time computable sequence, then
+		there is some algorithm that can compute the series in polynomial time.
+		In no way, however, do they say, how to compute the sequence from a given representation of the function and vice versa.
+		In fact the following theorems show, that this is not a problem of those theorems, but it's inherently impossible to do this.
+		\begin{theorem}[M\"uller \cite{Mue}]
+			Let $f$ given as in ... then the operator $f \to (a_n)_{n \in \NN}$ computing the Taylor series around $0$ (or any other point) is not computable.
+		\end{theorem} 
+		\begin{theorem}[M\"uller \cite{Mue}]
+			Let $(a_n)_{n \in \NN}$ be the series expansion around $0$ for some $f \in C^\omega(D)$.\\
+			The evaluation operator $((a_n)_{n \in \NN}, x) \to f(x)$ that, given a series and a point, computes the value of the corresponding function at that point, is not computable.
+			\begin{proof}
+				One does not know how many coefficients needed...
+			\end{proof}
+		\end{theorem} 
+
 	\subsection{Representation of Analytic Functions}
+	 As seen in the previous section, the information given by the series expansion is not enough to represent an analytic function.
+	 However, by enriching the information by some finite discrete parameters, the translation between Taylor-series and function representation can be made uniform.
+	 In particular the following two representation for analytic functions are useful
+	 \begin{definition}\label{def:series_name_ball}
+	 	A \textbf{series-name} of $f \in C^\omega([\overline{B_1(0)}])$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
+	 	\begin{enumerate}
+	 		\item $(a_n)_{n \in \NN}$ is the series expansion of $f$ around $0$
+	 		\item $\sqrt[k]{2} \leq R$ 
+	 		\item $|a_j|r^j \leq A$ for all $j \in \NN$
+	 	\end{enumerate}
+	 	where $R = (\limsup |a_j|^{\frac{1}{j}})^{-1}$ denotes the radius of convergence of the series.
+	 \end{definition}
+	 Those two additional parameters can be used to make a tail estimate 
+	 \begin{equation}\label{eqn:tail_estimate}
+	  \left | \sum_{n \geq N} a_nx^n \right | \leq A \frac{(|z|/r)^N}{1-|z|/r}
+	 \end{equation}
+	 A name as in Definition \ref{def:series_name_ball} can be found by choosing any appropriate $k$ (note that the radius of convergence is always bigger than $1$) and choosing $A$ as an upper bound of $f$ extended to $\overline{B_{\sqrt[k]{2}}(0)}$. 
+	 \begin{definition}
+	 	A \textbf{function-name} of $f \in C^\omega([\overline{B_1(0)}])$ 
+	 \end{definition}
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
 	\subsection{Evaluation}
