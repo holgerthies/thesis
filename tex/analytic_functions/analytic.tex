@@ -69,7 +69,7 @@
 	 However, by enriching the information by some finite discrete parameters, the translation between Taylor-series and function representation can be made uniform.
 	 In particular the following two representation for analytic functions are useful
 	 \begin{definition}\label{def:series_name_ball}
-	 	A \textbf{series-name} of $f \in C^\omega([\overline{B_1(0)}])$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
+	 	A \textbf{series-name} $\rho_s$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
 	 	\begin{enumerate}
 	 		\item $(a_n)_{n \in \NN}$ is the series expansion of $f$ around $0$
 	 		\item $\sqrt[k]{2} \leq R$ 
@@ -83,8 +83,26 @@
 	 \end{equation}
 	 A name as in Definition \ref{def:series_name_ball} can be found by choosing any appropriate $k$ (note that the radius of convergence is always bigger than $1$) and choosing $A$ as an upper bound of $f$ extended to $\overline{B_{\sqrt[k]{2}}(0)}$. 
 	 \begin{definition}
-	 	A \textbf{function-name} of $f \in C^\omega([\overline{B_1(0)}])$ 
+	 	A \textbf{function-name} $\rho_f$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $(f, l, B)$ such that
+		B is an upper bound of $f$ on $\overline{B_{\sqrt[l]{2}}(0)}$.
 	 \end{definition}
+	 \begin{theorem}\cite{Kaw}\label{thm:representation_conversion}
+	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
+	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
+	 \end{theorem}
+	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
+	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
+	 \begin{theorem}
+	 	The following is polynomial time computable when given $\rho_s$ or $\rho_f$ names for the input functions.
+	 	\begin{enumerate}
+	 		\item Evaluation $(f,z) \to f(z)$
+	 		\item Addition $(f_1, f_2) \to f_1 + f_2$
+	 		\item Multiplication $(f_1, f_2) \to f_1 \cdot f_2$
+	 		\item $d$-fold Differentiation $(f,d) \to f^{(d)}$ where $d$ is given as unary
+	 		\item $d$-fold Anti-differentiation $(f,d) \to \int \dots \int f$ where $d$ is given in unary
+	 		\item Parametric maximization
+	 	\end{enumerate}
+	 \end{theorem}
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
 	\subsection{Evaluation}
