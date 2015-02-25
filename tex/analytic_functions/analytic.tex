@@ -92,7 +92,7 @@
 	 \end{theorem}
 	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
 	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
-	 \begin{theorem}
+	 \begin{theorem}\label{thm:polytime_on_ball}
 	 	The following is polynomial time computable when given $\rho_s$ or $\rho_f$ names for the input functions.
 	 	\begin{enumerate}
 	 		\item Evaluation $(f,z) \to f(z)$
@@ -106,7 +106,7 @@
 	Now consider functions analytic on some other domain, e.g. on the real line $[0,1]$.
 	Such functions can be represented by a finite number of powerseries covering the domain. 
 	That leads to the following representation
-	\begin{definition}
+	\begin{definition}\label{def:series_name_rect}
 		A \textbf{series-name} for a function $f \in C^\omega([0,1])$ is a 5-tuple $(M, (x_m), (a_{n, j}), k, A)$ where $M \in \NN$
 		$1 \leq j \leq M$, $n \in \NN$, $x_m \in [0,1]$ and it holds
 		\begin{enumerate}
@@ -126,9 +126,22 @@
 		\end{enumerate}
 		Again, $l$ is coded in unary and $B$ in binary.
 	\end{definition}
-	Again it can be shown that the two representations are polynomial time equivalent.
-	
+	Again it can be shown that the two representations are polynomial time equivalent, and that the equivalent to
+	Theorem \ref{thm:polytime_on_ball} holds.
 	\subsection{Analytic Continuation}
+		One problem with the representation in Definition \ref{def:series_name_rect} is that when thinking of this representation as an interface for a datatype, it is very cumbersome for the user to provide all the information needed. 
+		One has to give enough Taylor series to cover the whole interval.
+		As said before, there is no real gain of information by providing all those series.
+		The analytic function is uniquely defined by the Taylor series around a single point.
+		Thus, one would like to have something like the following representation
+		\begin{definition}
+			A \textbf{single series name} for $f \in C^\omega([0,1])$ is a quadruple $(x_0, (a_n)_{n \in \NN}, k, A)$ such that
+			\begin{enumerate}
+				\item $(a_n)_{n \in \NN}$ is the series expansion of $x$ around $x_0$
+				\item $A$ and $k$ are such that $| a_m | \leq Ak^m$ 
+			\end{enumerate}
+		\end{definition}
+		
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
 	\subsection{Evaluation}
