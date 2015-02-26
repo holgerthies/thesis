@@ -90,6 +90,26 @@
 	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
 	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
 	 \end{theorem}
+	 \begin{proof}
+	 	To compute a function name from a series name it only has to be shown that evaluation...
+
+	 	To compute a series name from a function name, one has to compute the coefficients of the series expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
+	 	In \cite{Mue} M\"uller describes an algorithm for this task.
+	 	To approximate the coefficient $a_k$ with precision at least $2^{-n}$ $f$ is approximated by the Lagrangian interpolation
+	 	polynomial
+	 	\begin{equation}\label{eqn:interpolation_polynomial}
+	 		P_m(x)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}(x) 
+	 	\end{equation}
+	 	where
+	 	\begin{eqnarray*}
+	 		x_i & = & (i-m) \cdot h , h \in \RR, h > 0 \\
+	 		L_{m,i}(x) & = & \prod_{i \neq j} \frac{x-x_j}{x_i-x_j} 
+	 	\end{eqnarray*}
+	 	Differentiating Equation \ref{eqn:interpolation_polynomial} $k$ times yields
+	 	\begin{equation}\label{eqn:interpolation_polynomial_diff}
+	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}(x) 
+	 	\end{equation}
+	 \end{proof}
 	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
 	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
 	 \begin{theorem}\label{thm:polytime_on_ball}
@@ -102,6 +122,11 @@
 	 		\item $d$-fold Anti-differentiation $(f,d) \to \int \dots \int f$ where $d$ is given in unary
 	 		\item Parametric maximization
 	 	\end{enumerate}
+	 	\begin{proof}(Sketch)
+	 		Evaluation follows from \ref{thm:representation_conversion}. \\
+	 		Except for parametric maximization the transformation of the Taylor series is obvious (e.g. for addition, just add the coefficients).
+	 		It remains to show how to compute the new parameters $A'$ and $k'$. 
+	 	\end{proof}
 	 \end{theorem}
 	Now consider functions analytic on some other domain, e.g. on the real line $[0,1]$.
 	Such functions can be represented by a finite number of powerseries covering the domain. 
@@ -141,6 +166,10 @@
 				\item $A$ and $k$ are such that $| a_m | \leq Ak^m$ 
 			\end{enumerate}
 		\end{definition}
+		A series name can be computed from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[0,1]$ (see Figure \ref{fig}).
+		Since the parameters $A$ and $k$ are such that they hold on the entire rectangle, 
+		the new series will be valid on a ball with the same radius as the original series, effectly extending the domain.
+		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using \ref{thm:polytime_on_ball}.
 		
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
