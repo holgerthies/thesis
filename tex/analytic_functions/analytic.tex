@@ -107,8 +107,15 @@
 	 	\end{eqnarray*}
 	 	Differentiating Equation \ref{eqn:interpolation_polynomial} $k$ times yields
 	 	\begin{equation}\label{eqn:interpolation_polynomial_diff}
-	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}(x) 
+	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}^{(k)}(x) 
 	 	\end{equation}
+	 	Let $\sigma = \lceil \log_2 B \rceil + 1$
+
+	 	It can then be shown that if $f$ is evaluated on $2k+1$ points from the 
+	 	real interval $\{x \in \R \,|\, |x| \leq \frac{1}{2}\}$ with precision $2n+15k+\sigma+6$ 
+	 	then $a_k$ can be approximated by the above procedure with error less than $2^{-n}$ in 
+	 	$O((k+1)\cdot \M(n+k+\sigma) + k^2 \M (k \log k)$
+
 	 \end{proof}
 	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
 	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
@@ -169,8 +176,30 @@
 		A series name can be computed from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[0,1]$ (see Figure \ref{fig}).
 		Since the parameters $A$ and $k$ are such that they hold on the entire rectangle, 
 		the new series will be valid on a ball with the same radius as the original series, effectly extending the domain.
-		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using \ref{thm:polytime_on_ball}.
-		
+		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
+		Note however, that iterating this process will break the polynomial time computability, as will be shown in the next
+		section.
+	\subsection{Complexity Analysis}
+		The previous section gave an overview of the representations and how they can be used to yield efficient 
+		operations on analytic functions, where efficient means polynomial time computable.
+		Since for practical applications polynomial time computability is too coarse a measure for efficiency, 
+		in this section a more refined analysis on the algorithms is done, to establish time bounds in terms of $O$-notation.
+		Most of this was already done in \cite{mypaper}.
+		Of course, the overall running time will depend on the running time $T(a_m, n)$ that is needed to 
+		compute the coefficient $a_m$ with error less than $2^{-m}$.
+		\begin{theorem}
+			Given a series name of $f \in C^\omega(D)$.
+			To evaluate $f$ with error less than $2^{-n}$ 
+			$$N = k(n+\lceil log_2(log_2 (e^2) kA \rceil)$$
+			coefficients of the Taylor series are sufficent. \\
+			This yields evaluation computable in time 
+			$$ O(N\M(N)+N \cdot T(a_N, n+log_2(N)+1)) $$ 
+		\end{theorem}
+
+		\begin{theorem}
+			Computing the $m$-th coefficient of the series for the $d$-fold derivative can be done
+			$$ O(T(a_n, m+d, n+d\log_2(d+m)))+d\M(d \log_2 (d+m)+n)) $$
+		\end{theorem}
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
 	\subsection{Evaluation}
