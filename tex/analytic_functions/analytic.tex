@@ -198,7 +198,45 @@
 
 		\begin{theorem}
 			Computing the $m$-th coefficient of the series for the $d$-fold derivative can be done
-			$$ O(T(a_n, m+d, n+d\log_2(d+m)))+d\M(d \log_2 (d+m)+n)) $$
+			$$ O(T(a_{m+d}, n+d\log_2(d+m)))+d\M(d \log_2 (d+m)+n)) $$
+		\end{theorem}
+
+		\begin{theorem}
+			Given a series name of $f \in C^\omega(D)$, the number of coefficients of the series of the $d-fold$ derivative computed from $f$ as in Theorem \ref{thm:polytime_on_ball} needed to evaluate this derivative, is given by 
+			$$N_d = k\left(n+\lceil log_2(log_2 (e^4) kA \rceil+\left \lceil d\left(\log_2(d)+\log_2(\log_2(e)k+1)-\frac{1}{k}\right)\right\rceil\right).$$
+			Thus, evaluating the $d$-fold derivative of $f$ is possible in time bound by
+			$$ O(N_d\M(N)+N_d \cdot T(a_{N_d+d}, n+d\log_2(d+N_d)))+d\M(d \log_2 (d+N_d)+n) $$ 
+		\end{theorem}
+		For computing the $m$-th coefficient of a Taylor series around some point the $m-th$ derivative 
+		has to be divided by $m!$. This division reduces the needed precision leading to 
+		$$N_{coeff}(m) = 2k\left( n+\lceil log_2(\log_2 (e^4) kA) + m \log_2(log_2(e)k+1)\rceil \right)$$
+		as the number of coefficients that are needed to compute the $m-th$ coefficients of the Taylor series 
+		around another point. 
+		For stepwise analytic continuation it is necessary to iterate the process of differentiating.
+		For example, using the single series name when one wants to evaluate the function at a point $x$
+		that is not inside the ball of the given series, analytic continuation has to be applied until a series
+		containing $x$.
+		Assume for a computation the coefficents up to $N$ of the last series is needed. 
+		The previous results lead to the recurrence relation
+		relation 
+		\begin{eqnarray*}
+			N^{(0)} &=& N \\
+			N^{(l+1)} &=& 2k\left( n+\lceil log_2(\log_2 (e^4) kA) + N^{(l)} \log_2(log_2(e)k+1)\rceil \right)
+		\end{eqnarray*}
+		leading to
+		\begin{theorem}
+			Applying analytic continuation $l$ times, to compute $N$ coefficients of the last series 
+			\begin{equation}
+				N^{(l)} = O((2k \log_2 (\log_2 (e)k +1))^lN) 
+			\end{equation}
+			coefficients of the original series are needed.
+		\end{theorem}
+		The above leads to a running bound for evaluating using $l$-times iterated analytic continuation.
+		\begin{theorem}
+			The running time of evaluating the $l$ times iterated series is bounded by
+			\begin{equation}
+				 O(l(N^{(l)})^2\M(N^{(l)})+N^{(l)}T(a_{N(l)}, l N^{(l)}\log_2(N^{(l)}))) 
+			\end{equation}
 		\end{theorem}
 	\subsection{Class Overview}
 	\subsection{Implementation Details}
