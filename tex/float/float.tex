@@ -6,9 +6,12 @@ of \textbf{floating point arithmetic}.
 In general, the floating point representation of a real number has a fixed number of bits (e.g. 32 or 64 bits on a modern computer architecture).
 \begin{definition}\label{def: floating point number}
 	A floating point representation with base $b$ and precision $p$
-	is a string $\pm d_0 . d_1 \dots d_{p-1} \times b^l$ with $0 \leq d_i < b$.	
+	is a string $\pm d_0 . d_1 \dots d_{p-1} \times b^e$ with $0 \leq d_i < b$.	
 	It represents the number
 	$$ \pm b^e \cdot \sum_{i=0}^{p-1} d_i\beta^{-i} $$ 
+
+	$\pm d_0 . d_1 \dots d_{p-1}$ is called the Mantissa and $e$ the exponent.
+	
 	The smallest and largest exponent allowed are $e_min$ and $e_max$.
 	A floating point number can be encoded in
 	$$ \lceil log_2(e_max-e_min+1) \rceil + \lceil  p \cdot log_2 (b) \rceil + 1 $$
@@ -42,5 +45,15 @@ Note: Guard digits
 	    \caption{Parameters for the different types in the IEEE 754 standard}\label{table:IEEE floating point}
 	  \end{table}
 	  
-	The details can be seen in Table \ref{table:IEEE floating point}
+	The details can be seen in Table \ref{table:IEEE floating point}.
+	The standard requires that the result of addition, subtraction, multiplication and division is exactly rounded, 
+	i.e. the operation has to be performed exactly and then rounded.
+
+	Floating point arithmetic is not necessarily associative, e.g.
+
+	The standard also introduces special quantities for $0$, $\infty$ and others, but details will
+	not be given here.
+
+	
+
 
