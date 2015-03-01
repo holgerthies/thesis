@@ -19,4 +19,28 @@ Also, when performing operations on floating point numbers, the result will ofte
 and has to be rounded again.
 To make the floating point representation unique, it is usually required that it is normalized, i.e. that $d_0 \neq 0$.
 Absolute and relative error.
+Floating point arithmetic usually works by operating on only a fixed number of digits for computation.
+This makes computations fast, but can lead to large relative errors as in the following theorem: 
+\begin{theorem}
+	The relative error when computing $x-y$ for floating point numbers $x,y$ can be as large as $b-1$. 
+\end{theorem}
+Note: Guard digits
+\subsection{The IEEE Standard}
+	Floating point representations for binary base are standardized by IEEE 754 \cite{ieee}. 
+	This standard is followed by almost all modern computers.
+	The standard defines four different precisions: single, single-extended, double and double-extended.
+	  \begin{table}
+	  	\centering
+	    \begin{tabular}{ | c || c | c | c | c | c | }
+	    \hline
+	    Type & $p$ & $e_max$ & $e_min$ & exponent width (bits) & format width (bits) \\ \hline \hline
+	    Single & 24 & +127 & -126 & 8 & 32 \\ \hline
+	    Single-Extended & 32 & +1023 & $\leq -1022$ & $\leq 11$ & 43 \\ \hline
+	    Double & 53 & +1023 & -1022 & 11 & 64 \\ \hline
+	    Double-Extended & 64 & > 16383 & $\leq -16382$ & 15 & 79 \\ \hline
+	    \end{tabular}
+	    \caption{Parameters for the different types in the IEEE 754 standard}\label{table:IEEE floating point}
+	  \end{table}
+	  
+	The details can be seen in Table \ref{table:IEEE floating point}
 
