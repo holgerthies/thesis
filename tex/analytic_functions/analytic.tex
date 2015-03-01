@@ -238,7 +238,51 @@
 				 O(l(N^{(l)})^2\M(N^{(l)})+N^{(l)}T(a_{N(l)}, l N^{(l)}\log_2(N^{(l)}))) 
 			\end{equation}
 		\end{theorem}
+	\subsection{Implementation}
+		\irram was used as a framework to implement the ideas in the previous section.
+		The goal was to add user friendly classes for analytic functions to \irram.
+		In particular two classes were created for this purpose.
+
+		The class \baana is a basic class for analytic functions on 
+		a closed disc with rational radius around $0$, inspired by Definition \ref{def:series_name_ball}.
+
+		The class \anarect is a class for functions analytic on an arbitrary real interval $[a,b]$, 
+		inspired by Definitions \ref{def:series_name_ball} and \label{def:series_name_rect}.
+
+		Both classes provide a common set of operators and methods, in particular
+		\begin{enumerate}
+			\item It is possible to add, multiply and subtract two objects using the overloaded operators $+$, $*$, $-$.
+			\item It is possible to evaluate the function at $x \in D$ using the overloaded operator $()$
+			\item There is a function \code{differentiate (unsigned int n)} to get a new object representing the $d$-th derivative of the analytic function.
+			\item There is a function \code{integrate (unsigned int n)} to get a new object representing the $d$-th anti-derivative of the analytic function.
+			\item It is possible to get the coefficients of the underlying Taylor series.
+		\end{enumerate}
+
+		The implementation heavily uses new features introduced with the \ccx standard...
+
 	\subsection{Class Overview}
-	\subsection{Implementation Details}
+		In addition to the two classes for analytic functions, several helper classes were implemented.
+		The implementation tried to stay as close as possible to the interfaces given in the theory section.
+
+		Classes were implemented with generic types using Templates, whenever it made sense.
+
+ 		There are two types of classes, classes for representations and classes working on those representation.
+
+		The following classes exist
+		
+		\textbf{\poly} a class template for polynomials of a generic coefficient type. 
+		Additon, Subtraction, Multiplication, Evaluation, symbolic Differentiation, symbolic Integration is implemented.
+
+		\textbf{\powerseries} a class template for powerseries of a generic coefficient type.
+		A powerseries works on a representation called \code{rep\_rho\_dy\_omega}. 
+
+		\textbf{\func} A class for functions. 
+		Works on a a representaton called \code{rep\_rho\_D}.
+
+		The class \textbf{\baana} has two different representations: 
+		\code{rep\_pi}, the representation by a power series, and \code{rep\_rho\_D\_refined}, the represention as a function.
+
+		The class \textbf{\anarect} also has two different representations, 
+		a function representation \code{rep\_fun} and a series representation calles \code{rep\_ana\_rect}.
 	\subsection{Evaluation}
 	\subsection{Applications}

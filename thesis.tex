@@ -7,6 +7,7 @@
   \usepackage{graphicx,url}
   \usepackage[font=small]{caption}
  \usepackage{subcaption}
+ \usepackage[parfill]{parskip}
 
 % new commands
   \newcommand{\QQ}{\mathbb Q}
@@ -31,11 +32,14 @@
   \newcommand{\sharpp}{\ensuremath{\# \mathcal{P}}\xspace}
   \newcommand{\code}{\texttt}
   \newcommand{\cc}{\code{C++}\xspace}
+  \newcommand{\ccx}{\code{C++11}\xspace}
   \newcommand{\irram}{\code{iRRAM}\xspace}
   \newcommand{\MPFR}{\code{MPFR}\xspace}
   \newcommand{\baana}{\code{BA\_ANA}\xspace}
   \newcommand{\anarect}{\code{ANA\_RECT}\xspace}
   \newcommand{\powerseries}{\code{POWERSERIES}\xspace}
+  \newcommand{\poly}{\code{POLY}\xspace}
+  \newcommand{\func}{\code{FUNC}\xspace}
   \newcommand{\real}{\code{REAL}\xspace}
   \newcommand{\temp}{\textcolor{red}}
   \newcommand{\seq}{\mathbf}
@@ -47,10 +51,10 @@
 % ntheorem environments
   \theoremseparator{:}
   \theorembodyfont{\itshape}
-  \newtheorem{definition}{Definition}
+  \newtheorem{definition}{Definition}[section] 
   \theorembodyfont{\upshape}
-  \newtheorem{theorem}[definition]{Theorem}
-  \newtheorem{corollary}[definition]{Corollary}
+  \newtheorem{theorem}{Theorem}[section] 
+  \newtheorem{corollary}{Corollary}[section] 
   \newtheorem{example}{Example}[section]
   \newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
 \begin{document}
