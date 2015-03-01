@@ -8,6 +8,7 @@
   \usepackage[font=small]{caption}
  \usepackage{subcaption}
  \usepackage[parfill]{parskip}
+ \usepackage{newclude}
 
 % new commands
   \newcommand{\QQ}{\mathbb Q}
@@ -75,10 +76,10 @@
 
   \chapter{Theoretical Background}
   \section{Computers and Real Numbers}
-  \include{tex/computability/computability}
-  \include{tex/complexity/complexity}
+  \include*{tex/computability/computability}
+  \include*{tex/complexity/complexity}
   \chapter{Computing with Reals}
-  \section{Floating Point Arithmetic}
+  \include*{tex/float/float}
   \section{Interval Arithmetic}
   \section{Validated Numerics}
   \section{iRRAM}
@@ -88,8 +89,8 @@
    \subsection{Similiar Frameworks}
 
   \chapter{Case Studies}
-  \include{tex/dynamic_systems/dynamic_systems}
-  \include{tex/analytic_functions/analytic}
+  \include*{tex/dynamic_systems/dynamic_systems}
+  \include*{tex/analytic_functions/analytic}
   \section{Root Refinement for Real Polynomials}
   \subsection{Introduction}
   \subsection{Implementation}
