@@ -8,6 +8,11 @@
 	The advantage to floating point arithmetics is that the length of the interval gives a bound on the rounding error, 
 	thus making it possible to guarantee the accuracy of computed results.
 
+	The fundamental property of interval arithmetic is the inclusion property:
+
+	Every $f: \RR \to \RR$ can be extended to a function $\bar f$ on intervals, such that for all $x \in [a,b]$, $f(x) \in \bar f[a,b]$ 
+
+
 	In general applying a function $f: \RR^k \to \RR$ on on intervals $x_1, \dots, x_k$ can be defined as
 	\begin{equation}
 		f(x_1, \dots, x_k) = [\min(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \}), \max(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \})]
@@ -50,5 +55,6 @@
 
 	Note that the length of the interval can increase quickly  (example?)
 
-	
+	There are many implementations of interval arithmetic in different programming languages, e.g. 
+	for \cc the boost interval arithmetic library can be used.
 
