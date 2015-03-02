@@ -1,0 +1,54 @@
+%!TEX root = ../../thesis.tex
+\section{Interval Arithmetic}
+	When using floating point arithmetics several real numbers are mapped to the same floating point representation.
+	A single floating point number does not contain any information about its accuracy.
+
+	To put bounds on the error, one can instead work with sets of interval, instead of working on sets of single real numbers.
+	This means a real number $r \in \RR$ is represented by an interval $x := [x_l,x_r]$, so that $r \in x$.
+	The advantage to floating point arithmetics is that the length of the interval gives a bound on the rounding error, 
+	thus making it possible to guarantee the accuracy of computed results.
+
+	In general applying a function $f: \RR^k \to \RR$ on on intervals $x_1, \dots, x_k$ can be defined as
+	\begin{equation}
+		f(x_1, \dots, x_k) = [\min(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \}), \max(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \})]
+	\end{equation}
+	The basic arithmetic operations can be easily defined on intervals:
+	\begin{theorem}
+		Let $x = [x_l, x_r]$ and $y = [y_l, y_r]$ then it holds
+		\begin{eqnarray}
+			x + y  & = & [x_l + y_l, x_r + y_r] \\
+			x - y  & = & [x_l - y_r, x_r + y_l] \\
+			x \times y  & = & [\min(x_ly_l, x_ly_r, x_ry_l, x_ry_r), \max(x_ly_l, x_ly_r, x_ry_l, x_ry_r)] \\
+			\frac{1}{x} & = & \left[\frac{1}{x_r}, \frac{1}{x_l} \right] \text{ if } x_l > 0 \text{ or } x_r < 0 \\
+			\frac{x}{y} & = & x \times \frac{1}{y}   
+		\end{eqnarray}
+	\end{theorem}
+	\begin{theorem}
+		For every monotonic function $f: \RR \to \RR$ it holds
+		$$ f(x) = [\min(f(x_l), f(x_r)), \max(f(x_l), f(x_r))] $$
+		In particular
+		\begin{equation}
+			x^n  =   
+				\begin{cases} 
+					[x_l^n, x_r^n] &\mbox{if } n \mbox{ is even or } x_l \geq 0 \\
+					[x_r^n, x_l^n] &\mbox{if n is odd and } x_r \leq 0 \\
+					[0, \max(x_r^n, x_l^n)] & \mbox{otherwise.}  \\
+				\end{cases} 
+		\end{equation} 
+	\end{theorem}
+	In a similiar way, interval version for $\exp, \log, \sin, \cos$ and other elementary functions can be found, 
+	that can then be used to find the interval versions of more complicated functions.
+
+	The strength of interval arithmetic is, that it can easily be implemented even when the above 
+	operations on the interval endpoints are not computed exactly, but finite approximations are used.
+	
+	For that to work, the only thing that is important, is that outward rounding is used, i.e. 
+	after every operation the left point of the interval has to be rounded down and the right point rounded up.
+
+	IEEE 754 requires, that the user is able to specify the rounding mode, thus interval arithmetic can be implemented 
+	using standard floating point numbers.
+
+	Note that the length of the interval can increase quickly  (example?)
+
+	
+

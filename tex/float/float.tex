@@ -14,7 +14,7 @@ In general, the floating point representation of a real number has a fixed numbe
 	
 	The smallest and largest exponent allowed are $e_min$ and $e_max$.
 	A floating point number can be encoded in
-	$$ \lceil log_2(e_max-e_min+1) \rceil + \lceil  p \cdot log_2 (b) \rceil + 1 $$
+	$$ \lceil log_2(e_{max}-e_{min}+1) \rceil + \lceil  p \cdot log_2 (b) \rceil + 1 $$
 	bits.
 \end{definition}
 If a real number does not fit into the above representation, it has to be rounded apropriately.
@@ -36,7 +36,7 @@ Note: Guard digits
 	  	\centering
 	    \begin{tabular}{ | c || c | c | c | c | c | }
 	    \hline
-	    Type & $p$ & $e_max$ & $e_min$ & exponent width (bits) & format width (bits) \\ \hline \hline
+	    Type & $p$ & $e_{max}$ & $e_{min}$ & exponent width (bits) & format width (bits) \\ \hline \hline
 	    Single & 24 & +127 & -126 & 8 & 32 \\ \hline
 	    Single-Extended & 32 & +1023 & $\leq -1022$ & $\leq 11$ & 43 \\ \hline
 	    Double & 53 & +1023 & -1022 & 11 & 64 \\ \hline
@@ -51,8 +51,9 @@ Note: Guard digits
 
 	Floating point arithmetic is not necessarily associative, e.g.
 
-	The standard also introduces special quantities for $0$, $\infty$ and others, but details will
-	not be given here.
+	The standard also introduces special quantities $-0, +0, \inf, +\inf$ and NAN (not a number). 
+
+	Rounding modes
 
 	
 
