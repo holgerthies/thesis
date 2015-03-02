@@ -1,6 +1,24 @@
 %!TEX root = ../../thesis.tex
 \section{iRRAM}
+	Since the case studies in this thesis were all implemented  in \irram, the \irram framework 
+	is discussed in detail.
+
+	\irram is a \cc framework for exact real arithmetic devoloped by Norbert M\"uller.
+	\irram extends \cc by a datatpe \real for error free computations with real numbers.
 	\subsection{Real Number representation}
+		\irram's approach is similiar to the bottom-up DAG approach described in Section \ref{sec:exact real arithmetic}
+		with the difference that the DAGs are not really constructed.
+
+		Instead there is only enough information saved to repeat the whole computation when the precision is not sufficent, and thus reducing the needed memory to a minimum.
+
+		\irram uses simplified interval arithmetic for real number computations.
+		During the run of the program, a real number always represented by a \textbf{single} interval, more precisely by a pair $(d,e)$ such that $x \in [d-e, d+e]$.
+ 		$d$ is saved as a multiple precision number and $e$ consists of two \code{long}s $p,z$ such that $e = p \cdot 2^p$.
+ 		Whenever at some point in the program the precision is not sufficent, the computation is restarted with higher precision, 
+ 		changing the interval representations of the real numbers.
+ 		Thus, computations in \irram are done iteratively, where each iteration increases the precision of the output and the process is terminated when the desired output precision is reached. 
 	\subsection{Overview of Classes}
+		
 	\subsection{Multivalued Functions}
-	\subsection{Similiar Frameworks}
+	\subsection{Limits}
+
