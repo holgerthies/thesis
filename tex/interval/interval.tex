@@ -10,13 +10,13 @@
 
 	The fundamental property of interval arithmetic is the inclusion property:
 
-	Every $f: \RR \to \RR$ can be extended to a function $\bar f$ on intervals, such that for all $x \in [a,b]$, $f(x) \in \bar f[a,b]$ 
+	Every $f: \RR \to \RR$ can be extended to a function $\bar f$ on intervals, such that for all $x \in [a,b]$, $f(x) \in \bar f[a,b]$. 
 
-
-	In general applying a function $f: \RR^k \to \RR$ on on intervals $x_1, \dots, x_k$ can be defined as
-	\begin{equation}
-		f(x_1, \dots, x_k) = [\min(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \}), \max(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \})]
-	\end{equation}
+	The interval extension of a function is not unique, but usually one wants it to be as tight as possible.
+	% In general applying a function $f: \RR^k \to \RR$ on on intervals $x_1, \dots, x_k$ can be defined as
+	% \begin{equation}
+	% 	f(x_1, \dots, x_k) = [\min(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \}), \max(\{f(r_1, \dots, r_n) \,|\, r_1 \in x_1, \dots, r_k\in x_k \})]
+	% \end{equation}
 	The basic arithmetic operations can be easily defined on intervals:
 	\begin{theorem}
 		Let $x = [x_l, x_r]$ and $y = [y_l, y_r]$ then it holds
@@ -28,10 +28,21 @@
 			\frac{x}{y} & = & x \times \frac{1}{y}   
 		\end{eqnarray}
 	\end{theorem}
+	It is easy to see, that addition and multiplication are associative and commutative.
+	However, the following example shows, that the distributive law does not necesserily hold
+	\begin{example}
+		\begin{align*}
+			[-1,1] \times ([-1,0] + [3,4])  &= [-1,1] \times [2,4] = [-4,4] \\
+			[-1,1] \times [-1,0] + [-1,1] \times [3,4] &=  [-1,1] + [-4,4] =[-5,5] 
+		\end{align*}
+	\end{example} 
+	Thus, the length of the resulting interval is not independent of 
+	
+	The next theorem provides a simple way to find interval extensions of many functions.
 	\begin{theorem}
 		For every monotonic function $f: \RR \to \RR$ it holds
 		$$ f(x) = [\min(f(x_l), f(x_r)), \max(f(x_l), f(x_r))] $$
-		In particular
+		In particular this can be used to find interval extensions of piecewise monotonic functions, such as
 		\begin{equation}
 			x^n  =   
 				\begin{cases} 
@@ -43,6 +54,8 @@
 	\end{theorem}
 	In a similiar way, interval version for $\exp, \log, \sin, \cos$ and other elementary functions can be found, 
 	that can then be used to find the interval versions of more complicated functions.
+
+
 
 	The strength of interval arithmetic is, that it can easily be implemented even when the above 
 	operations on the interval endpoints are not computed exactly, but finite approximations are used.

@@ -1,0 +1,40 @@
+%!TEX root = ../../thesis.tex
+\section{Exact Real Arithmetic}
+	Using interval arithmetic or arbitrary precision arithmetic, 
+	the precision is set in the beginning and rounding and truncation errors still accumulate.
+	In the end a result is obtained that may not be as precise as needed.
+
+	In contrast, the goal of exact real arithmetic is to perform compuations on real numbers without 
+	accumulating errors, and that can be given up to any desired precision on demand.
+	That is, the user does not specify the precision the numbers are represented with in the beginning,
+	but gives a desired precision \textbf{for the answer} of the computation.
+
+	There are several approaches to exact real arithmetic.
+	Some of them are presented below. 
+
+	\subsection{Signed-digit streams}
+	\subsection{Continued fractions}
+	\subsection{Linear fractional transformations}
+	\subsection{DAGs}
+		An arithmetic expression over real numbers can be expressed by a directed acyclic graph (DAG)
+		where the leaf nodes are real numbers and the inner nodes are operations on real numbers.
+		
+		Information in nodes??
+
+		A DAG represents a real number and evaluating a DAG means to get an approximation to that real number
+		with a desired precision.
+
+		There are essentially two ways to evaluate a DAG:
+		\begin{enumerate}
+			\item \textbf{Top=down evaluation} means, that the desired precision is computed from the top node down to the leaves.
+			That is, a node contains the information, how precise he needs the input given by its children to deliver the output with the necessary precision and requests its children to provide it.  
+			\item \textbf{Bottom-up evaluation} means, that the computation is started with a fixed precision in the leaf nodes 
+			and it is kept track of the errors (e.g. by using interval arithmetic). 
+			If in the end, the error bound is too large, the computation is restarted with a higher precision. 
+		\end{enumerate}
+		The top-down approach suffers from the problem, that the precision can grow unnecessarily large.   
+		Example.
+	\subsection{Comparison}
+
+
+
