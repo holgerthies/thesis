@@ -23,7 +23,13 @@
 		The following section introduces the most important classes and functions of \irram. 
 		For a complete see
 		
-		An \irram program is a usual \cc program.
+		An \irram program is written in usual \cc extended by the datatypes provided by a framework.
+		However, a few things have to be kept in mind when writing a program
+		\begin{enumerate}
+			\item compute function
+			\item Input and Output
+			\item Global variables
+		\end{enumerate}
 		\irram provides the class \real for error free computations with real numbers.
 		An object of type \real can be constructed from \code{int}, \code{char*}, \code{double}, \code{DYADIC} 
 		or another \real. 
@@ -138,4 +144,17 @@
 			\item \textbf{Multi-valued limits}
 		\end{enumerate}
 	\subsection{Access to the underlying representation}
+		Even tough usually the user of \irram should work with the datatype \real
+		as if computing exactly with real numbers, sometimes it can be useful to access the internal representation.
+		The error of a \real has the following type
+		\begin{verbatim}
+			struct sizetype { SIZETYPEMANTISSA mantissa; SIZETYPEEXPONENT exponent; }
+		\end{verbatim}
+		where \code{SIZETYPEMANTISSA} is \code{unsigned int} and \code{SIZETYPEEXPONENT} is int.
 		
+		An object of type \real has the two functions
+		\begin{verbatim}
+			void seterror (sizetype error);
+			void geterror (sizetype& error) const;
+		\end{verbatim}
+		to get and set the error.
