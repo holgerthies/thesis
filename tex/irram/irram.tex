@@ -4,7 +4,7 @@
 	is discussed in detail.
 
 	\irram is a \cc framework for exact real arithmetic devoloped by Norbert M\"uller.
-	\irram extends \cc by a datatpe \real for error free computations with real numbers.
+	\irram extends \cc by a datatype \real for error free computations with real numbers.
 	\subsection{Real Number representation}
 		\irram's approach is similiar to the bottom-up DAG approach described in Section \ref{sec:exact real arithmetic}
 		with the difference that the DAGs are not really constructed.
@@ -17,8 +17,86 @@
  		Whenever at some point in the program the precision is not sufficent, the computation is restarted with higher precision, 
  		changing the interval representations of the real numbers.
  		Thus, computations in \irram are done iteratively, where each iteration increases the precision of the output and the process is terminated when the desired output precision is reached. 
-	\subsection{Overview of Classes}
+
+ 		The theoretical model to reason about \irram programs is TTE.
+	\subsection{Overview}
+		The following section introduces the most important classes and functions of \irram. 
+		For a complete see
 		
+		An \irram program is a usual \cc program.
+		\irram provides the class \real for error free computations with real numbers.
+		An object of type \real can be constructed from \code{int}, \code{char*}, \code{double}, \code{DYADIC} 
+		or another \real. 
+
+		Arithmetic operations can be applied on \real s by using the overloaded operators \code{+}, \code{-}, \code{*},
+		\code{/}.
+
+		Many functions on \real s are already included in the \irram package, e.g. 
+		\code{abs(x)}, \code{power(x, n)}, \code{exp(x)}, \code{log(x)},
+		trigonometric functions and their inverse and many more.
+
+		The operators \code{<}. \code{<=}, \code{==}. \code{>=}, \code{>} are also overloaded, but have to be used carefully.
+
+
 	\subsection{Multivalued Functions}
+		As said before, the theoretical model to reason about \irram programs is TTE.
+		Thus, the limitations seen in Chapter \ref{sec:real computability} also hold for \irram programs.  
+		In particular, every function computable with \irram is necesserily continuous.
+		
+		That also implies, that comparisons and tests for equality of {\real}s are not computable when the input numbers are equal.
+
+		Indeed, two numbers can only be compared if the intervals they are represented by do not overlap. 
+		Thus, if the intervals overlap, \irram has to reiterate. But if the numbers are equal, the intervals will always overlap, 
+		no matter how small they are, leading to an infinite loop of iterations.
+		
+		In practice, this is achieved by letting those functions have type \code{LAZY\_BOOLEAN}.
+ 		\code{LAZY\_BOOLEAN} realizes ternary logic
+		$T, F,\bot$, where $\bot$ means that the current information is not sufficent to make a decision.
+		When casting to \code{bool} $\bot$ leads to reiteration. The semantics of \code{LAZY\_BOOLEAN} can be found in Table.
+
+		Not being able to make comparisons might first seem like a huge disadvantage, but note that in numerical practice it is also strongly advised to never test floating point numbers on equality.
+		The \code{gnu gcc} compiler even has a warning option on that:
+		\begin{quotation}
+				\noindent
+		\begin{verbatim}
+			-Wfloat-equal
+			  Warn if floating-point values are used in equality comparisons.
+
+			  The idea behind this is that sometimes it is convenient (for the programmer) to consider 
+			  floating-point values as approximations to infinitely precise real numbers. [...]
+			  Instead of testing for equality, you should check to see whether the two values 
+			  have ranges that overlap; and this is done with the relational operators, so equality 
+			  comparisons are probably mistaken. 
+		    \end{verbatim}
+		\end{quotation} 
+
+		In contrast to that \irram has however, a sementically correct way to handle comparisons and other
+		cases of non-continuity: multi-valued functions.
+
+		In \irram a multi-valued function can have multiple valid outputs for the same input and 
+		return seemingly indeterministic one of the valid outputs (of course, everything is deterministic in the 
+		interval representation of the input numbers, but that is usually not observed by the user).
+		
+		\irram already has some multi valued functions included, e.g. the function
+		\begin{equation*}
+			bound(x,k) = 
+			\begin{cases}
+				\code{true} & \mbox{if } | x | \leq 2^{k-2} \\
+				\code{true} \mbox{ or } \code{false} & \mbox{if } 2^k \geq |x| > 2^{k-2} \\
+				 \code{false}  & \mbox{if } |x| > 2^k.
+			\end{cases}
+		\end{equation*}
+		can be used for multi-valued comparisons.
+
+		Another example is the function \code{approx(const REAL\& x, const long p)} that returns a \code{DYADIC} 
+		approximation with error less than $2^{-k}$ to $x$.	
+
+		One way to construct multi-valued functions without accessing the internal representation of the {\real}s 
+		is to use \code{LAZY\_BOOLEAN} together with the \code{choose}-function.
+		\code{choose} is a multi-valued function that takes up to 6 lazy booleans and returns the index of one 
+		that is evaluated to $T$ or $0$ if all evaluate to $F$ (leading to reiteration as long as neither of the two cases hold).
+
+
+
 	\subsection{Limits}
 
