@@ -96,7 +96,46 @@
 		\code{choose} is a multi-valued function that takes up to 6 lazy booleans and returns the index of one 
 		that is evaluated to $T$ or $0$ if all evaluate to $F$ (leading to reiteration as long as neither of the two cases hold).
 
-
-
+		The possibility to have multi-valued functions introduces a new problem: 
+		A multi-valued function can have different results for different representations of the same real number,
+		thus the outcome could also change in different iterations of the \irram. 
+		Thus, the program flow could be completely change from one iteration to another, leading to unexpected results.
+		To prevent that from happening, the result of a multi-valued function is saved in the so called \textbf{multi-value cache}
+		and read from there when reiterating. 
+		Thus, it is guaranteed that the program flow stays the same in each iteration.
+		This makes, however, the use of multi-valued functions memory-intensive and they should therefore be used with care,
+		especially inside loops.
 	\subsection{Limits}
+		\irram also has the feature to generate new user-defined {\real}s by using a special \code{limit} operator.
+		There are three types of limits
+		\begin{enumerate}
+			\item \textbf{Simple limits}: \\
+			This limit has the form
+			\begin{verbatim}
+				REAL limit(REAL a(long, const REAL&), const REAL& x).
+			\end{verbatim}
 
+			The limit operator takes a sequence of real functions that converges to a single-valued function $f: \RR \to \RR$
+			rapidly, i.e. such that 
+			$$|a_p(x) - f(x)| \leq 2^p \text{ for all } x \in dom(f)$$
+			and returns the value of $f(x)$ as a \real.
+
+			There exist similiar functions to compute limits of sequences of functions with $0$ or $2$ input variables.
+			\item \textbf{Lipschitz limits} \\
+				The limit computation can be improved if a Lipschitz bound on the limit function $f$ is known, i.e. one has an $l$
+				such that
+				\begin{equation*}
+					| f(x) - f(y) | \leq 2^l | x - y | \text{ for } x,y in dom(f).
+				\end{equation*}
+				Then for $x \in [d-e, d+e]$  
+				$$ | a_p(d) - f(x) | \leq | a_p(d) - f(d) | + | f(d) - f(x) |  \leq 2^p + 2^l \cdot e $$
+				Thus for large enough $p$ (i.e. such that $2^p > 2^l \cdot e$)
+				$$ | a_p(d) - f(x) | \leq  2^{p+1} $$
+				To use this in \irram there is a function
+				\begin{verbatim}
+					REAL limit_lip(REAL a(long, const REAL&), long lip, const REAL& x).
+				\end{verbatim}
+			\item \textbf{Multi-valued limits}
+		\end{enumerate}
+	\subsection{Access to the underlying representation}
+		
