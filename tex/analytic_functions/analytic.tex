@@ -279,10 +279,9 @@
 				\item Constructor from a \code{vector<coeff\_type>} and default constructor (constant zero polynomial).
 				\item Copy constructor \code{POLY(const POLY<coeff\_type>\& P)} and Copy assignment constructor \code{POLY\& operator = (const POLY<coeff\_type>\& P)}.
 				\item Methods \code{get\_degree()} and \code{get\_coeff(const unsigned int n)} returning the degree and a specific coefficient.
-				\item Addition, Subtraction, Multiplication and Scalar Multiplication via the overloaded operators \code{+}, \code{-}, 
-				\code{*}, \code{+=}, \code{*=}.
+				\item Addition, Subtraction, Multiplication and Scalar Multiplication via the overloaded operators \code{+}, \code{-}, 	\code{*}, \code{+=}, \code{*=}.
 				\item Evaluation via the overloaded operator \code{()}.
-				\item symbolic differentiation and integration via the functions \code{void diff(unsigned int)} and \code{void integrate(unsigned int n)}.
+				\item symbolic differentiation and anti differentiation via the functions \code{void diff(unsigned int)} and \code{void integrate(unsigned int n)}.
 				\item A function \code{void rwrite(const POLY<coeff\_type>\& P, int precision)} that outputs the polynomial
 				in the form $a_n*X^n+ \dots a_n*X + a_0$ where the real numbers $a_0, \dots, a_n$ are written with the number of decimals given by the parameter \code{precision}.
 			\end{enumerate}
@@ -293,9 +292,24 @@
 		\subsection{\powerseries}
 			\textbf{\code{POWERSERIES<coeff\_type>}} is a class template for power series of a generic coefficient type, 
 			i.e. a (symbolic) series of the form $ \sum_{i=0}^\infty a_n \cdot x^n$.
+
+			The same restrictions on the coefficient type as for \poly hold.
 			
 			The series itself is given as a \code{FUNC<coeff\_type(unsigned\ int)>}, i.e. a function from the integers to \code{coeff\_type}. Note, that hereby the maximal number of coefficients is limited by the size of \code{unsigned int}, 
 			but the limit is large enough to have no practical relevance.   
+
+			\powerseries has the following methods
+			\begin{enumerate}
+				\item Constructors from a \code{shared\_ptr} to a \code{FUNC<coeff\_type(unsigned\ int)>} and from a single object of \code{coeff\_type} (giving a sequence with constant coefficient sequence).
+				\item Copy constructor \code{POWERSERIES(const POWERSERIES<coeff\_type>\& P)} and copy assignment constructor 
+				\code{POWERSERIES\& operator = (const POWERSERIES<coeff\_type>\& P)}.
+				\item A method \code{coeff\_type get\_coeff(const unsigned int\& n)} returning the $n$-th coefficient
+				\item A method \code{POLY<coeff\_type> cut\_of\_at(const unsigned int\& n)} that returns the polynomial given by 
+				$ \sum_{i=0}^n a_i x^i $.
+
+				\item Addition, Subtraction, Multiplication and Scalar Multiplication via the overloaded operators \code{+}, \code{-}, \code{*}, \code{+=}, \code{*=}
+				\item symbolic differentiation \code{void differentiate(int n)} [where did anti differentiation go?]
+			\end{enumerate}
 			A powerseries works on a representation called \code{rep\_rho\_dy\_omega}. 
 
 		
