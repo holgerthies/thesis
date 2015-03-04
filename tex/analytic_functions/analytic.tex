@@ -1,7 +1,6 @@
 %!TEX root = ../../thesis.tex
-\section{A Data Structure for Analytic Functions}
 	Acknowledgment: Florian, Akitoshi
-	\subsection{Introduction}
+	\section{Introduction}
 		As seen in Chapter \ref{section:real_complexity} many important operators 
 		on real functions have been shown to be computationally hard.
 		On the other hand, numerical scientists can quickly compute maxima or anti-derivatives of functions.
@@ -64,7 +63,7 @@
 			\end{proof}
 		\end{theorem} 
 
-	\subsection{Representation of Analytic Functions}
+	\section{Representation of Analytic Functions}
 	 As seen in the previous section, the information given by the series expansion is not enough to represent an analytic function.
 	 However, by enriching the information by some finite discrete parameters, the translation between Taylor-series and function representation can be made uniform.
 	 In particular the following two representation for analytic functions are useful
@@ -160,7 +159,7 @@
 	\end{definition}
 	Again it can be shown that the two representations are polynomial time equivalent, and that the equivalent to
 	Theorem \ref{thm:polytime_on_ball} holds.
-	\subsection{Analytic Continuation}
+	\section{Analytic Continuation}
 		One problem with the representation in Definition \ref{def:series_name_rect} is that when thinking of this representation as an interface for a datatype, it is very cumbersome for the user to provide all the information needed. 
 		One has to give enough Taylor series to cover the whole interval.
 		As said before, there is no real gain of information by providing all those series.
@@ -179,7 +178,7 @@
 		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
 		Note however, that iterating this process will break the polynomial time computability, as will be shown in the next
 		section.
-	\subsection{Complexity Analysis}
+	\section{Complexity Analysis}
 		The previous section gave an overview of the representations and how they can be used to yield efficient 
 		operations on analytic functions, where efficient means polynomial time computable.
 		Since for practical applications polynomial time computability is too coarse a measure for efficiency, 
@@ -238,7 +237,7 @@
 				 O(l(N^{(l)})^2\M(N^{(l)})+N^{(l)}T(a_{N(l)}, l N^{(l)}\log_2(N^{(l)}))) 
 			\end{equation}
 		\end{theorem}
-	\subsection{Implementation}
+	\section{Implementation}
 		\irram was used as a framework to implement the ideas in the previous section.
 		The goal was to add user friendly classes for analytic functions to \irram.
 		In particular two classes were created for this purpose.
@@ -260,7 +259,7 @@
 
 		The implementation heavily uses new features introduced with the \ccx standard...
 
-	\subsection{Class Overview}
+	\section{Class Overview}
 		In addition to the two classes for analytic functions, several helper classes were implemented.
 		The implementation tried to stay as close as possible to the interfaces given in the theory section.
 
@@ -284,9 +283,9 @@
 
 		The class \textbf{\anarect} also has two different representations, 
 		a function representation \code{rep\_fun} and a series representation calles \code{rep\_ana\_rect}.
-	\subsection{Evaluation}
+	\section{Evaluation}
 		Evaluation is done seperately for both classes.
-		\subsubsection{\baana}
+		\subsection{\baana}
 			\begin{figure}{h}
 				\centering
 				\includegraphics[width=0.5\textwidth]{img/analytic/ba_ana_dep_on_n_bar.png}
@@ -294,5 +293,5 @@
 				\label{fig:ba_ana dep on n}
 			\end{figure}
 			Running time Integration, Differentiation, Coefficient computation 
-		\subsubsection{\anarect}
-	\subsection{Applications}
+		\subsection{\anarect}
+	\section{Applications}

@@ -1,6 +1,5 @@
 %!TEX root = ../../thesis.tex
-\section{Dynamic Systems and the Shadowing Lemma}
-\subsection{Introduction}
+\section{Introduction}
   \begin{definition}
     A \textbf{discrete dynamical system} is a triple $(\NN,X,\Phi)$ with $X$ a non empty set (the state space) and an operation $\Phi : \NN \times X \to X$, so that
     $\Phi(0,x) = x$ and $\Phi(n,\Phi(m,x)) = \Phi(n+m, x)$. 
@@ -51,7 +50,7 @@
 
   \irram can also be used to approximate the complexity in terms of needed computation precision. Since \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits, the internal precision at the end of the computation gives a measure of this complexity. As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
   To compute 10 significant digits of the $20000$-th iterate, \irram interally computes already with precision nearly $2^{-50000}$, which is of course far from any standard floating point datatype.   
-  \subsubsection{The Shadowing Lemma}
+  \subsection{The Shadowing Lemma}
     The term pseudo-orbit is used to describe numerically generated noisy orbits. 
     \begin{definition}\label{def:pseudoorbit}
       A sequence $(x_i)$ is called an \textbf{$\alpha$-pseudo-orbit} for a map $f$ if
@@ -80,7 +79,7 @@
     All their computations are done on a Cray X-MP supercomputer. 
     For the case study, first their algorithm was implemented on a modern computer in the \cc programming language, both using fixed precision floating point numbers and \irram. 
     As a second step \irram was used to compute the shadowing orbit exactly.
-  \subsubsection{Backward Algorithm}
+  \subsection{Backward Algorithm}
     The goal of the algorithm is to compute a shadowing orbit $(y_n)$ of size $N$ for a pseudo orbit $(x_n)$ of the logistic map $f$.
     Instead of computing the shadowing orbit from the first point, the algorithm computes the inverse orbit by starting with the last point and then iteratively computing the predecessor. 
     Since the logistic map is not injective, there is not a unique choice for this predecessor. 
@@ -93,7 +92,7 @@
     The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is selected so that $I_n \subseteq f(I_{n-1})$ holds and $I_n$ is chosen as small as possible. 
     Then the maximal distance between all points in $I_n$ and $x_n$ is computed.
     This gives a shadowing bound.
-    \subsubsection{Forward Algorithm}
+    \subsection{Forward Algorithm}
     An alternative to the algorithm descriped above can be found in \cite{chow1991}.
     Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
     They define the two quantities
@@ -118,7 +117,7 @@
       \tau_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
       \end{eqnarray*}
     \end{enumerate}
-\subsection{Implementation}
+\section{Implementation}
   The first part of the case study was to simulate the computations that were made on the Cray X-MP supercomputer on a modern computer. 
   The cray double precision data type used for the computations in the paper has machine epsilon $\varepsilon_\mu = 2^{-95}$.
   To compute the intervals $I_n$ from $I_{n+1}$ the inverse of the interval is computed as described above (using floating point arithmetic).
@@ -145,11 +144,11 @@
   \irram's support for multivalued functions yields an easy solution to this problem: 
   The maximum computation may be wrong, when two numbers are very close to each other (their distance is orders of magnitude lower than the result we expect). 
   This program will always terminate and give a very accurate approximation to the shadowing distance.  
-\subsection{Evaluation}
-  \subsubsection{Breakdown points}
+\section{Evaluation}
+  \subsection{Breakdown points}
   Since the inverse of the logistic map is only defined for points $x < \frac{a}{4}$, the above procedure fails, if at some point $i$ $x_i > \frac{a}{4}$. The first $N$ for that such an $i$ exists, is called the breakdown point.
   The breakdown point depends on the precision that are used to compute the pseudo orbit. 
-  \subsubsection{Shadowing bound and computation precision}
+  \subsection{Shadowing bound and computation precision}
   The original work also deals with the question, how the computation precision is related to the shadowing bound. 
   Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed. Instead, the noise was artificially increased by setting $x_{n+1} = ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the shadowing distance in relation to $\delta_p$ measured.
   However, using the boost multiprecision library's \code{cpp\_bin\_float} data type, an arbitrary number of binary digits can be used for the precision.
