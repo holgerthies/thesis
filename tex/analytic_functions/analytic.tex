@@ -269,20 +269,44 @@
 
 		The following classes exist
 		
-		\textbf{\poly} a class template for polynomials of a generic coefficient type. 
-		Additon, Subtraction, Multiplication, Evaluation, symbolic Differentiation, symbolic Integration is implemented.
+		\subsection{\poly} 
+			\textbf{\code{POLY<coeff\_type>}} is a class template for polynomials of a generic coefficient type. 
+			The class for the coefficient type should have implementations of the \code{*} and \code{+} operators
+			and it should be possible to cast $0$ to \code{<coeff\_type>}.
 
-		\textbf{\powerseries} a class template for powerseries of a generic coefficient type.
-		A powerseries works on a representation called \code{rep\_rho\_dy\_omega}. 
+			The following has been implemented for \poly
+			\begin{enumerate}
+				\item Constructor from a \code{vector<coeff\_type>} and default constructor (constant zero polynomial).
+				\item Copy constructor \code{POLY(const POLY<coeff\_type>\& P)} and Copy assignment constructor \code{POLY\& operator = (const POLY<coeff\_type>\& P)}.
+				\item Methods \code{get\_degree()} and \code{get\_coeff(const unsigned int n)} returning the degree and a specific coefficient.
+				\item Addition, Subtraction, Multiplication and Scalar Multiplication via the overloaded operators \code{+}, \code{-}, 
+				\code{*}, \code{+=}, \code{*=}.
+				\item Evaluation via the overloaded operator \code{()}.
+				\item symbolic differentiation and integration via the functions \code{void diff(unsigned int)} and \code{void integrate(unsigned int n)}.
+				\item A function \code{void rwrite(const POLY<coeff\_type>\& P, int precision)} that outputs the polynomial
+				in the form $a_n*X^n+ \dots a_n*X + a_0$ where the real numbers $a_0, \dots, a_n$ are written with the number of decimals given by the parameter \code{precision}.
+			\end{enumerate}
+			All methods were implemented in the most straight forward way. (Evaluation should be Horner Scheme?)
+		\subsection{FUNC}
+			\textbf{\func} A class for functions. 
+			Works on a a representaton called \code{rep\_rho\_D}.
+		\subsection{\powerseries}
+			\textbf{\code{POWERSERIES<coeff\_type>}} is a class template for power series of a generic coefficient type, 
+			i.e. a (symbolic) series of the form $ \sum_{i=0}^\infty a_n \cdot x^n$.
+			
+			The series itself is given as a \code{FUNC<coeff\_type(unsigned\ int)>}, i.e. a function from the integers to \code{coeff\_type}. Note, that hereby the maximal number of coefficients is limited by the size of \code{unsigned int}, 
+			but the limit is large enough to have no practical relevance.   
+			A powerseries works on a representation called \code{rep\_rho\_dy\_omega}. 
 
-		\textbf{\func} A class for functions. 
-		Works on a a representaton called \code{rep\_rho\_D}.
+		
 
 		The class \textbf{\baana} has two different representations: 
 		\code{rep\_pi}, the representation by a power series, and \code{rep\_rho\_D\_refined}, the represention as a function.
 
 		The class \textbf{\anarect} also has two different representations, 
 		a function representation \code{rep\_fun} and a series representation calles \code{rep\_ana\_rect}.
+	\section{Usage}
+
 	\section{Evaluation}
 		Evaluation is done seperately for both classes.
 		\subsection{\baana}
