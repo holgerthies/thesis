@@ -257,6 +257,39 @@
 			\item It is possible to get the coefficients of the underlying Taylor series.
 		\end{enumerate}
 
+		There are essentially two ways to represent a power series:
+		\begin{enumerate}
+			\item A finite representation, i.e. at every time during the program execution, 
+			only a finite initial segment of the power series is known. 
+			Thus, all computations are performed on polynomials. 
+			The length of the initial segment depends on the desired precision and grows 
+			with the iterations of \irram.
+			\item A functional representation, i.e. a powerseries is a function from an integer $n$ to its coefficient
+			$a_n$ (or a pointer to such a function). If a coefficient is needed it can be simply computed by calling the function.
+		\end{enumerate}
+		
+		The second method is very similiar to the DAG approach and can therefore suffer from the same memory issues.
+		Even tough this is true and also the first method is arguably more in the spirit of the \irram framework, a decision was made to follow the second approch.
+
+		There are several reasons for that. Firstly, the number of coefficients needed from the power series depends heavily on the point where the analytic function is evaluated. 
+		If the length of the used initial segment grows with the internal precision of \irram, worst case assumptions have to be 
+		made on the needed number of coefficients. 
+		This would in most cases be a huge overestimation and therefore lead to longer computation times.
+
+		Secondly, the memory issue does not play such a big role in this case. 
+		Usually, operations like derivation or analytic continuation, that increase the size of the DAG 
+		are not applied hundred thousands of times, but orders of magnitude less. 
+		Thus, the DAGs stay rather small and easily fit into the main memory of a modern computer.
+
+		The pure functional approach, however, has the disadvantage that a coefficient has to
+		be computed every time it is needed and thus the same work might have to be done many times. 
+		Depending on the algorithm, this can lead to very poor performance.
+
+		To prevent this, a form of caching was implemented. The coefficient function is only called the first time, when a 
+		coefficient needs to be computed and then saved to the cache. The next time the coefficient is accesed it is taken from 
+		the cache instead of calling the function again. 
+		
+
 		The implementation heavily uses new features introduced with the \ccx standard...
 
 	\section{Class Overview}
@@ -309,18 +342,45 @@
 
 				\item Addition, Subtraction, Multiplication and Scalar Multiplication via the overloaded operators \code{+}, \code{-}, \code{*}, \code{+=}, \code{*=}
 				\item symbolic differentiation \code{void differentiate(int n)} [where did anti differentiation go?]
+				\item Composition of \powerseries using the operator \code{()}
 			\end{enumerate}
-			A powerseries works on a representation called \code{rep\_rho\_dy\_omega}. 
+			The methods are mainly implemented as realizer functions on the corresponding representation class \code{rep\_rho\_dy\_omega}. 
 
+			Again, the implementation is mostly straight forward transformations on the power series. 
+			Since the objects that are manipulated are functions {\ccx}'s functional features come in handy and are used heavily. 		
+
+			coefficient caching
+
+	\subsection{\baana}
+		\textbf{\code{BA\_ANA<ARG>}} is a class template for functions analytic on a closed disc with some rational radius $r$ around $0$. 
+		As for now, for the template parameter \code{ARG} only \real and \complex makes sense. 
 		
+		Apart from the methods at the beginning of this section, the following methods exists
+		\begin{enumerate}
+			\item A constructor from a \powerseries, two \code{INTEGER}s $k$ and $A$ and a \code{RATIONAL} $r$.
+			To work correctly $r$ has to be strictly smaller than the radius of convergence $R$ 
+			and it has to hold $\sqrt[k]{2r} < R$ and $|a_n| \leq \frac{A}{r^n \cdot 2^{n/k}}$.
+			\item A constructor from a \func, two \code{INTEGER}s $k$ and $A$ and a \code{RATIONAL} $r$.
+			\item A method \code{POWERSERIES<ARG> series\_around(const ARG\&)} that computes the series expansion around
+			an arbitrary point in the domain.
+			\item Composition using the \code{()} operator.
+		\end{enumerate}
+		
+		\baana uses two representation classes, \code{rep\_pi}, the representation by a power series, and \code{rep\_rho\_D\_refined}, the represention as a function. 
+		All operations except evaluation use the power series representation. 
+		If the constructor from a function object is called, the power series will also be computed, 
+		thus the \code{rep\_pi}-name is always available.
 
-		The class \textbf{\baana} has two different representations: 
-		\code{rep\_pi}, the representation by a power series, and \code{rep\_rho\_D\_refined}, the represention as a function.
+		Evaluation can also be realized from the \code{rep\_pi} name, but it will usually be faster 
+		to use the function if it is available.
 
+
+
+	\subsection{\anarect}
 		The class \textbf{\anarect} also has two different representations, 
 		a function representation \code{rep\_fun} and a series representation calles \code{rep\_ana\_rect}.
 	\section{Usage}
-
+		The following \cc program gives an example how the classes are used.
 	\section{Evaluation}
 		Evaluation is done seperately for both classes.
 		\subsection{\baana}
