@@ -389,11 +389,37 @@
 		to use the function if it is available.
 
 	\subsection{\anarect}
-		The class \textbf{\anarect} also has two different representations, 
-		a function representation \code{rep\_fun} and a series representation calles \code{rep\_ana\_rect}.
+		The class \anarect represents complex functions that are analytic on an interval $[a, b] \subseteq \RR$.
+		The internal representation is very similiar to the one in Definition \ref{def:series_name_rect}.
+		That is, a finite sequence of (overlapping) equidistant Taylor sequences covering the interval and parameters $A$ and $k$ 
+		that are valid for all the series.
+
+		Apart from the methods common with \baana the following exist
+		\begin{enumerate}
+			\item Constructors from 
+		\end{enumerate}
+		The constructor only takes a single \powerseries.
+		All other power series needed to cover the interval are computed from the provided one using analytic 
+		continuation.  
+		\textbf{\anarect} uses two representation, \code{rep\_fun} and a series representation called \code{rep\_ana\_rect} that can be transformed into each other.
+
+		The series representation \code{rep\_ana\_rect} contains a \code{vector} with the power series.
+		When evaluating the \code{rep\_ana\_rect}-name at a point $x \in \CC$, 
+		a Taylor series containing $x$ is chosen and then a \baana object of this series created and evaluated at 
+		the (appropriately shifted) point $x$. 
+
+		For other operations, the according transformation of the first series is computed and then the 
+		other series are computed from that.    
 	\section{Usage}
-		The following \cc program gives an example how the classes are used.
+		The following \cc program gives an example how the classes can be used.
+		\lstinputlisting{code/analytic_example.cc}
 	\section{Evaluation}
+		Due to the chosen functional approach, most operations like differentiation do by themselves not perform any time critical operations but only define a new function to compute the coefficient series of the result.
+		As long as no coefficient is accesed, this function is not called and thus no operations performed.
+		Thus, the only time critical operations are evaluation and printing coefficients.
+		Consequently the way to measure the complexity of the other operations, is evaluating the resulting function, 
+		e.g. for measuring the complexity of addition, the sum is evaluated at some point and the running time taken.
+
 		Evaluation is done seperately for both classes.
 		\subsection{\baana}
 			\begin{figure}{h}
@@ -404,4 +430,13 @@
 			\end{figure}
 			Running time Integration, Differentiation, Coefficient computation 
 		\subsection{\anarect}
+			Since most operations on the power series on \anarect and \baana and are therefore expected to behave similiarily, 
+			the crucial part of evaluating \baana is the evaluation using analytic continuation.
+			
+			In particular the following questions
+			\begin{enumerate}
+				\item How does the running time depend on the number of analytic continuations and on the output precision?
+				\item How many coefficients of each power series are needed?
+				\item How does the number of coefficients needed grow with the number of iterations and the output precision?
+			\end{enumerate} 
 	\section{Applications}
