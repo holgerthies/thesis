@@ -9,7 +9,7 @@
  \usepackage{subcaption}
  \usepackage[parfill]{parskip}
  \usepackage{newclude}
-
+\usepackage{listings}
 % new commands
   \newcommand{\QQ}{\mathbb Q}
   \newcommand{\RR}{\mathbb R}
@@ -59,6 +59,13 @@
   \newtheorem{corollary}{Corollary}[section] 
   \newtheorem{example}{Example}[section]
   \newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
+\lstset{language={C++},
+                basicstyle=\ttfamily,
+                keywordstyle=\color{red}\ttfamily,
+                stringstyle=\color{blue}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
 \begin{document}
   \thesistitle{Case Studies in Exact Real Arithmetic - Implementations and empirical Evaluation}{Fallstudien in exakter reeller Arithmetik: Implementation und empirische Evaluation}
   \author{Holger Thies}

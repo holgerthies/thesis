@@ -288,7 +288,7 @@
 		To prevent this, a form of caching was implemented. The coefficient function is only called the first time, when a 
 		coefficient needs to be computed and then saved to the cache. The next time the coefficient is accesed it is taken from 
 		the cache instead of calling the function again. 
-		
+
 
 		The implementation heavily uses new features introduced with the \ccx standard...
 
@@ -318,10 +318,24 @@
 				\item A function \code{void rwrite(const POLY<coeff\_type>\& P, int precision)} that outputs the polynomial
 				in the form $a_n*X^n+ \dots a_n*X + a_0$ where the real numbers $a_0, \dots, a_n$ are written with the number of decimals given by the parameter \code{precision}.
 			\end{enumerate}
-			All methods were implemented in the most straight forward way. (Evaluation should be Horner Scheme?)
-		\subsection{FUNC}
-			\textbf{\func} A class for functions. 
-			Works on a a representaton called \code{rep\_rho\_D}.
+			All methods were implemented in the most straight forward way. \temp{Evaluation should be Horner Scheme?}
+		\subsection{\func}
+			\textbf{\code{FUNC<RESULT(PARAM)>}} is a class template for functions with input 
+			of type \code{PARAM} and return type \code{RESULT} and can be seen as a thin wrapper around \code{std::function}.
+			The idea of \func is to have a class for functions in the mathematical sense, thus the classes for the template
+			parameters should have the arithmetical operators implemented.
+			The following methods exists
+			\begin{enumerate}
+				\item Constructors from an \code{std::function} or a pointer an \code{std::function}.
+				\item  Copy constructor \code{FUNC(const FUNC<RESULT(PARAM)>\&)} and copy assignment constructor 
+						\code{FUNC\& operator = (const FUNC<RESULT(PARAM)>\&)}
+				\item Addition, Subtraction, Multiplication and Scalar Multiplication via the overloaded operators \code{+}, \code{-}, 	\code{*}, \code{+=}, \code{*=}
+				\item Evaluation with the operator \code{()}
+				\item Function Composition with the operator \code{()}
+			\end{enumerate}
+			Methods are performed on a representation called \code{rep\_rho\_D}, straight forward implementations
+			are possible using {\ccx}'s lambda functions, e.g. addition is implemented the following way
+			\lstinputlisting{code/func_addition.cc}
 		\subsection{\powerseries}
 			\textbf{\code{POWERSERIES<coeff\_type>}} is a class template for power series of a generic coefficient type, 
 			i.e. a (symbolic) series of the form $ \sum_{i=0}^\infty a_n \cdot x^n$.
@@ -349,7 +363,7 @@
 			Again, the implementation is mostly straight forward transformations on the power series. 
 			Since the objects that are manipulated are functions {\ccx}'s functional features come in handy and are used heavily. 		
 
-			coefficient caching
+			\temp{coefficient caching}
 
 	\subsection{\baana}
 		\textbf{\code{BA\_ANA<ARG>}} is a class template for functions analytic on a closed disc with some rational radius $r$ around $0$. 
@@ -373,8 +387,6 @@
 
 		Evaluation can also be realized from the \code{rep\_pi} name, but it will usually be faster 
 		to use the function if it is available.
-
-
 
 	\subsection{\anarect}
 		The class \textbf{\anarect} also has two different representations, 
