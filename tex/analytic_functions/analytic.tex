@@ -439,4 +439,73 @@
 				\item How many coefficients of each power series are needed?
 				\item How does the number of coefficients needed grow with the number of iterations and the output precision?
 			\end{enumerate} 
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_series_4_dep_on_n.png}
+			\caption{running time of \anarect computing the sine function at the boundary of the third series, depending on the number of valid digits. The text above the bars shows the highest internal precision and the number of iterations \irram did.}
+			\label{fig:sin dep on n}
+		\end{figure}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_n_prec_150_dep_on_series_log.png}
+			\caption{log-scale plot of the running time for \anarect computing the sine function with 150 valid digits at the boundary of the $l$-th series.}
+			\label{fig:sin dep on series}
+		\end{figure}
+		\begin{figure}
+			 \centering
+			% \begin{subfigure}{0.23\textwidth}
+			%   	\begin{tabular}{|c|c|c|}
+			%   	\hline
+			%   	prec & $N^{(1)}$ & sec \\
+			%   	\hline
+			%   	50 & 71 & 0\\
+			%   	\hline
+			%   	136 & 271 & 0\\
+			%   	\hline
+			%   	242 & 527 & 2\\
+			%   	\hline
+			%   	375 & 842 & 6\\
+			%   	\hline
+			%   	541 & 1235 & 20\\
+			%   	\hline
+			%   	\end{tabular}
+			%   	\caption{evaluating at series 1}
+		 %  	\end{subfigure}
+			%\begin{subfigure}{0.23\textwidth}
+			  	% \begin{tabular}{|c|c|c|c|c|c|}
+			  	% \hline
+			  	% prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
+			  	% \hline
+			  	% 50 & 13 & 30 & 59 & 112 & 212\\
+			  	% \hline
+			  	% 136 & 55 & 120 & 234 & 442 & 833\\
+			  	% \hline
+			  	% 242 & 109 & 236 & 458 & 863 & 1626\\
+			  	% \hline
+			  	% 375 & 175 & 378 & 733 & 1382 & 2603\\
+			  	% \hline
+			  	% 541 & 258 & 556 & 1078 & 2031 & 3825\\
+			  	% \hline
+			  	% \end{tabular}
+			  	%\caption{evaluating at series 3}
+		  	%\end{subfigure}
+          \begin{tabular}{|c||c|c|c|c|c|}
+          \hline
+          prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
+          \hline\hline
+          50 & 12 & 31 & 63 & 121 & 229\\
+          \hline
+          136 & 55 & 136 & 276 & 531 & 1009\\
+          \hline
+          242 & 107 & 248 & 493 & 939 & 1778\\
+          \hline
+          375 & 175 & 393 & 773 & 1466 & 2769\\
+          \hline
+          541 & 258 & 571 & 1118 & 2116 & 3993\\
+          \hline
+          \end{tabular}
+			\caption{Number of coefficients accessed in an iRRAM iteration of precision \sprec when evaluating at on the boundary of the third series.}
+			\label{fig:xinv coeff 0 dep on n}
+		\end{figure}
+
 	\section{Applications}
