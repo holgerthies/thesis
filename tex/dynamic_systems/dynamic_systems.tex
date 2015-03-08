@@ -28,13 +28,13 @@
     \end{tabular}
     \caption{behaviour of iterating the logistic map for different values of the parameter $a$}\label{table:logmapbehaviour}
   \end{table}
-  \begin{figure}
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
     \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
     \label{fig:logmaperror1}  
   \end{figure}
-    \begin{figure}
+    \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
     \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
@@ -153,7 +153,7 @@
   Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed. Instead, the noise was artificially increased by setting $x_{n+1} = ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the shadowing distance in relation to $\delta_p$ measured.
   However, using the boost multiprecision library's \code{cpp\_bin\_float} data type, an arbitrary number of binary digits can be used for the precision.
 
-  \begin{figure}
+  \begin{figure}[H]
     \centering
     \begin{subfigure}{.45\textwidth}
       \centering

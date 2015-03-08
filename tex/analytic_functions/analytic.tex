@@ -420,9 +420,11 @@
 		Consequently the way to measure the complexity of the other operations, is evaluating the resulting function, 
 		e.g. for measuring the complexity of addition, the sum is evaluated at some point and the running time taken.
 
+		\temp{Computer, Compiler, iRRAM version, Method of measurement etc.}
+
 		Evaluation is done seperately for both classes.
 		\subsection{\baana}
-			\begin{figure}{h}
+			\begin{figure}[H]
 				\centering
 				\includegraphics[width=0.5\textwidth]{img/analytic/ba_ana_dep_on_n_bar.png}
 				\caption{running time evaluating \baana at fixed point $x=0.8$ depending on the desired number of valid digits}
@@ -439,19 +441,35 @@
 				\item How many coefficients of each power series are needed?
 				\item How does the number of coefficients needed grow with the number of iterations and the output precision?
 			\end{enumerate} 
-		\begin{figure}
+
+		From the theoretical analysis, the expected behavior is that the running time for evaluating at a fixed 
+		point is bounded by $O(n^4)$ and should grow exponentially with the number of analytic continuations.
+		The number of coefficients needed from the first series should grow similiarly. 
+
+ 		Evaluation was performed on test functions, in particular the functions $x \to sin(x)$, $x \to \frac{1}{1+x^2}$, $x \to ln(2+x)$ and $x \to \sqrt{2+x}$. 
+
+ 		Due to the iterative concept of the \irram, the running time is not continuous in the desired output precision, but grow stepwise with the internal precision of the \irram.
+
+		\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_series_4_dep_on_n.png}
 			\caption{running time of \anarect computing the sine function at the boundary of the third series, depending on the number of valid digits. The text above the bars shows the highest internal precision and the number of iterations \irram did.}
 			\label{fig:sin dep on n}
 		\end{figure}
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_n_prec_150_dep_on_series_log.png}
-			\caption{log-scale plot of the running time for \anarect computing the sine function with 150 valid digits at the boundary of the $l$-th series.}
-			\label{fig:sin dep on series}
-		\end{figure}
-		\begin{figure}
+
+		Figure \ref{fig:sin dep on n} shows, how the running time of evaluating at a fixed point $x$ depends on the desired number of valid decimals. 
+		$x$ is chosen so that $3$ analytic continuations are necessary. 
+
+		The plot also contains the information on how many iterations \irram performed and the maximum internal 
+		precision (text above the bars). 
+		Every bar is broken down into smaller bars, that show how much time was spent in each iteration of the \irram.
+		The reason for the running time going down again between $75$ and $100$ decimals is, that
+		the iterations do not always have the same size, but \irram makes estimates on a good step size.
+		The internal precision in the end is $-375$ for both $n=75$ and $n=100$, but 
+		for $75$ the first estimate is too small, leading to a total number of $3$ iterations instead of only $2$ iterations for $n=100$.
+		However, the plot also clearly shows that the running time is always dominated by the time spent in the last iteration.
+
+		\begin{figure}[h]
 			 \centering
 			% \begin{subfigure}{0.23\textwidth}
 			%   	\begin{tabular}{|c|c|c|}
@@ -508,4 +526,17 @@
 			\label{fig:xinv coeff 0 dep on n}
 		\end{figure}
 
+		Table \ref{fig:xinv coeff 0 dep on n} shows the number $N^{(l)}$ of coeffcients accesed from the original series, when evaluated at a point where $l$ analytic continuations are necessary depending on 
+		the internal precision of \irram.
+
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_n_prec_150_dep_on_series_log.png}
+			\caption{log-scale plot of the running time for \anarect computing the sine function with 150 valid digits at the boundary of the $l$-th series.}
+			\label{fig:sin dep on series}
+		\end{figure}
+
+		How the running time and the number of coefficients  depends on the number of analytic continuations can also be observed in Figure \ref{fig:sin dep on n}. 
+
+		All in all the figures are accordance with the qualitative behaviour expected from the theoretical analysis.
 	\section{Applications}
