@@ -3,70 +3,167 @@
 	\section{Introduction}
 		As seen in Chapter \ref{section:real_complexity} many important operators 
 		on real functions have been shown to be computationally hard.
-		On the other hand, numerical scientists can quickly compute maxima or anti-derivatives of functions.
-		To analyze this mismatch one should ask the follwing questions
+		On the other hand, numerical scientists can quickly compute maximums or anti-derivatives of functions.
+		To analyze this mismatch one should ask the following questions
 		\begin{enumerate}
 			\item What subset of real functions is usually considered in numerical analysis?
 			\item Are there implicit assumptions made about the functions, that allow faster computations? 
 		\end{enumerate}
 		One class of functions that has been considered in computable analysis is the analytic functions.
-		Although not at all sufficent as the class of functions considered interesting for numerical analysis, 
+		Although not at all sufficient as the class of functions considered interesting for numerical analysis, 
 		many computations become tractable when one restricts the attention to analytic functions.
 		\begin{definition}
 			For $z \in \CC$ and $r \in \RR, r > 0$, let $B(z,r) := \{ x \in \CC \,\, | x - z | < r\}$. \\
 			A function $f: D \to \CC$ with $D \subseteq CC$ is called \textbf{analytic} if for every $x_0 \in D$ 
 			the function given by the Taylor-series around $x_0$ converges to $f(x)$ for every $x$ in a neighborhood of 
-			$x_0$. 
-			That is, for every $x_0 \in \D$ there is a $\varepsilon > 0$, such that for all $x \in B(x_0, \varepsilon)$ and for 
-			$$ T(x) := \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n  \text{, } T(x) \rightarrow f(x)$$.
-			The set of functions analytic on $D$ is denoted as $C^\infty(D)$. \\
-			The coefficients of the Taylor expansion is denoted by the series $(a_n)_{n \in \NN}$, i.e. 
-			$$ a_n = \frac{f^{(n)}(x_0)}{n!}. $$    
-			For the sake of simplicity, it will w.l.o.g. be assumed that $x_0 = 0$  and $D = [0,1]$ if not stated otherwise.
+			$x_0$. \\
+			That is, for every $x_0 \in D$ there is an $\varepsilon > 0$, such that for all $x \in B(x_0, \varepsilon)$ and there is a series
+			$$ T(x) := \sum_{n=0}^{\infty} a_n(x-x_0)^n$$
+			such that $T(x) \rightarrow f(x)$.
+
 		\end{definition}
-		Note: The above definition can be easily generalized to higher dimension. \\
-		Some properties of analytic functions...
-		The complexity of analytic functions is much better then for the general case.
-		\begin{theorem}[Pour-El, Richards, Ko, Friedman, Müller] 
+		The above definition can be easily generalized to higher dimension. \\
+		If $f$ is analytic then all its derivatives $f^{(n)}(x)$ exist and it holds
+		$$ a_n = \frac{f^{(n)}(x_0)}{n!}. $$    
+
+		The set of functions analytic on $D$ will be denoted by $C^\infty(D)$. \\		
+		For the sake of simplicity, it will w.l.o.g. be assumed that $x_0 = 0$  and $D = [0,1]$ if not stated otherwise.
+		
+		Below are some properties of analytic functions
+
+		\begin{enumerate}
+			\item For $f,g \in C^\infty(D)$ the sum  $f+g$ and the product $fg$ are analytic functions.
+			\item If $f, g$ are analytic and $im(f) \subseteq dom(g)$ then their composition $f \circ g$ is analytic.
+			\item The roots of an analytic function that is not identical to $0$ are isolated points.
+			\item The derivative and anti-derivative of an analytic function are analytic.
+			\item If the domain is connected, an analytic function is uniquely defined by a single Taylor series around one point in its domain.
+		\end{enumerate}
+
+		Analytic functions have been thoroughly investigated in real number complexity theory.
+		For many problems that are hard in the general case, it could be shown that polynomial time algorithms exist when restricting the input to
+		analytic functions.
+
+		\begin{theorem}[Pour-El, Richards, Ko, Friedman]\label{theorem:computable equiv series computable} 
 			The following are equivalent
 			\begin{enumerate}
 				\item $f$ is computable 
 				\item The series $(a_n)_{n \in \NN}$ is computable. 
  			\end{enumerate}
- 			The equivalence also holds, when computable is replaced by polynomial time computable.
 		\end{theorem}
-		From that it follows
+		\begin{theorem}[M\"uller]\label{theorem:computable equiv series computable polytime}
+			The equivalence in Theorem \ref{theorem:computable equiv series computable} also holds, when the word computable is replaced by polynomial time computable.
+		\end{theorem}
+		
+		Since differentiation and anti-differentiation on analytic functions are only simple manipulations on the series, 
+		a direct consequence of Theorem \ref{theorem:computable equiv series computable polytime} is the following
 		\begin{corollary}
-			If $f$ is polynomial time computable the following functions are
+			If $f$ is polynomial time computable the following functions are also polynomial time computable:
 			\begin{enumerate}
 				\item $I: [0,1] \to \RR$, $I(x) = \int_0^x f(t) dt$
 				\item $D: [0,1] \to \RR$, $D(x) = f'(x)$ 
 			\end{enumerate}
-			\begin{proof}
-				Taylor-series
-			\end{proof}
 		\end{corollary}
-		Even tough the above results are nice, those theorems are non-uniform.
-		The theorems only say that, when $f$ is polynomial time computable, then there exists 
-		a polynomial time computable coefficient sequence and if there is a polynomial time computable sequence, then
-		there is some algorithm that can compute the series in polynomial time.
+		
+		The above theorems show that computing with analytic functions is in some sense much easier than the general case.
+
+		However, those theorems are non-uniform in the following sense:
+
+		The theorems only say that, that $f$ being polynomial time computable implies the existence of a polynomial time computable sequence
+		and the existence of such a sequence implies that there exists some algorithm computing $f$ in polynomial time. \\
 		In no way, however, do they say, how to compute the sequence from a given representation of the function and vice versa.
-		In fact the following theorems show, that this is not a problem of those theorems, but it's inherently impossible to do this.
+
+		In fact the following theorems show, that this is not a problem of those theorems, but it's inherently impossible to do so.
 		\begin{theorem}[M\"uller \cite{Mue}]
 			Let $f$ given as in ... then the operator $f \to (a_n)_{n \in \NN}$ computing the Taylor series around $0$ (or any other point) is not computable.
 		\end{theorem} 
-		\begin{theorem}[M\"uller \cite{Mue}]
+		\begin{theorem}[M\"uller \cite{Mue}]\label{theorem: evaluation not uniformly computable from powerseries}
 			Let $(a_n)_{n \in \NN}$ be the series expansion around $0$ for some $f \in C^\omega(D)$.\\
 			The evaluation operator $((a_n)_{n \in \NN}, x) \to f(x)$ that, given a series and a point, computes the value of the corresponding function at that point, is not computable.
-			\begin{proof}
-				One does not know how many coefficients needed...
-			\end{proof}
 		\end{theorem} 
+
+		The reason for Theorem \ref{theorem: evaluation not uniformly computable from powerseries} is, that any algorithm can only read a finite number of 
+		coefficients from the series. But from the power series alone, it is impossible to know how many coefficients are needed to make
+		a good enough approximation. 
+
+		The goal of the case study is to write a general data type for analytic functions. 
+		Due to the above any such data type will need more information than only the series of Taylor coefficients. \\
+		The next section will deal with the question, what additional information is needed to get uniform versions of the above theorems.
 
 	\section{Representation of Analytic Functions}
 	 As seen in the previous section, the information given by the series expansion is not enough to represent an analytic function.
 	 However, by enriching the information by some finite discrete parameters, the translation between Taylor-series and function representation can be made uniform.
-	 In particular the following two representation for analytic functions are useful
+	 
+	 Two possible representations for analytic functions on the closed unit disc are as follows
+	 \begin{definition}\label{def:series_name_ball}
+	 	A \textbf{series-name} $\rho_s$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
+	 	\begin{enumerate}
+	 		\item $(a_n)_{n \in \NN}$ is the series expansion of $f$ around $0$
+	 		\item $\sqrt[k]{2} \leq R$ 
+	 		\item $|a_j|r^j \leq A$ for all $j \in \NN$
+	 	\end{enumerate}
+	 	and $R = (\limsup |a_j|^{\frac{1}{j}})^{-1}$ denotes the radius of convergence of the series.
+	 \end{definition}
+	 The two additional parameters are useful, because they can be used to make a tail estimate 
+	 \begin{equation}\label{eqn:tail_estimate}
+	  \left | \sum_{n \geq N} a_nx^n \right | \leq A \frac{(|z|/r)^N}{1-|z|/r}
+	 \end{equation}
+	 A name as in Definition \ref{def:series_name_ball} can be found by choosing any appropriate $k$ (note that the radius of convergence is always bigger than $1$) and choosing $A$ as an upper bound of $f$ extended to $\overline{B_{\sqrt[k]{2}}(0)}$. 
+	 \begin{definition}
+	 	A \textbf{function-name} $\rho_f$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $(f, l, B)$ such that
+		B is an upper bound of $f$ on $\overline{B_{\sqrt[l]{2}}(0)}$.
+	 \end{definition}
+	 \begin{theorem}\cite{Kaw}\label{thm:representation_conversion}
+	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
+	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
+	 \end{theorem}
+	 \begin{proof}[Sketch]
+	 	A full proof can be found in \cite{Kaw}.  
+	 	To compute a function name from a series name it only has to be shown that evaluation...
+
+	 	To compute a series name from a function name, one has to compute the coefficients of the series expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
+	 	In \cite{Mue} M\"uller describes an algorithm for this task.
+	 	To approximate the coefficient $a_k$ with precision at least $2^{-n}$ $f$ is approximated by the Lagrangian interpolation
+	 	polynomial
+	 	\begin{equation}\label{eqn:interpolation_polynomial}
+	 		P_m(x)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}(x) 
+	 	\end{equation}
+	 	where
+	 	\begin{eqnarray*}
+	 		x_i & = & (i-m) \cdot h , h \in \RR, h > 0 \\
+	 		L_{m,i}(x) & = & \prod_{i \neq j} \frac{x-x_j}{x_i-x_j} 
+	 	\end{eqnarray*}
+	 	Differentiating Equation \ref{eqn:interpolation_polynomial} $k$ times yields
+	 	\begin{equation}\label{eqn:interpolation_polynomial_diff}
+	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}^{(k)}(x) 
+	 	\end{equation}
+	 	Let $\sigma = \lceil \log_2 B \rceil + 1$
+
+	 	It can then be shown that if $f$ is evaluated on $2k+1$ points from the 
+	 	real interval $\{x \in \R \,|\, |x| \leq \frac{1}{2}\}$ with precision $2n+15k+\sigma+6$ 
+	 	then $a_k$ can be approximated by the above procedure with error less than $2^{-n}$ in 
+	 	$O((k+1)\cdot \M(n+k+\sigma) + k^2 \M (k \log k)$
+
+	 \end{proof}
+	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
+	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
+	 \begin{theorem}\label{thm:polytime_on_ball}
+	 	The following is polynomial time computable when given $\rho_s$ or $\rho_f$ names for the input functions.
+	 	\begin{enumerate}
+	 		\item Evaluation $(f,z) \to f(z)$
+	 		\item Addition $(f_1, f_2) \to f_1 + f_2$
+	 		\item Multiplication $(f_1, f_2) \to f_1 \cdot f_2$
+	 		\item $d$-fold Differentiation $(f,d) \to f^{(d)}$ where $d$ is given as unary
+	 		\item $d$-fold Anti-differentiation $(f,d) \to \int \dots \int f$ where $d$ is given in unary
+	 		\item Parametric maximization
+	 	\end{enumerate}
+	 	\begin{proof}(Sketch)
+	 		Evaluation follows from \ref{thm:representation_conversion}. \\
+	 		Except for parametric maximization the transformation of the Taylor series is obvious (e.g. for addition, just add the coefficients).
+	 		It remains to show how to compute the new parameters $A'$ and $k'$. 
+	 	\end{proof}
+	 \end{theorem}
+	Now consider functions analytic on some other domain, e.g. on the real line $[0,1]$.
+	Such functions can be represented by a finite number of power series covering the domain. 
 	 \begin{figure}
 	 	\centering
 	 	\begin{subfigure}{.45\textwidth}
@@ -120,76 +217,6 @@
 		\end{subfigure}
 		\caption{Representations for analytic function}\label{fig: analytic function representations}
 	 \end{figure}
-
-	 \begin{definition}\label{def:series_name_ball}
-	 	A \textbf{series-name} $\rho_s$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
-	 	\begin{enumerate}
-	 		\item $(a_n)_{n \in \NN}$ is the series expansion of $f$ around $0$
-	 		\item $\sqrt[k]{2} \leq R$ 
-	 		\item $|a_j|r^j \leq A$ for all $j \in \NN$
-	 	\end{enumerate}
-	 	where $R = (\limsup |a_j|^{\frac{1}{j}})^{-1}$ denotes the radius of convergence of the series.
-	 \end{definition}
-	 Those two additional parameters can be used to make a tail estimate 
-	 \begin{equation}\label{eqn:tail_estimate}
-	  \left | \sum_{n \geq N} a_nx^n \right | \leq A \frac{(|z|/r)^N}{1-|z|/r}
-	 \end{equation}
-	 A name as in Definition \ref{def:series_name_ball} can be found by choosing any appropriate $k$ (note that the radius of convergence is always bigger than $1$) and choosing $A$ as an upper bound of $f$ extended to $\overline{B_{\sqrt[k]{2}}(0)}$. 
-	 \begin{definition}
-	 	A \textbf{function-name} $\rho_f$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $(f, l, B)$ such that
-		B is an upper bound of $f$ on $\overline{B_{\sqrt[l]{2}}(0)}$.
-	 \end{definition}
-	 \begin{theorem}\cite{Kaw}\label{thm:representation_conversion}
-	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
-	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
-	 \end{theorem}
-	 \begin{proof}
-	 	To compute a function name from a series name it only has to be shown that evaluation...
-
-	 	To compute a series name from a function name, one has to compute the coefficients of the series expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
-	 	In \cite{Mue} M\"uller describes an algorithm for this task.
-	 	To approximate the coefficient $a_k$ with precision at least $2^{-n}$ $f$ is approximated by the Lagrangian interpolation
-	 	polynomial
-	 	\begin{equation}\label{eqn:interpolation_polynomial}
-	 		P_m(x)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}(x) 
-	 	\end{equation}
-	 	where
-	 	\begin{eqnarray*}
-	 		x_i & = & (i-m) \cdot h , h \in \RR, h > 0 \\
-	 		L_{m,i}(x) & = & \prod_{i \neq j} \frac{x-x_j}{x_i-x_j} 
-	 	\end{eqnarray*}
-	 	Differentiating Equation \ref{eqn:interpolation_polynomial} $k$ times yields
-	 	\begin{equation}\label{eqn:interpolation_polynomial_diff}
-	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}^{(k)}(x) 
-	 	\end{equation}
-	 	Let $\sigma = \lceil \log_2 B \rceil + 1$
-
-	 	It can then be shown that if $f$ is evaluated on $2k+1$ points from the 
-	 	real interval $\{x \in \R \,|\, |x| \leq \frac{1}{2}\}$ with precision $2n+15k+\sigma+6$ 
-	 	then $a_k$ can be approximated by the above procedure with error less than $2^{-n}$ in 
-	 	$O((k+1)\cdot \M(n+k+\sigma) + k^2 \M (k \log k)$
-
-	 \end{proof}
-	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
-	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
-	 \begin{theorem}\label{thm:polytime_on_ball}
-	 	The following is polynomial time computable when given $\rho_s$ or $\rho_f$ names for the input functions.
-	 	\begin{enumerate}
-	 		\item Evaluation $(f,z) \to f(z)$
-	 		\item Addition $(f_1, f_2) \to f_1 + f_2$
-	 		\item Multiplication $(f_1, f_2) \to f_1 \cdot f_2$
-	 		\item $d$-fold Differentiation $(f,d) \to f^{(d)}$ where $d$ is given as unary
-	 		\item $d$-fold Anti-differentiation $(f,d) \to \int \dots \int f$ where $d$ is given in unary
-	 		\item Parametric maximization
-	 	\end{enumerate}
-	 	\begin{proof}(Sketch)
-	 		Evaluation follows from \ref{thm:representation_conversion}. \\
-	 		Except for parametric maximization the transformation of the Taylor series is obvious (e.g. for addition, just add the coefficients).
-	 		It remains to show how to compute the new parameters $A'$ and $k'$. 
-	 	\end{proof}
-	 \end{theorem}
-	Now consider functions analytic on some other domain, e.g. on the real line $[0,1]$.
-	Such functions can be represented by a finite number of powerseries covering the domain. 
 	That leads to the following representation
 	\begin{definition}\label{def:series_name_rect}
 		A \textbf{series-name} for a function $f \in C^\omega([0,1])$ is a 5-tuple $(M, (x_m), (a_{n, j}), k, A)$ where $M \in \NN$
