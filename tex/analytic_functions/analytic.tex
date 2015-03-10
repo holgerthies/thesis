@@ -67,6 +67,60 @@
 	 As seen in the previous section, the information given by the series expansion is not enough to represent an analytic function.
 	 However, by enriching the information by some finite discrete parameters, the translation between Taylor-series and function representation can be made uniform.
 	 In particular the following two representation for analytic functions are useful
+	 \begin{figure}
+	 	\centering
+	 	\begin{subfigure}{.45\textwidth}
+			\begin{tikzpicture}[scale=0.8]
+			    \node  at (-0.2,-0.5) {$-1$};
+			    \node  at (4.0,-0.5) {$1$};
+			    \draw [thick,|-|] (0,0) -- (4,0);
+			    \node  at (1.5,.6) {$\frac 1{2k}$};
+			    \draw  [dotted] (2.0,0) -- (2.0,1);
+			    \draw [domain = 0:8,color=gray] plot[samples=160] (\x-2, {sqrt(16-(\x-4)^2)*(1-1/(\x^2+1) + sin(\x) + (\x/7)^5-\x/6 +1.5- 1/((\x-5)^2+1))/2});
+			    \draw [domain = 0:8,color=gray] plot[samples=160] (\x-2, {1/(\x^2+1)/2 + sin(80*\x) + (\x/7)^5-\x/6 -1-sqrt(16-(\x-4)^2)/2});
+			    \draw [color=gray] (-2,0) -- (-2,-.5);
+			    \draw [color=gray] (6,.19) -- (6,-1.42);
+			    \node [color=gray] at (.5,2) {$dom(f)$};
+			    \draw [fill=blue,radius =.05,color=blue] (3.5,0) circle;
+			    \node [color=blue] at (3.5,-.2) {$x_0$};
+			    \draw [fill=blue,radius =.05,color=blue] (2.0,0) circle;
+			    \node [color=blue] at (2.0,-.2) {$x_1$};
+			    \draw [radius = 1,color=blue, dotted] (2.0,0) circle; 
+			    \draw [fill=blue,radius =.05,color=blue] (0.5,0) circle;
+			    \node [color=blue] at (0.5,-.2) {$x_2$}; 
+			    \draw [radius = 1,color=blue, dotted] (0.5,0) circle;
+			    \draw [radius = 1,color=blue, dotted] (3.5,0) circle;
+			    \draw [radius = 1.8, color = red, dotted] (3.5,0) circle; 
+			    \draw [fill=red,radius = .05,color = red] (3,1.75) circle;
+			    \node [color=red] at (3,1.45) {$singularity$};
+			\end{tikzpicture}
+		\end{subfigure}
+	 	\begin{subfigure}{.45\textwidth}
+			\begin{tikzpicture}[scale=0.8]
+			    \draw (-1,1) rectangle (5,-1);
+			    \node  at (-0.2,-0.5) {$-1$};
+			    \node  at (4.0,-0.5) {$1$};
+			    \draw [thick,|-|] (0,0) -- (4,0);
+			    \node  at (-.7,-.25) {$\frac 1l$};
+			    \draw  [dotted] (-1,0) -- (0,0);
+			    \node  at (2.2,.5) {$\frac 1l$};
+			    \draw  [dotted] (2,1) -- (2,0);
+			    \node  at (-.5,0.6) {$\overline R_l$};
+			    \draw [domain = 0:8,color=gray] plot[samples=160] (\x-2, {sqrt(16-(\x-4)^2)*(1-1/(\x^2+1) + sin(\x) + (\x/7)^5-\x/6 +1.5- 1/((\x-5)^2+1))/2});
+			    \draw [domain = 0:8,color=gray] plot[samples=160] (\x-2, {1/(\x^2+1)/2 + sin(80*\x) + (\x/7)^5-\x/6 -1-sqrt(16-(\x-4)^2)/2});
+			    \draw [color=gray] (-2,0) -- (-2,-.5);
+			    \draw [color=gray] (6,.19) -- (6,-1.42);
+			    \node [color=gray] at (.5,2) {$dom(f)$};
+			    \draw [fill=red,radius = .05,color = red] (3,1.75) circle;
+			    \node [color=red] at (3,1.45) {$singularity$};
+			    \draw [radius = 1, color = green, dotted] (2.5,0) circle;
+			    \draw [fill=green, radius = .05, color = green] (2.5,0) circle;
+			    \node [color=green] at (2.5,-.2) {$x_1$};
+			\end{tikzpicture}
+		\end{subfigure}
+		\caption{Representations for analytic function}\label{fig: analytic function representations}
+	 \end{figure}
+
 	 \begin{definition}\label{def:series_name_ball}
 	 	A \textbf{series-name} $\rho_s$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
 	 	\begin{enumerate}
@@ -424,15 +478,22 @@
 
 		Evaluation is done seperately for both classes.
 		\subsection{\baana}
-			\begin{figure}[H]
+
+			\begin{figure}[h]
 				\centering
 				\includegraphics[width=0.5\textwidth]{img/analytic/ba_ana_dep_on_n_bar.png}
-				\caption{running time evaluating \baana at fixed point $x=0.8$ depending on the desired number of valid digits}
+				\caption{running time evaluating \baana at fixed point $x=0.8$ depending on the desired number of valid decimals}
 				\label{fig:ba_ana dep on n}
+			\end{figure}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=0.5\textwidth]{img/analytic/ba_ana_dep_on_diff_sin.png}
+				\caption{running time evaluating differentiated \baana with series for $\sin(x)$ at fixed point $x=0.8$ with different numver of desired valid decimals depending on the number of differentiation}
+				\label{fig:ba_ana dep on differentiation}
 			\end{figure}
 			Running time Integration, Differentiation, Coefficient computation 
 		\subsection{\anarect}
-			Since most operations on the power series on \anarect and \baana and are therefore expected to behave similiarily, 
+			Since most operations on the power series on \anarect and \baana are identical ‚and are therefore expected to behave similiarily, 
 			the crucial part of evaluating \baana is the evaluation using analytic continuation.
 			
 			In particular the following questions
@@ -450,7 +511,7 @@
 
  		Due to the iterative concept of the \irram, the running time is not continuous in the desired output precision, but grow stepwise with the internal precision of the \irram.
 
-		\begin{figure}[H]
+		\begin{figure}[h]
 			\centering
 			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_series_4_dep_on_n.png}
 			\caption{running time of \anarect computing the sine function at the boundary of the third series, depending on the number of valid digits. The text above the bars shows the highest internal precision and the number of iterations \irram did.}
@@ -470,59 +531,68 @@
 		However, the plot also clearly shows that the running time is always dominated by the time spent in the last iteration.
 
 		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_coeffs_prec_150_dep_on_series.png}
+			\caption{Number of coefficients read from the original series when evaluating sine-function with 150 valid decimals, depending on the number of analytic continuations}
+			\label{fig:sin dep on n}
+		\end{figure}
+
+		\begin{figure}[h]
 			 \centering
-			% \begin{subfigure}{0.23\textwidth}
-			%   	\begin{tabular}{|c|c|c|}
-			%   	\hline
-			%   	prec & $N^{(1)}$ & sec \\
-			%   	\hline
-			%   	50 & 71 & 0\\
-			%   	\hline
-			%   	136 & 271 & 0\\
-			%   	\hline
-			%   	242 & 527 & 2\\
-			%   	\hline
-			%   	375 & 842 & 6\\
-			%   	\hline
-			%   	541 & 1235 & 20\\
-			%   	\hline
-			%   	\end{tabular}
-			%   	\caption{evaluating at series 1}
-		 %  	\end{subfigure}
-			%\begin{subfigure}{0.23\textwidth}
-			  	% \begin{tabular}{|c|c|c|c|c|c|}
-			  	% \hline
-			  	% prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
-			  	% \hline
-			  	% 50 & 13 & 30 & 59 & 112 & 212\\
-			  	% \hline
-			  	% 136 & 55 & 120 & 234 & 442 & 833\\
-			  	% \hline
-			  	% 242 & 109 & 236 & 458 & 863 & 1626\\
-			  	% \hline
-			  	% 375 & 175 & 378 & 733 & 1382 & 2603\\
-			  	% \hline
-			  	% 541 & 258 & 556 & 1078 & 2031 & 3825\\
-			  	% \hline
-			  	% \end{tabular}
-			  	%\caption{evaluating at series 3}
-		  	%\end{subfigure}
-          \begin{tabular}{|c||c|c|c|c|c|}
-          \hline
-          prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
-          \hline\hline
-          50 & 12 & 31 & 63 & 121 & 229\\
-          \hline
-          136 & 55 & 136 & 276 & 531 & 1009\\
-          \hline
-          242 & 107 & 248 & 493 & 939 & 1778\\
-          \hline
-          375 & 175 & 393 & 773 & 1466 & 2769\\
-          \hline
-          541 & 258 & 571 & 1118 & 2116 & 3993\\
-          \hline
-          \end{tabular}
-			\caption{Number of coefficients accessed in an iRRAM iteration of precision \sprec when evaluating at on the boundary of the third series.}
+			\begin{subfigure}{0.48\textwidth}
+				\centering
+			  	\begin{tabular}{|c|c|c|}
+			  	\hline
+			  	prec & $N^{(1)}$ & sec \\
+			  	\hline
+			  	50 & 71 & 0\\
+			  	\hline
+			  	136 & 271 & 0\\
+			  	\hline
+			  	242 & 527 & 2\\
+			  	\hline
+			  	375 & 842 & 6\\
+			  	\hline
+			  	541 & 1235 & 20\\
+			  	\hline
+			  	\end{tabular}
+			  	\caption{evaluating at series 1}
+		  	\end{subfigure}
+			\begin{subfigure}{0.48\textwidth}
+				\centering
+			  	\begin{tabular}{|c|c|c|c|c|c|}
+			  	\hline
+			  	prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
+			  	\hline
+			  	50 & 13 & 30 & 59 & 112 & 212\\
+			  	\hline
+			  	136 & 55 & 120 & 234 & 442 & 833\\
+			  	\hline
+			  	242 & 109 & 236 & 458 & 863 & 1626\\
+			  	\hline
+			  	375 & 175 & 378 & 733 & 1382 & 2603\\
+			  	\hline
+			  	541 & 258 & 556 & 1078 & 2031 & 3825\\
+			  	\hline
+			  	\end{tabular}
+			  	\caption{evaluating at series 3}
+		  	\end{subfigure}
+          % \begin{tabular}{|c||c|c|c|c|c|}
+          % \hline
+          % prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
+          % \hline\hline
+          % 50 & 12 & 31 & 63 & 121 & 229\\
+          % \hline
+          % 136 & 55 & 136 & 276 & 531 & 1009\\
+          % \hline
+          % 242 & 107 & 248 & 493 & 939 & 1778\\
+          % \hline
+          % 375 & 175 & 393 & 773 & 1466 & 2769\\
+          % \hline
+          % 541 & 258 & 571 & 1118 & 2116 & 3993\\
+          % \hline
+          % \end{tabular}
+			\caption{Number of coefficients accessed in an iRRAM iteration of precision \sprec when evaluating at on the boundary of the first and third series.}
 			\label{fig:xinv coeff 0 dep on n}
 		\end{figure}
 
@@ -531,12 +601,19 @@
 
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=0.5\textwidth]{img/analytic/sin_for_n_prec_150_dep_on_series_log.png}
-			\caption{log-scale plot of the running time for \anarect computing the sine function with 150 valid digits at the boundary of the $l$-th series.}
-			\label{fig:sin dep on series}
+			\begin{subfigure}{.45\textwidth}
+				\includegraphics[width=1.0\textwidth]{img/analytic/sin_for_n_prec_150_dep_on_series_log.png}
+				\caption{$x\sin(x)$}
+			\end{subfigure}
+			\begin{subfigure}{.45\textwidth}
+				\includegraphics[width=1.0\textwidth]{img/analytic/log_for_n_prec_150_dep_on_series_log.png}
+				\caption{$\log(2+x)$}
+			\end{subfigure}
+			\caption{log-scale plot of the running time for \anarect with 150 valid digits at the boundary of the $l$-th series.}
+			\label{fig:baana dep on series}
 		\end{figure}
 
-		How the running time and the number of coefficients  depends on the number of analytic continuations can also be observed in Figure \ref{fig:sin dep on n}. 
+		How the running time and the number of coefficients  depends on the number of analytic continuations can also be observed in Figure \ref{fig:baana dep on series}. 
 
 		All in all the figures are accordance with the qualitative behaviour expected from the theoretical analysis.
 	\section{Applications}
