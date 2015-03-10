@@ -27,7 +27,7 @@
 		$$ a_n = \frac{f^{(n)}(x_0)}{n!}. $$    
 
 		The set of functions analytic on $D$ will be denoted by $C^\infty(D)$. \\		
-		For the sake of simplicity, it will w.l.o.g. be assumed that $x_0 = 0$  and $D = [0,1]$ if not stated otherwise.
+		For the sake of simplicity, it will w.l.o.g. be assumed that $x_0 = 0$ if not stated otherwise.
 		
 		Below are some properties of analytic functions
 
@@ -57,10 +57,10 @@
 		Since differentiation and anti-differentiation on analytic functions are only simple manipulations on the series, 
 		a direct consequence of Theorem \ref{theorem:computable equiv series computable polytime} is the following
 		\begin{corollary}
-			If $f$ is polynomial time computable the following functions are also polynomial time computable:
+			If $f \in C^\omega(D)$ is polynomial time computable the following functions are also polynomial time computable:
 			\begin{enumerate}
-				\item $I: [0,1] \to \RR$, $I(x) = \int_0^x f(t) dt$
-				\item $D: [0,1] \to \RR$, $D(x) = f'(x)$ 
+				\item $i: D \to \RR$, $I(x) = \int_0^x f(t) dt$
+				\item $d: D \to \RR$, $D(x) = f'(x)$ 
 			\end{enumerate}
 		\end{corollary}
 		
@@ -108,7 +108,7 @@
 	  \left | \sum_{n \geq N} a_nx^n \right | \leq A \frac{(|z|/r)^N}{1-|z|/r}
 	 \end{equation}
 	 A name as in Definition \ref{def:series_name_ball} can be found by choosing any appropriate $k$ (note that the radius of convergence is always bigger than $1$) and choosing $A$ as an upper bound of $f$ extended to $\overline{B_{\sqrt[k]{2}}(0)}$. 
-	 \begin{definition}
+	 \begin{definition}\label{def: function name ball}
 	 	A \textbf{function-name} $\rho_f$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $(f, l, B)$ such that
 		B is an upper bound of $f$ on $\overline{B_{\sqrt[l]{2}}(0)}$.
 	 \end{definition}
@@ -116,9 +116,12 @@
 	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
 	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
 	 \end{theorem}
+	 A full proof of Theorem \ref{thm:representation_conversion} can be found in \cite{Kaw}. 
+	 Some of the details that are important for the implementation are given below.
 	 \begin{proof}[Sketch]
-	 	A full proof can be found in \cite{Kaw}.  
-	 	To compute a function name from a series name it only has to be shown that evaluation...
+	 	To compute a function name from a series name it only has to be shown that the series name can be used to evaluate the function and that the two parameters can be computed.
+		
+
 
 	 	To compute a series name from a function name, one has to compute the coefficients of the series expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
 	 	In \cite{Mue} M\"uller describes an algorithm for this task.
@@ -158,15 +161,22 @@
 	 	\end{enumerate}
 	 	\begin{proof}(Sketch)
 	 		Evaluation follows from \ref{thm:representation_conversion}. \\
-	 		Except for parametric maximization the transformation of the Taylor series is obvious (e.g. for addition, just add the coefficients).
+	 		Except for parametric maximization the manipulations that have to be done on the Taylor series are straight forward (e.g. for addition, just add the coefficients).
 	 		It remains to show how to compute the new parameters $A'$ and $k'$. 
 	 	\end{proof}
 	 \end{theorem}
-	Now consider functions analytic on some other domain, e.g. on the real line $[0,1]$.
-	Such functions can be represented by a finite number of power series covering the domain. 
+
+	The above can be extended to a data type for analytic functions on arbitrary ball-shaped domains.\\
+	But of course, most domains are not ball-shaped and one would also like to represent such domains.
+	
+	One possible way to represent such functions, is to cover the domain with balls and use the representation from Definition \ref{def:series_name_ball} on each ball.
+	As an example, consider functions analytic on the real line $[-1,1]$ (this implies being analytic on a rectangle around the line $[-1,1]$ in the complex plane).
+	
+
 	 \begin{figure}
 	 	\centering
 	 	\begin{subfigure}{.45\textwidth}
+	 		\centering
 			\begin{tikzpicture}[scale=0.8]
 			    \node  at (-0.2,-0.5) {$-1$};
 			    \node  at (4.0,-0.5) {$1$};
@@ -191,7 +201,10 @@
 			    \draw [fill=red,radius = .05,color = red] (3,1.75) circle;
 			    \node [color=red] at (3,1.45) {$singularity$};
 			\end{tikzpicture}
+			\caption{For a series name the domain is covered with equally sized balls. 
+			For each ball a Taylor series around the center of the ball is given and the properties of Definition \ref{def:series_name_ball} hold.}\label{fig: analytic function representation series name}
 		\end{subfigure}
+		\centering
 	 	\begin{subfigure}{.45\textwidth}
 			\begin{tikzpicture}[scale=0.8]
 			    \draw (-1,1) rectangle (5,-1);
@@ -210,52 +223,62 @@
 			    \node [color=gray] at (.5,2) {$dom(f)$};
 			    \draw [fill=red,radius = .05,color = red] (3,1.75) circle;
 			    \node [color=red] at (3,1.45) {$singularity$};
-			    \draw [radius = 1, color = green, dotted] (2.5,0) circle;
-			    \draw [fill=green, radius = .05, color = green] (2.5,0) circle;
-			    \node [color=green] at (2.5,-.2) {$x_1$};
+			    %\draw [radius = 1, color = blue, dotted] (2.5,0) circle;
+			    %\draw [fill=blue, radius = .05, color = blue] (2.5,0) circle;
+			    %\node [color=blue] at (2.5,-.2) {$x_1$};
 			\end{tikzpicture}
+			\caption{A function name encodes a closed rectangle around $[-1,1]$ where the function is analytic and an upper bound for the function on that rectangle.}\label{fig: analytic function representation function name}
 		\end{subfigure}
-		\caption{Representations for analytic function}\label{fig: analytic function representations}
+		\caption{Representations for functions analytic on the real line $[-1,1]$}\label{fig: analytic function representations}
 	 \end{figure}
-	That leads to the following representation
 	\begin{definition}\label{def:series_name_rect}
-		A \textbf{series-name} for a function $f \in C^\omega([0,1])$ is a 5-tuple $(M, (x_m), (a_{n, j}), k, A)$ where $M \in \NN$
-		$1 \leq j \leq M$, $n \in \NN$, $x_m \in [0,1]$ and it holds
+		Let $f \in C^\omega([-1,1])$.
+		A \textbf{series-name} for $f$ is a 5-tuple $(M, (x_m), (a_{n, j}), k, A)$ where $M \in \NN$
+		$1 \leq j \leq M$, $n \in \NN$, $x_m \in [-1,1]$ and it holds
 		\begin{enumerate}
-			\item $[0,1] \subseteq \bigcup_{m=1}^M [x_m - \frac{i}{4k}, x_m + \frac{1}{4k}]$
-			\item $(a_{n,i})_{n \in \NN}$ is the series expansion of $f$ around $x_0 + \frac{i}{4k}$
+			\item $[-1,1] \subseteq \bigcup_{m=1}^M [x_m - \frac{i}{4k}, x_m + \frac{1}{4k}]$
+			\item $(a_{n,i})_{n \in \NN}$ is the series expansion of $f$ around $x_i$
 			\item $|a_{n,i}| \leq Ak^n$ for all $n \in N$, $1 \leq i \leq M$
 		\end{enumerate}
 	\end{definition}
-	A function name as in Definition \ref{def:function_name_ball} can also be defined
+	To simplify the definition the parameters $k$ and $A$ were chosen global, i.e. they hold for each of the series.
+	That means, the domain is covered by equally sized balls. 
+	Figure \ref{fig: analytic function representation series name} shows a series name with three series.
+	
+	The definition can be further simplified by requiring the series centers to be equidistantly distributed on $[-1,1]$ and thus
+	making it unnecessary to store them in the representation.
+
+	A function name as in Definition \ref{def: function name ball} can also be defined
 	\begin{definition}
-		Let $R_l := [-\frac{1}{l}, 1+frac{1}{l}] \times [-\frac{1}{l}, frac{1}{l}]$ the closed rectangle around $[-1,1]$ 
-		with distance $\frac{1}{l}$ around the line $[0,1]$.
-		A \textbf{function-name} for a function $f \in C^\omega([0,1])$ is a 3-tuple $(f|_{[-1,1]}, B, l)$ with $B, l \in \NN$ such that 
+		Let $R_l := [-\frac{1}{l}, 1+\frac{1}{l}] \times [-\frac{1}{l}, \frac{1}{l}]$ the closed rectangle with distance $\frac{1}{l}$ around $[-1,1]$ .\\
+		A \textbf{function-name} for a function $f \in C^\omega([-1,1])$ is a 3-tuple $(f|_{[-1,1]}, B, l)$ with $B, l \in \NN$ such that 
 		\begin{enumerate}
 			\item $f \in C^\omega(R_l)$
 			\item $B$ is an upper bound for $f$ on $R_l$
 		\end{enumerate}
-		Again, $l$ is coded in unary and $B$ in binary.
+		where $l$ is coded in unary and $B$ in binary.
 	\end{definition}
+	Figure \ref{fig: analytic function representation function name} visualizes the function name. 
+
 	Again it can be shown that the two representations are polynomial time equivalent, and that the equivalent to
 	Theorem \ref{thm:polytime_on_ball} holds.
 	\section{Analytic Continuation}
-		One problem with the representation in Definition \ref{def:series_name_rect} is that when thinking of this representation as an interface for a datatype, it is very cumbersome for the user to provide all the information needed. 
-		One has to give enough Taylor series to cover the whole interval.
+		One problem with the representation in Definition \ref{def:series_name_rect} is that when thinking of this representation as an interface for a data type, it is very cumbersome for the user to provide all the information needed. 
+		He would need to give an algorithm for as many Taylor series as needed to cover the interval.
+		
 		As said before, there is no real gain of information by providing all those series.
 		The analytic function is uniquely defined by the Taylor series around a single point.
 		Thus, one would like to have something like the following representation
 		\begin{definition}
-			A \textbf{single series name} for $f \in C^\omega([0,1])$ is a quadruple $(x_0, (a_n)_{n \in \NN}, k, A)$ such that
+			A \textbf{single series name} for $f \in C^\omega([-1,1])$ is a quadruple $(x_0, (a_n)_{n \in \NN}, k, A)$ such that
 			\begin{enumerate}
 				\item $(a_n)_{n \in \NN}$ is the series expansion of $x$ around $x_0$
 				\item $A$ and $k$ are such that $| a_m | \leq Ak^m$ 
 			\end{enumerate}
 		\end{definition}
-		A series name can be computed from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[0,1]$ (see Figure \ref{fig}).
+		A series name can be computed from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[-1,1]$ (see Figure \ref{fig}).
 		Since the parameters $A$ and $k$ are such that they hold on the entire rectangle, 
-		the new series will be valid on a ball with the same radius as the original series, effectly extending the domain.
+		the new series will be valid on a ball with the same radius as the original series, effectively extending the domain.
 		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
 		Note however, that iterating this process will break the polynomial time computability, as will be shown in the next
 		section.
