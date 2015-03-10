@@ -265,7 +265,7 @@
 	\section{Analytic Continuation}
 		One problem with the representation in Definition \ref{def:series_name_rect} is that when thinking of this representation as an interface for a data type, it is very cumbersome for the user to provide all the information needed. 
 		He would need to give an algorithm for as many Taylor series as needed to cover the interval.
-		
+
 		As said before, there is no real gain of information by providing all those series.
 		The analytic function is uniquely defined by the Taylor series around a single point.
 		Thus, one would like to have something like the following representation
@@ -276,9 +276,12 @@
 				\item $A$ and $k$ are such that $| a_m | \leq Ak^m$ 
 			\end{enumerate}
 		\end{definition}
-		A series name can be computed from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[-1,1]$ (see Figure \ref{fig}).
+		A series name can be computed from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[-1,1]$.
+
 		Since the parameters $A$ and $k$ are such that they hold on the entire rectangle, 
 		the new series will be valid on a ball with the same radius as the original series, effectively extending the domain.
+		This process is called \textbf{analytic continuation},
+		
 		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
 		Note however, that iterating this process will break the polynomial time computability, as will be shown in the next
 		section.
