@@ -314,10 +314,17 @@
 		The previous section gave an overview of the representations and how they can be used to yield efficient 
 		operations on analytic functions, where efficient means polynomial time computable.
 		Since for practical applications polynomial time computability is too coarse a measure for efficiency, 
-		in this section a more refined analysis on the algorithms is done, to establish time bounds in terms of $O$-notation.
-		Most of this was already done in \cite{mypaper}.
-		Of course, the overall running time will depend on the running time $T(a_m, n)$ that is needed to 
-		compute the coefficient $a_m$ with error less than $2^{-m}$.
+		in this section a more refined analysis on the algorithms is done. 
+
+		The goal is to establish time bounds in terms of the $O$-notation.
+		
+		Most of this has already been done in \cite{mypaper}, thus proofs are omitted or only sketched.
+
+		Let $T(a_m, n)$ denote the running time needed to compute the coefficient $a_m$ from the Taylor series with an error 
+		less than $2^{-n}$.
+		The running time of all operations on the Taylor series will depend on this factor.
+
+		Let further denote $\M(n)$ the time needed to multiply two $n$-bit numbers (e.g. $\M(n) = O(n\log n \log \log n)$ when using the Schoenhage-Strassen Algorithm \cite{sstr}). 		
 		\begin{theorem}
 			Given a series name of $f \in C^\omega(D)$.
 			To evaluate $f$ with error less than $2^{-n}$ 
@@ -328,25 +335,27 @@
 		\end{theorem}
 
 		\begin{theorem}
-			Computing the $m$-th coefficient of the series for the $d$-fold derivative can be done
+			The $m$-th coefficient of the $d$-times differentiated series is given by $a_m^{(d)} = a_{m+d} \prod_{i=1}^d (i+m)$.
+			
+			Computing the $m$-th coefficient of the series for the $d$-fold derivative can thus be done
 			$$ O(T(a_{m+d}, n+d\log_2(d+m)))+d\M(d \log_2 (d+m)+n)) $$
 		\end{theorem}
 
 		\begin{theorem}
-			Given a series name of $f \in C^\omega(D)$, the number of coefficients of the series of the $d-fold$ derivative computed from $f$ as in Theorem \ref{thm:polytime_on_ball} needed to evaluate this derivative, is given by 
+			Given a series name of $f \in C^\omega(D)$, the number of coefficients of the series of the $d$-fold derivative computed from $f$ as in Theorem \ref{thm:polytime_on_ball} needed to evaluate this derivative, is given by 
 			$$N_d = k\left(n+\lceil log_2(log_2 (e^4) kA \rceil+\left \lceil d\left(\log_2(d)+\log_2(\log_2(e)k+1)-\frac{1}{k}\right)\right\rceil\right).$$
 			Thus, evaluating the $d$-fold derivative of $f$ is possible in time bound by
-			$$ O(N_d\M(N)+N_d \cdot T(a_{N_d+d}, n+d\log_2(d+N_d)))+d\M(d \log_2 (d+N_d)+n) $$ 
+			$$ O(N_d\M(N_d)+N_d \cdot T(a_{N_d+d}, n+d\log_2(d+N_d)))+d\M(d \log_2 (d+N_d)+n) $$ 
 		\end{theorem}
-		For computing the $m$-th coefficient of a Taylor series around some point the $m-th$ derivative 
+		For computing the $m$-th coefficient of a Taylor series around some point the $m$-th derivative 
 		has to be divided by $m!$. This division reduces the needed precision leading to 
 		$$N_{coeff}(m) = 2k\left( n+\lceil log_2(\log_2 (e^4) kA) + m \log_2(log_2(e)k+1)\rceil \right)$$
-		as the number of coefficients that are needed to compute the $m-th$ coefficients of the Taylor series 
+		as the number of coefficients that are needed to compute the $m$-th coefficients of the Taylor series 
 		around another point. 
 		For stepwise analytic continuation it is necessary to iterate the process of differentiating.
 		For example, using the single series name when one wants to evaluate the function at a point $x$
 		that is not inside the ball of the given series, analytic continuation has to be applied until a series
-		containing $x$.
+		containing $x$ is reached.
 		Assume for a computation the coefficients up to $N$ of the last series is needed. 
 		The previous results lead to the recurrence relation
 		relation 
@@ -368,7 +377,25 @@
 			\begin{equation}
 				 O(l(N^{(l)})^2\M(N^{(l)})+N^{(l)}T(a_{N(l)}, l N^{(l)}\log_2(N^{(l)}))) 
 			\end{equation}
-		\end{theorem}
+		\end{theorem}'
+		Due to the number of parameters the running time depends on, the above bounds are quite complicated.\\
+		To get simplified bounds the following assumptions were made
+		\begin{enumerate}
+			\item $A$ and $k$ are usually very small compared to the other parameters, 
+			thus they are neglected except for the case when $k$ is in the base of an exponentiation.
+			\item The time $T(a_m, n)$ to read a coefficient of the series is neglected. 
+			Although this time has a huge impact on the overall running time, for reasonably fast sequences it 
+			the time will be dominated by the other parameters.
+		\end{enumerate}
+		This leads to the following simplified bounds
+		\begin{enumerate}
+			\item Evaluation of a series-name is possible in time $O(n\M(n))$.
+			\item Evaluation of the $d$-fold (anti-)derivative is possible in time $O((n+d)\M(n+d))$
+			\item Evaluation of the $l$ times iterated analytic continuation is possible in time $O((2k \log k)^{2l}n^2\M((2k\log k)^ln)$
+			\item The number of coefficients that have to be read from the original series to evaluate a series gained by 
+			$l$-times iterated analytic continuation is bound by $O((2\log_2(\log_2(e)+1))^l) = O(2.56^l)$
+		\end{enumerate}
+
 	\section{Implementation}
 		\irram was used as a framework to implement the ideas in the previous section.
 		The goal was to add user friendly classes for analytic functions to \irram.
