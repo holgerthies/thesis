@@ -116,14 +116,28 @@
 	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
 	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
 	 \end{theorem}
+	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
+	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
+
 	 A full proof of Theorem \ref{thm:representation_conversion} can be found in \cite{Kaw}. 
-	 Some of the details that are important for the implementation are given below.
+   Still, some of the details are given seperate theorems, because they are important for the implementation.
+
+   \begin{theorem}
+     A series name can be used to evaluate the corresponding function in polynomial time.
+     \begin{proof}
+       According to Equation \ref{eqn:tail_estimate} if the first $nk+\log A$ terms are summed up then the error 
+       $$ \left | a_j r^j \right | \leq 2^{-n} $$
+     \end{proof}
+   \end{theorem}
+
+   \begin{theorem}
+    Given a function name it is possible to compute any Taylor coefficient $a_n$ around $0$ of the function
+    in polynomial time.
+    
 	 \begin{proof}[Sketch]
-	 	To compute a function name from a series name it only has to be shown that the series name can be used to evaluate the function and that the two parameters can be computed.
-		
+	 	To compute a series name from a function name, one has to compute the coefficients of the series 
+    expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
 
-
-	 	To compute a series name from a function name, one has to compute the coefficients of the series expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
 	 	In \cite{Mue} M\"uller describes an algorithm for this task.
 	 	To approximate the coefficient $a_k$ with precision at least $2^{-n}$ $f$ is approximated by the Lagrangian interpolation
 	 	polynomial
@@ -147,8 +161,8 @@
 	 	$O((k+1)\cdot \M(n+k+\sigma) + k^2 \M (k \log k)$
 
 	 \end{proof}
-	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
-	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
+   \end{theorem}
+
 	 \begin{theorem}\label{thm:polytime_on_ball}
 	 	The following is polynomial time computable when given $\rho_s$ or $\rho_f$ names for the input functions.
 	 	\begin{enumerate}
@@ -416,14 +430,15 @@
 			\item It is possible to get the coefficients of the underlying Taylor series.
 		\end{enumerate}
 
-		There are essentially two ways to represent a power series:
+    Since a power series is an infinite object, some thought has to be put into how to represent it on a computer.
+    One can think of essentially two ways to do this:
 		\begin{enumerate}
-			\item A finite representation, i.e. at every time during the program execution, 
+			\item A finite representation, i.e. at every point of time during the execution of the program, 
 			only a finite initial segment of the power series is known. 
 			Thus, all computations are performed on polynomials. 
 			The length of the initial segment depends on the desired precision and grows 
 			with the iterations of \irram.
-			\item A functional representation, i.e. a powerseries is a function from an integer $n$ to its coefficient
+			\item A functional representation, i.e. a powerseries is a function from an integer $n$ to the coefficient
 			$a_n$ (or a pointer to such a function). If a coefficient is needed it can be simply computed by calling the function.
 		\end{enumerate}
 		
@@ -447,9 +462,9 @@
 		To prevent this, a form of caching was implemented. The coefficient function is only called the first time, when a 
 		coefficient needs to be computed and then saved to the cache. The next time the coefficient is accesed it is taken from 
 		the cache instead of calling the function again. 
+    Thus the coefficient is only recomputed when the precision is not sufficent and \irram reiterates the computation.
 
 
-		The implementation heavily uses new features introduced with the \ccx standard...
 
 	\section{Class Overview}
 		In addition to the two classes for analytic functions, several helper classes were implemented.
@@ -579,9 +594,12 @@
 		Consequently the way to measure the complexity of the other operations, is evaluating the resulting function, 
 		e.g. for measuring the complexity of addition, the sum is evaluated at some point and the running time taken.
 
-		\temp{Computer, Compiler, iRRAM version, Method of measurement etc.}
+    All the evaluations were performed using a Mac-Book Pro with a 2 GHz Intel Core i7 processor and 4GB of RAM.
+    The code was compiled using gcc version 4.9.1 and \irram version 2013 01.
+    To get a reliable estimate for the running time, all evaluation scripts were run twice and 
+    the average of the two runs denoted.
 
-		Evaluation is done seperately for both classes.
+    Below the results for both the evaluations performed on the both the \baana and the \anarect datatype are shown. 
 		\subsection{\baana}
 
 			\begin{figure}[h]
@@ -593,11 +611,24 @@
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=0.5\textwidth]{img/analytic/ba_ana_dep_on_diff_sin.png}
-				\caption{running time evaluating differentiated \baana with series for $\sin(x)$ at fixed point $x=0.8$ with different numver of desired valid decimals depending on the number of differentiation}
+				\caption{running time evaluating differentiated \baana with series for $\sin(x)$ at fixed point $x=0.8$ with different number
+        of desired valid decimals depending on the number of differentiation}
 				\label{fig:ba_ana dep on differentiation}
 			\end{figure}
-			Running time Integration, Differentiation, Coefficient computation 
-		\subsection{\anarect}
+      All operations on \baana are expected to run in polynomial time.
+      Thus, the algorithms are expected to run reasonably fast.
+
+      This could be verified in the performed tests. 
+      Figure \ref{fig:ba_ana dep on n} depicts the running time for the two functions $x \to \sin(x)$ and $x \to \frac{1}{1+x^2}$.
+      Similiar results were obtained for different functions.
+
+      Of course it's possible to compute those functions much faster, e.g. by using {\irram}'s built-in $\sin$ function.
+      However to obtain the above results no special properties of those functions were used, but only the information 
+      contained in the Taylor series and the two additional parameters.
+      Thus, the results obtained are very general and should hold for all kind of functions (as long as the complexity to compute
+      the series is similiar).
+
+      \subsection{\anarect}
 			Since most operations on the power series on \anarect and \baana are identical ‚and are therefore expected to behave similiarily, 
 			the crucial part of evaluating \baana is the evaluation using analytic continuation.
 			
