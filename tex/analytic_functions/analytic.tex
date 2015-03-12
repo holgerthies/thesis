@@ -571,6 +571,18 @@
 		Evaluation can also be realized from the \code{rep\_pi} name, but it will usually be faster 
 		to use the function if it is available.
 
+    The methods are implemented as described in Theorems \ref{thm:polytime_on_ball} and \ref{thm:representation_conversion}. 
+
+    For evaluation it is very useful to have access to {\irram}'s internal representation of the error of a \real. \\
+    The value $f(x)$ is obtained summing up a finite initial segment of the Taylor series $ \sum a_i x^n $.
+
+    The error consists of two parts, the error that is made because of the truncation (see \ref{eqn:tail_estimate}) and 
+    the error that is made because of the coefficients and $x$ only being available as finite approximations. 
+    
+    While summing up the terms in the sum, the second error type of error might become bigger than the firs type.
+    In that case, it is better to stop the summation and return a \real with a too big error, to make \irram start a new 
+    iteration with more precise approximations to the coefficients and $x$.
+   
 	\subsection{\anarect}
 		The class \anarect represents complex functions that are analytic on an interval $[a, b] \subseteq \RR$.
 		The internal representation is very similiar to the one in Definition \ref{def:series_name_rect}.
@@ -606,7 +618,6 @@
    In Line 19 the \baana object is defined from the powerseries and the parameters $A=2$ and $k=2$.\\
    This object is then differentiated two times (line 20) and then evaluated at $0.2$ (line 21). \\
    The \code{rwrite} function is used to output the resulting real number with 20 valid decimal digits.
-   
 	\section{Evaluation}
 		Due to the chosen functional approach, most operations like differentiation do by themselves not perform any time critical operations but only define a new function to compute the coefficient series of the result.
 		As long as no coefficient is accesed, this function is not called and thus no operations performed.
