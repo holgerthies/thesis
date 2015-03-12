@@ -546,7 +546,10 @@
 			Again, the implementation is mostly straight forward transformations on the power series. 
 			Since the objects that are manipulated are functions {\ccx}'s functional features come in handy and are used heavily. 		
 
-			\temp{coefficient caching}
+      This class also implements a form of caching for the power series coefficients.
+      
+      The \code{rep\_rho\_dy\_omega} class contains a \code{vector<coeff\_type>} and when ever
+      a coefficient is read, all coefficients up to this one are saved in the \code{vector} and retrieved from there when read the next time.
 
 	\subsection{\baana}
 		\textbf{\code{BA\_ANA<ARG>}} is a class template for functions analytic on a closed disc with some rational radius $r$ around $0$. 
@@ -591,7 +594,11 @@
 
 		Apart from the methods common with \baana the following exist
 		\begin{enumerate}
-			\item Constructors from 
+      \item A constructor from (a pointer to) a \powerseries, the two integers $k$ and $A$ and two {\real}s \code{left} and \code{right}
+            that give the end points of the line where the \anarect object will be defined.
+      \item A constructor from a function pointer, two \code{INTEGER}s $l$ and $B$ and \code{left} and \code{right} as above.
+      \item A method \code{get\_series\_number(int n)} that returns a pointer to the \powerseries for the $n$-th series.
+      \item The method \code{cut\_of\_at(int n, int m)} returns a \poly with the first $m$ coefficients of series $n$. 
 		\end{enumerate}
 		The constructor only takes a single \powerseries.
 		All other power series needed to cover the interval are computed from the provided one using analytic 
