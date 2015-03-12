@@ -171,12 +171,21 @@
 	 		\item Multiplication $(f_1, f_2) \to f_1 \cdot f_2$
 	 		\item $d$-fold Differentiation $(f,d) \to f^{(d)}$ where $d$ is given as unary
 	 		\item $d$-fold Anti-differentiation $(f,d) \to \int \dots \int f$ where $d$ is given in unary
-	 		\item Parametric maximization
 	 	\end{enumerate}
-	 	\begin{proof}(Sketch)
+    \begin{proof}[Sketch]
 	 		Evaluation follows from \ref{thm:representation_conversion}. \\
-	 		Except for parametric maximization the manipulations that have to be done on the Taylor series are straight forward (e.g. for addition, just add the coefficients).
-	 		It remains to show how to compute the new parameters $A'$ and $k'$. 
+	 		The manipulations that have to be done on the Taylor series are straight forward, 
+      e.g. addition can be done by just adding the coefficients of the two series.
+      
+	 		It remains to show how to compute the new parameters $A'$ and $k'$ from the parameters $A_1, A_2, k_1, k_2$. 
+      The results will just be listed here without proof.
+      \begin{enumerate}
+        \item Addition: $A' = A_1 + A_2$ and $k' = max(k_1, k_2)$.
+        \item Multiplication: $k' = 2\max(k_1, k_2)$ and $A'$ is some integer such that $A' \geq A_1 \cdot A_2 \cdot (1 + \frac{k'}{e \ln 2})$.
+        \item Differentiation: $k' = 2k$ and $A'$ is some integer such that $A' \geq \frac{A}{r} \cdot (1+\frac{2k}{e\ln 2})$.
+          Note, that the parameters do not depend on $d$.
+        \item Anti-Differentiation: $k' = k$ and $A'$ an integer such that $A' \geq A \cdot r^d$.
+      \end{enumerate}
 	 	\end{proof}
 	 \end{theorem}
 
@@ -585,8 +594,19 @@
 		For other operations, the according transformation of the first series is computed and then the 
 		other series are computed from that.    
 	\section{Usage}
-		The following \cc program gives an example how the classes can be used.
-		\lstinputlisting{code/analytic_example.cc}
+		The following \cc program gives an example how the \baana class can be used. 
+    \anarect can be used similiarily.
+    \lstinputlisting[numbers=left,stepnumber=1,firstnumber=1,numberfirstline=true,frame=L,xleftmargin=\parindent]
+    {code/analytic_example.cc}
+   The snippet defines a \baana object for the sine function.\\ 
+   Lines 5 to 15 define a function that returns with input an integer $n$ the coefficient $a_n$ of the sine series.\\
+   Instead of defining a function it is also possible to use {\ccx}'s lambda feature to define a function object. \\
+   The main part of the program happens in {\irram}'s compute function. \\
+   Line 18 defines a \powerseries object from the series function. \\
+   In Line 19 the \baana object is defined from the powerseries and the parameters $A=2$ and $k=2$.\\
+   This object is then differentiated two times (line 20) and then evaluated at $0.2$ (line 21). \\
+   The \code{rwrite} function is used to output the resulting real number with 20 valid decimal digits.
+   
 	\section{Evaluation}
 		Due to the chosen functional approach, most operations like differentiation do by themselves not perform any time critical operations but only define a new function to compute the coefficient series of the result.
 		As long as no coefficient is accesed, this function is not called and thus no operations performed.
@@ -594,6 +614,14 @@
 		Consequently the way to measure the complexity of the other operations, is evaluating the resulting function, 
 		e.g. for measuring the complexity of addition, the sum is evaluated at some point and the running time taken.
 
+    The running time was measured for different test functions, 
+ 		in particular the functions $x \to sin(x)$, $x \to \frac{1}{1+x^2}$, $x \to ln(2+x)$ and $x \to \sqrt{2+x}$. 
+
+    As the running times are very similiar for all the functions, only a few examples are included in this thesis.
+
+ 		To better understand the generated graphs, it is important to know that due to the iterative concept of the \irram,
+    the running time is not continuous in the desired output precision, but grow stepwise with the internal precision of the \irram.
+    
     All the evaluations were performed using a Mac-Book Pro with a 2 GHz Intel Core i7 processor and 4GB of RAM.
     The code was compiled using gcc version 4.9.1 and \irram version 2013 01.
     To get a reliable estimate for the running time, all evaluation scripts were run twice and 
@@ -619,7 +647,7 @@
       Thus, the algorithms are expected to run reasonably fast.
 
       This could be verified in the performed tests. 
-      Figure \ref{fig:ba_ana dep on n} depicts the running time for the two functions $x \to \sin(x)$ and $x \to \frac{1}{1+x^2}$.
+      Figure \ref{fig:ba_ana dep on n} depicts the running time for the two real-valued functions $x \to \sin(x)$ and $x \to \frac{1}{1+x^2}$.
       Similiar results were obtained for different functions.
 
       Of course it's possible to compute those functions much faster, e.g. by using {\irram}'s built-in $\sin$ function.
@@ -628,8 +656,13 @@
       Thus, the results obtained are very general and should hold for all kind of functions (as long as the complexity to compute
       the series is similiar).
 
+      \ref{fig:ba_ana dep on differentiation} shows how the running time depends on the number of differentiation. \temp{This picture is strange and should be replaced}
+
+      All in all, the running times obtained for the tested examples were very close to what was expected from the theoretical analysis, but due to the lack 
+      of similiar approaches to compute analytic functions, it is hard to say how good those results really are.
+
       \subsection{\anarect}
-			Since most operations on the power series on \anarect and \baana are identical ‚and are therefore expected to behave similiarily, 
+			Since most operations on the power series on \anarect and \baana are identical‚ and are therefore expected to behave similiarily, 
 			the crucial part of evaluating \baana is the evaluation using analytic continuation.
 			
 			In particular the following questions
@@ -641,11 +674,8 @@
 
 		From the theoretical analysis, the expected behavior is that the running time for evaluating at a fixed 
 		point is bounded by $O(n^4)$ and should grow exponentially with the number of analytic continuations.
-		The number of coefficients needed from the first series should grow similiarly. 
+		The number of coefficients needed from the original Taylor series should grow similiarly. 
 
- 		Evaluation was performed on test functions, in particular the functions $x \to sin(x)$, $x \to \frac{1}{1+x^2}$, $x \to ln(2+x)$ and $x \to \sqrt{2+x}$. 
-
- 		Due to the iterative concept of the \irram, the running time is not continuous in the desired output precision, but grow stepwise with the internal precision of the \irram.
 
 		\begin{figure}[h]
 			\centering
@@ -673,9 +703,9 @@
 			\label{fig:sin dep on n}
 		\end{figure}
 
-		\begin{figure}[h]
+		\begin{table}[h]
 			 \centering
-			\begin{subfigure}{0.48\textwidth}
+			\begin{subtable}{0.48\textwidth}
 				\centering
 			  	\begin{tabular}{|c|c|c|}
 			  	\hline
@@ -693,8 +723,8 @@
 			  	\hline
 			  	\end{tabular}
 			  	\caption{evaluating at series 1}
-		  	\end{subfigure}
-			\begin{subfigure}{0.48\textwidth}
+		  	\end{subtable}
+			\begin{subtable}{0.48\textwidth}
 				\centering
 			  	\begin{tabular}{|c|c|c|c|c|c|}
 			  	\hline
@@ -712,7 +742,7 @@
 			  	\hline
 			  	\end{tabular}
 			  	\caption{evaluating at series 3}
-		  	\end{subfigure}
+		  	\end{subtable}
           % \begin{tabular}{|c||c|c|c|c|c|}
           % \hline
           % prec & $N^{(0)}$ & $N^{(1)}$ &$N^{(2)}$ & $N^{(3)}$ & $N^{(4)}$ \\
@@ -730,7 +760,7 @@
           % \end{tabular}
 			\caption{Number of coefficients accessed in an iRRAM iteration of precision \sprec when evaluating at on the boundary of the first and third series.}
 			\label{fig:xinv coeff 0 dep on n}
-		\end{figure}
+		\end{table}
 
 		Table \ref{fig:xinv coeff 0 dep on n} shows the number $N^{(l)}$ of coeffcients accesed from the original series, when evaluated at a point where $l$ analytic continuations are necessary depending on 
 		the internal precision of \irram.
@@ -739,7 +769,7 @@
 			\centering
 			\begin{subfigure}{.45\textwidth}
 				\includegraphics[width=1.0\textwidth]{img/analytic/sin_for_n_prec_150_dep_on_series_log.png}
-				\caption{$x\sin(x)$}
+				\caption{$\sin(x)$}
 			\end{subfigure}
 			\begin{subfigure}{.45\textwidth}
 				\includegraphics[width=1.0\textwidth]{img/analytic/log_for_n_prec_150_dep_on_series_log.png}
@@ -748,8 +778,25 @@
 			\caption{log-scale plot of the running time for \anarect with 150 valid digits at the boundary of the $l$-th series.}
 			\label{fig:baana dep on series}
 		\end{figure}
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{|c||c|c|c|c|c|c|c|}
+        \hline
+        precision & series 0&series 1&series 2&series 3&series 4&series 5&series 6 \\ \hline
+        52 &1914&1039&576&325&185&104&55 \\ \hline 
+        512 &3721&2021&1121&633&361&204&109 \\ \hline
+        2300 &5978&3247&1801&1017&580&328&175 \\ \hline
+        7550 &8775 & 4766 & 2644 & 1493&851&481&257 \\ \hline
+      \end{tabular}
+      \caption{The number of coefficients read from each series depending on {\irram}'s precision. 
+    Results are for the sine function evaluated at the border of the series 6.}\label{table: coefficients dep on precision} 
+    \end{table}
+		How the running time and the number of coefficients depends on the number of analytic continuations can also be observed in Figure \ref{fig:baana dep on series} 
+    and Table \ref{table: coefficients dep on precision}.
 
-		How the running time and the number of coefficients  depends on the number of analytic continuations can also be observed in Figure \ref{fig:baana dep on series}. 
+    It can be seen that the number of coefficients read approximately doubles in each analytic continuation and thus grows 
+    a little slower than the upper bound established in the theoretical analysis.
 
-		All in all the figures are accordance with the qualitative behaviour expected from the theoretical analysis.
+		All in all the figures are very well in accordance with the qualitative behaviour expected from the analysis in the theory section.
 	\section{Applications}
