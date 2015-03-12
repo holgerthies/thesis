@@ -1,7 +1,5 @@
 #include "iRRAM.h"
 #include "Functions/Analytic/BA_ANA.h"
-#include "Functions/Analytic/ANA_RECT.h"
-
 using namespace iRRAM;
 
 REAL factorial(const int n){
