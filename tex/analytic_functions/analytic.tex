@@ -1,17 +1,31 @@
 %!TEX root = ../../thesis.tex
 	Acknowledgment: Florian, Akitoshi
 	\section{Introduction}
-		As seen in Chapter \ref{section:real_complexity} many important operators 
-		on real functions have been shown to be computationally hard.
-		On the other hand, numerical scientists can quickly compute maximums or anti-derivatives of functions.
-		To analyze this mismatch one should ask the following questions
+		In Chapter \ref{section:real_complexity} it was shown many important operators 
+		on real functions are known to be computationally hard.
+
+		On the other hand, for many of those functions, fast numerical algorithms working with 
+    floating point arithmetic exist and are often very precise and reliable.
+
+    Thus, there is a kind of mismatch between the worst case results in Computable Analysis
+    and the practice of Numerical Analysis. 
+
+    The following questions arise
 		\begin{enumerate}
-			\item What subset of real functions is usually considered in numerical analysis?
-			\item Are there implicit assumptions made about the functions, that allow faster computations? 
+			\item WHat kind of functions are important and naturally arise in numerical analysis? 
+			\item What kind of implicit assumptions are made about the functions and in what way do they allow faster computations? 
 		\end{enumerate}
-		One class of functions that has been considered in computable analysis is the analytic functions.
-		Although not at all sufficient as the class of functions considered interesting for numerical analysis, 
-		many computations become tractable when one restricts the attention to analytic functions.
+
+    Thus it might be useful to consider subsets of real functions and investigate which of the operations become feasible.
+
+		One subset of real functions that has been thoroughly studied in computable analysis are the analytic functions.
+    It could be shown that many operators that are hard in the general case become polynomial time computable when restricting 
+    to analytic functions.
+     
+    Note, however, that being analytic is a quite strong restriction on a function and that many problems in 
+    numerical analysis deal with non-analytic functions.
+
+    An analytic function is locally defined by it's Taylor series, that is
 		\begin{definition}
 			For $z \in \CC$ and $r \in \RR, r > 0$, let $B(z,r) := \{ x \in \CC \,\, | x - z | < r\}$. \\
 			A function $f: D \to \CC$ with $D \subseteq CC$ is called \textbf{analytic} if for every $x_0 \in D$ 
@@ -29,7 +43,8 @@
 		The set of functions analytic on $D$ will be denoted by $C^\infty(D)$. \\		
 		For the sake of simplicity, it will w.l.o.g. be assumed that $x_0 = 0$ if not stated otherwise.
 		
-		Below are some properties of analytic functions
+		Below are some properties of analytic functions.
+    More detailed information on analytic function can for example be found in \cite{krantz2002primer}. 
 
 		\begin{enumerate}
 			\item For $f,g \in C^\infty(D)$ the sum  $f+g$ and the product $fg$ are analytic functions.
@@ -151,7 +166,7 @@
 	 	\end{eqnarray*}
 	 	Differentiating Equation \ref{eqn:interpolation_polynomial} $k$ times yields
 	 	\begin{equation}\label{eqn:interpolation_polynomial_diff}
-	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}^{(k)}(x) 
+	 		P_m^k(0)  :=  \sum_{i=0}^{2m} f(x_i) \cdot L_{m,i}^{(k)}(0) 
 	 	\end{equation}
 	 	Let $\sigma = \lceil \log_2 B \rceil + 1$
 
@@ -160,6 +175,8 @@
 	 	then $a_k$ can be approximated by the above procedure with error less than $2^{-n}$ in 
 	 	$O((k+1)\cdot \M(n+k+\sigma) + k^2 \M (k \log k)$
 
+    The coefficients $L_{m,i}^{(k)}(0) $ in Equation \ref{eqn:interpolation_polynomial_diff} 
+    are rational numbers and can be computed by a recursion formula.
 	 \end{proof}
    \end{theorem}
 
