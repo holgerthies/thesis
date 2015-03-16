@@ -1,20 +1,26 @@
 %!TEX root = ../../thesis.tex
 \section{Introduction}
+  A dynamical system describes how the state of a system evolves with time. Formally
   \begin{definition}
     A \textbf{discrete dynamical system} is a triple $(\NN,X,\Phi)$ with $X$ a non empty set (the state space) and an operation $\Phi : \NN \times X \to X$, so that
     $\Phi(0,x) = x$ and $\Phi(n,\Phi(m,x)) = \Phi(n+m, x)$. 
-    Thus, a discrete dynamical system is the model of a system, that evolves over discrete time steps.
   \end{definition}
+  Thus, a discrete dynamical system is the model of a system, that evolves over discrete time steps.
+
   The simplest case of a discrete dynamical system, is when the state space is 1-dimensional (say $X \subseteq \RR$) and 
   the transition function only depends on the previous value, i.e. $\Phi(1,x) = f(x)$ for some $f : \RR \to \RR$. 
+  In which case it can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \RR$.
+  The set of the $x_n$ is called \textbf{orbit} of the map $f$.
 
-  In that case the dynamical system can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \RR$.
+  In this thesis only very simple examples of dynamical systems are used. A broader introduction can for example be found in \cite{katok1997introduction}.
+
   A chaotic system is a dynamical system, that is highly sensitive to initial conditions.
   A consequence of that is that even relatively small numerical errors in the computation grow exponentially fast.
-  A prototypical example of a chaotic system is the logistic map:
+
+  A prototypical example of a chaotic system is the logistic map.
   \begin{definition}\label{def:logmap}
     The \textbf{logistic map} is given by the recurrence relation 
-    $ x_{n+1} = ax_n(1-x_n) \text{ with } a, x_0 \in \RR$.
+    $ x_{n+1} = ax_n(1-x_n) \text{ with } a,\, x_0 \in \RR$.
   \end{definition} 
   \begin{table}
     \begin{tabular}{ | c | c | }
@@ -23,73 +29,115 @@
     $[0,1]$ & Stabilizes at $0$ \\ \hline
     $(1,3]$ & Stabilizes at $\frac{a-1}{r}$ \\ \hline 
     $(3, \approx 3.544]$ & oscillates between $2$, $4$, $8$, $\dots$ values. \\ \hline 
-    $(\approx 3.544, 4]$ & \begin{tabular}{l}almost all inital points no oscillation with finite period \footnote{This is true for most points in this interval. There are however isolated ranges of $a$ for which the oscillation period is finite.}  \\ Small changes in the initial point yield large differences over the iterations. \end{tabular} \\ \hline
+    $(\approx 3.544, 4]$ & \begin{tabular}{l}For almost all inital points no oscillation with finite period. \\ Small changes in the initial point yield large differences over the iterations. \end{tabular} \\ \hline
     $(4, \infty)$ & The values eventually leave the interval [0,1] and diverge for almost all initial points \\ 
     \hline
     \end{tabular}
     \caption{behaviour of iterating the logistic map for different values of the parameter $a$}\label{table:logmapbehaviour}
   \end{table}
-  \begin{figure}[H]
+  \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
     \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
     \label{fig:logmaperror1}  
   \end{figure}
-    \begin{figure}[H]
+    \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
     \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
     \label{fig:logmapprec}
   \end{figure}
-  The logistic map behaves differently for different values of the parameter $a$ as can be seen in Table \ref{table:logmapbehaviour}. 
-  The for this thesis interesting case is for $a \in (3.544, 4)$ where the iteration of the map leads to chaotic behaviour.
+  The behaviour of the logistic map depends on the parameter $a$.\\
+  Table \ref{table:logmapbehaviour} shows the behaviour for different values for this parameter.
 
-  Since the \irram framework can be used to compute iterations of the logistic map exactly, it is very well suited to invesitgate this chaotic behaviour \footnote{what could also be shown in a contest in 2000 \cite{competition:2001}}. 
+  The interesting case for this thesis is for $a \in (3.544, 4)$, because this is  where the iteration of the map leads to chaotic behaviour.
 
+  The \irram framework can be used to compute iterations of the logistic map exactly. It is therefore very well suited to invesitgate this chaotic behaviour.
+  
   Figure \ref{fig:logmaperror1} shows how sensitive the map is to small errors that occur because of finite precision computations. 
   When using 10 significant digits for the computation, it can be seen that after around 50 iterations the finite precision version diverges from the \irram version and then behaves completely differently. 
 
-  \irram can also be used to approximate the complexity in terms of needed computation precision. Since \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits, the internal precision at the end of the computation gives a measure of this complexity. As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
-  To compute 10 significant digits of the $20000$-th iterate, \irram interally computes already with precision nearly $2^{-50000}$, which is of course far from any standard floating point datatype.   
+  \irram can also be used to approximate the complexity in terms of needed computation precision. 
+  \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits.
+  Thus, the internal precision at the end of the computation gives a measure of this complexity. 
+
+  As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
+  To compute 10 significant digits of the $20000$-th iterate, \irram interally computes already with precision nearly $2^{-50000}$, which is of course far from what is possible with any standard floating point datatype.   
   \subsection{The Shadowing Lemma}
-    The term pseudo-orbit is used to describe numerically generated noisy orbits. 
+    The next section deals with the relation between exactly computed and approximately computed orbits and how much numerical orbits have to do with real orbits. 
     \begin{definition}\label{def:pseudoorbit}
-      A sequence $(x_i)$ is called an \textbf{$\alpha$-pseudo-orbit} for a map $f$ if
-      $ \| x_{i+1} - f(x_i) \| < \alpha $  
+      A sequence $(x_i)_{i \in \NN}$ is called an \textbf{$\alpha$-pseudo-orbit} for a map $f$ if for all $i \in \NN$
+      $$ \| x_{i+1} - f(x_i) \| < \alpha $$  
     \end{definition}
     One can think of a pseudo orbit as a numerically computed orbit, where small rounding errors can occur in every evaluation of $f$.
     \begin{definition}\label{def:shadowing}
-      A real orbit $(y_i)$ \textbf{$\beta$-shadows} the pseudo-orbit $(x_i)$ if 
-      $\| x_i - y_i \| < \beta$.  
+      A real orbit $(y_i)_{i \in \NN}$ \textbf{$\beta$-shadows} the pseudo-orbit $(x_i)_{i \in \NN}$ if for all $i \in \NN$
+      $$\| x_i - y_i \| < \beta.$$  
     \end{definition}
     \begin{definition}
       A dynamic system is called \textbf{uniformly hyperbolic} if ...
     \end{definition}
     For systems that are uniformly hyperbolic Anosov and Bowen could show the following result \cite{anosov1967} \cite{Bowen1975} \cite{Hasselblatt:2008}:
     \begin{theorem}[Shadowing Lemma]
-     For all $\beta > 0$ there exists an $\alpha > 0$ so that for every $\alpha$-pseudo-orbit $(x_i)$ there is a point $y_0$ so that the real orbit starting at $y_0$ $\beta$-shadows $(x_i)$.
+     Let $f: \RR \to \RR$ be a uniformly hyperbolic map.
+     Then it holds that for all $\beta > 0$ there exists an $\alpha > 0$ such that for every $\alpha$-pseudo-orbit $(x_i)_{i \in \NN}$
+     there is a point $p_0$ so that the real orbit $(y_i)_{i \in \NN}$ defined by $y_0 := p_0$ and $y_{i+1} := f(y_i)$ $\beta$-shadows $(x_i)_{i \in \NN}$.
     \end{theorem} 
-    The logistic map is not hyperbolic...\\
-    So for non-hyperbolic $f$, it can not be expected, that there is a real orbit that stays close to the pseudo orbit forever.
+    In other words, in the unformly hyperbolic case, every numerically computed orbit is close to a true orbit with a slightly changed initial point.
+
+    Unfortunately, many maps including the logistic map, are not uniformly hyperbolic. 
+
+    For non-hyperbolic $f$, it can not be expected, that there is a real orbit that stays close to the pseudo orbit forever.
     Instead, there will be an orbit staying close to $(x_i)$ for some time, say up to some point $n_0$, and then starting to diverge. 
+
     The goal of this the case study is to investigate such orbits, in particular to find out how long there is an orbit staying close to the pseudo orbit,
     The basis for this case study is a paper by Hammel, Yorke and Grebogi from 1987 \cite{Hammel1987}.
     The paper deals with the question, how long numerical orbits of the logitstic map can be shadowed by true orbits.
-    The authors show that for $a = 3.8$ and $x_0 = 0.4$, there is a true orbit $(y_n)$ of the logistic map, so that $\| x_n - y_n \| < 10^{-7}$ for $n \leq 10^7$.
-    Their proof method is to compute bounds on the points of the true orbit by using a form of interval arithmetic and letting a computer do the computations. 
-    All their computations are done on a Cray X-MP supercomputer. 
-    For the case study, first their algorithm was implemented on a modern computer in the \cc programming language, both using fixed precision floating point numbers and \irram. 
+
+    The authors show that for $a = 3.8$ and $x_0 = 0.4$, there is a true orbit $(y_i)_{i \in \NN}$ of the logistic map, so that $\| x_n - y_n \| < 10^{-7}$ for $n \leq 10^7$.
+
+    Their proof method is to compute bounds on the points of the true orbit with a computer by using a form of interval arithmetics. 
+    All their computations were done on a Cray X-MP supercomputer. 
+
+    For the case study, first their algorithm was implemented on a modern
+    computer in the \cc programming language, both using fixed precision
+    floating point numbers and \irram. 
+
     As a second step \irram was used to compute the shadowing orbit exactly.
-  \subsection{Backward Algorithm}
-    The goal of the algorithm is to compute a shadowing orbit $(y_n)$ of size $N$ for a pseudo orbit $(x_n)$ of the logistic map $f$.
+  \subsection{The Algorithm}
+    In their paper Hammel, Yorke and Grebogi give an algorithm to compute a
+    shadowing orbit $(y_i)_{i \in \NN}$ of size $N$ for a given pseudo orbit
+    $(x_n)_{n \in \NN}$ of the logistic map $f$.
+
     Instead of computing the shadowing orbit from the first point, the algorithm computes the inverse orbit by starting with the last point and then iteratively computing the predecessor. 
     Since the logistic map is not injective, there is not a unique choice for this predecessor. 
-    For some point $f(x)$ there are normally two possible values for the inverse given by $f^{-1}_{1,2}(x) = 0.5 \pm \sqrt{0.25 + \frac{x}{a}} $.
-    An orbit can be computed by setting $y_N = x_N$ and then iteratively applying one of the inverse map $y_{n-1} = f^{-1}(y_n)$.   To stay close to the pseudo orbit, in every step the point on the same side of $0.5$ as $x_n$ is chosen (the index of $f^{-1}$ will from now on be omitted). 
-    This works since the inverse function on $(0,1)$ is a contraction, thus
-    $$ \| x_{n-1} - y_{n-1} \| = \| x_{n-1} - f^{-1}(y_n) \| \leq \| f^{-1}(x_n) - f^{-1}{y_n} \| + \| f^{-1}(x_n) - x_{n-1} \| \leq \| x_n - y_n \| + \delta $$   
-    Since the original work had to do all the computations using floating point arithmetics, the inverse could not be computed exactly.
-    Instead of the points $y_n$, a sequence of intervals $(I_n)$ that bound the location of $y_n$ is computed, i.e. so that $y_n \in I_n \text{ for } 0 \leq n \leq N$.
+
+    For some point $f(x)$ there are normally two possible values for the
+    inverse given by $$f^{-1}_{1,2}(x) = 0.5 \pm \sqrt{0.25 + \frac{x}{a}} $$
+
+    An orbit can be computed by setting $y_N = x_N$ and then iteratively
+    applying one of the inverse map $y_{n-1} = f^{-1}(y_n)$.  
+
+    To stay close to the pseudo orbit, in every step the point on the same side
+    of $0.5$ as $x_n$ is chosen.
+    This function will just be denoted by $f^{-1}$ when the choice of index is
+    obvious.
+    
+    The backward procedure will give an orbit close to the pseudo-orbit since the
+    inverse function on $(0,1)$ is a contraction, thus 
+    $$ \| x_{n-1} - y_{n-1} \| = \| x_{n-1} - f^{-1}(y_n) \| \leq \|
+    f^{-1}(x_n) - f^{-1}{y_n} \| + \| f^{-1}(x_n) - x_{n-1} \| \leq \| x_n -
+    y_n \| + \delta $$   
+    Of course, using only floating point arithmetics, the inverse can not be
+    computed exactly and thus the shadowing orbit can not be computed.
+
+    Instead of computing the orbit, an error bound can be computed using
+    interval arithmetics. 
+    
+    That is, a sequence of intervals $(I_n)_{0 \leq n \leq N}$ giving upper on
+    lower bounds for $y_n$ is computed. 
+    That is such that $y_n \in I_n \text{ for } 0 \leq n \leq N$.
+
     The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is selected so that $I_n \subseteq f(I_{n-1})$ holds and $I_n$ is chosen as small as possible. 
     Then the maximal distance between all points in $I_n$ and $x_n$ is computed.
     This gives a shadowing bound.
