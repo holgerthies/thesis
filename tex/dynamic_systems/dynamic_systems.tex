@@ -124,79 +124,139 @@
     obvious.
     
     The backward procedure will give an orbit close to the pseudo-orbit since the
-    inverse function on $(0,1)$ is a contraction, thus 
+    inverse function on $(0,1)$ is a contraction, i.e. $\| f^{-1}(x) -
+    f^{-1}(y) \| \leq |x-y|$. 
+
+    Let $\delta$ be the rounding error made when numerically computing
+    $f(x_n)$.
+    Then it holds $\|f^{-1}(x_n)\| = \| f^{-1}(f(x_{n-1})+\delta)\| \leq \|f(x_n)\| +
+    \varepsilon$ for some small $\varepsilon$.   
+    This leads to
     $$ \| x_{n-1} - y_{n-1} \| = \| x_{n-1} - f^{-1}(y_n) \| \leq \|
-    f^{-1}(x_n) - f^{-1}{y_n} \| + \| f^{-1}(x_n) - x_{n-1} \| \leq \| x_n -
-    y_n \| + \delta $$   
+    f^{-1}(x_n) - f^{-1}(y_n) \| + \| f^{-1}(x_n) - x_{n-1} \| \leq \| x_n -
+    y_n \| + \varepsilon $$   
+
     Of course, using only floating point arithmetics, the inverse can not be
     computed exactly and thus the shadowing orbit can not be computed.
 
     Instead of computing the orbit, an error bound can be computed using
     interval arithmetics. 
-    
-    That is, a sequence of intervals $(I_n)_{0 \leq n \leq N}$ giving upper on
-    lower bounds for $y_n$ is computed. 
-    That is such that $y_n \in I_n \text{ for } 0 \leq n \leq N$.
+    That is, a sequence of intervals $(I_n)_{0 \leq n \leq N}$ giving upper and
+    lower bounds for $y_n$ is computed, i.e Intervals $I_n$ such that
+    $$y_n \in I_n \text{ for } 0 \leq n \leq N.$$
 
-    The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is selected so that $I_n \subseteq f(I_{n-1})$ holds and $I_n$ is chosen as small as possible. 
-    Then the maximal distance between all points in $I_n$ and $x_n$ is computed.
-    This gives a shadowing bound.
-    \subsection{Forward Algorithm}
-    An alternative to the algorithm descriped above can be found in \cite{chow1991}.
-    Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
-    They define the two quantities
-    \begin{eqnarray*}
-    \sigma & = & \sup^N_{n=0} \sum_{m=n}^N  \prod_{j=n}^{m} | Df(y_j)^{-1} |  \\
-    \tau & = & \sup^N_{n=0} | \sum_{m=n}^N (y_{m+1}-f(y_m)\prod_{j=n}^{m} Df(y_j)^{-1}  |
-    \end{eqnarray*}
-    and show the following theorem:
-    \begin{theorem}
-    Let $f: [0,1] \to [0,1] \in C^2$ and $M = sup \{|D^2f(x)| \,:\, x \in [0,1] \}$.
-    For a pseudo orbit $(y_n)_{n=0}^{N+1}$ with $2M\sigma\tau \leq 1$, there is an exact orbit $(x_n)_{n=0}^N$  with 
-    $$sup_{n=0}^N |x_n - y_n| \in [\frac{tau}{1+0.5(1+\sqrt{1-2M\sigma \tau})}, \frac{2\tau}{1+\sqrt {1-2M\sigma \tau}}]$$
-    \end{theorem}
-    Then they derive the following esitmations for $\sigma$ and $\tau$:
-    The procedure to determine how closely a given pseudo orbit $(y_n)$ is shadowed by a true orbit is then given as follows:
-    \begin{enumerate}
-      \item Find upper bounds for $M$, $\delta$ and $\Delta$.
-      \item Compute 
-      \begin{eqnarray*}
-      \mu_p &=& \sup_{n=0}^{N-p} \prod_{m=n}^{n+p} |Df(y_m)^-1| \\
-      \sigma_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
-      \tau_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
-      \end{eqnarray*}
-    \end{enumerate}
+    The procedure is started with $I_N := [x_n, x_n]$ and then $I_{n-1}$ is
+    selected so that $I_n \subseteq f(I_{n-1})$ holds.\\
+    In each step, $I_n$ is chosen as small as possible. 
+
+    If at some point $x_n < \frac{a}{4}$ the inverse in not defined and the
+    procedure fails.
+    
+    In the other case, an upper bound on the maximal distance between all points in
+    $I_n := [l_n, r_n]$ and $x_n$ is computed.
+
+    That is
+    $$ \delta = \max_{0 \leq n \leq N} \min(|x_n-l_i|,\, |x_n - r_i|)$$
+    gives a shadowing bound.
+%    \subsection{Forward Algorithm}
+%    An alternative to the algorithm descriped above can be found in \cite{chow1991}.
+%    Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
+%    They define the two quantities
+%    \begin{eqnarray*}
+%    \sigma & = & \sup^N_{n=0} \sum_{m=n}^N  \prod_{j=n}^{m} | Df(y_j)^{-1} |  \\
+%    \tau & = & \sup^N_{n=0} | \sum_{m=n}^N (y_{m+1}-f(y_m)\prod_{j=n}^{m} Df(y_j)^{-1}  |
+%    \end{eqnarray*}
+%    and show the following theorem:
+%    \begin{theorem}
+%    Let $f: [0,1] \to [0,1] \in C^2$ and $M = sup \{|D^2f(x)| \,:\, x \in [0,1] \}$.
+%    For a pseudo orbit $(y_n)_{n=0}^{N+1}$ with $2M\sigma\tau \leq 1$, there is an exact orbit $(x_n)_{n=0}^N$  with 
+%    $$sup_{n=0}^N |x_n - y_n| \in [\frac{tau}{1+0.5(1+\sqrt{1-2M\sigma \tau})}, \frac{2\tau}{1+\sqrt {1-2M\sigma \tau}}]$$
+%    \end{theorem}
+%    Then they derive the following esitmations for $\sigma$ and $\tau$:
+%    The procedure to determine how closely a given pseudo orbit $(y_n)$ is shadowed by a true orbit is then given as follows:
+%    \begin{enumerate}
+%      \item Find upper bounds for $M$, $\delta$ and $\Delta$.
+%      \item Compute 
+%      \begin{eqnarray*}
+%      \mu_p &=& \sup_{n=0}^{N-p} \prod_{m=n}^{n+p} |Df(y_m)^-1| \\
+%      \sigma_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
+%      \tau_p &=& \sup_{n=0}{N} \sum_{m=n}^{min(n+p,N)} \prod_{j=n}^{m} |Df(y_j)^-1| \\
+%      \end{eqnarray*}
+%    \end{enumerate}
 \section{Implementation}
-  The first part of the case study was to simulate the computations that were made on the Cray X-MP supercomputer on a modern computer. 
-  The cray double precision data type used for the computations in the paper has machine epsilon $\varepsilon_\mu = 2^{-95}$.
-  To compute the intervals $I_n$ from $I_{n+1}$ the inverse of the interval is computed as described above (using floating point arithmetic).
-  Then as long as $I_{n+1} \not \subseteq f(I_n)$, $I_n$ is enlarged on both sides by the minimal possible quantity $\varepsilon_\mu$. 
-  Since also the computation of $f(I_n)$ is done using floating point arithmetics, the condition might still not be fulfilled.
-  This can, however, be compensated by further enlargening the interval on both sides by the constant $10^{-25}$.
-  Since the precision of the clay double data type differs from the IEEE double precision, it was not possible using \cc's built in data types for simulating the algorithm.
-  Instead, the boost multiprecision library \cite{boostmultiprecision} was used. 
-  The library provides data types that replace the native \cc floating point types, but with a user defined precision. 
-  For the interval arithmetic an interval class was implemented, having the following methods:\\
-  CLASS DIAGRAM \\
-  The same algorithm was also implemented in a different way. 
-  Instead of using intervals with fixed precision floating point end points, \irram's \code{INTERVAL} type can be used. 
-  The data type provides interval arithmetic for intervals with real numbered end points.
-  Then, the inverse of an interval can be computed exactly.
+  Several versions of the above algorithm were implemented.
+
+  The first one a reimplementation of the original interval arithmetic version
+  on a modern computer.
   
-  Instead of computing only an upper bound to the shadowing bound \irram can also be used to compute the exact shadowing orbit. 
-  To do that, one has to compute the pseudo orbit by computing an orbit using floating point arithmetic of a certain fixed precision.
+  Since the Cray-MP's floating point data types had different sizes than the
+  standard types in modern programmming languages, to get similiar results as
+  in the original work,  The cray double precision data type had to be
+  simulated using software implementations.
+  
+  For the \cc implementation, the boost multiprecision library \cite{boostmultiprecision} was used. 
+  The library provides data types that replace the native \cc floating point types, but with a user defined precision. 
+ 
+  The clay double data type used for the computations in the paper has machine epsilon
+  $\varepsilon_\mu = 2^{-95}$.
+
+  To compute the intervals $I_n$ from $I_{n+1}$ the inverse of the interval is
+  computed as described above, 
+  As long as the condition 
+  \begin{equation}\label{eqn:nesting condition}  
+    I_{n+1} \subseteq f(I_n) 
+  \end{equation}
+  is not fulfilled, $I_n$ is enlarged on both sides by the minimal possible quantity $\varepsilon_\mu$. 
+
+  Since both the computation of $f(I_n)$ and $f^{-1}(I_n)$ are done using
+  floating point arithmetics, this is however not enough to guarantee the condition
+  \ref{eqn:nesting condition}.
+  
+  Further enlargening the interval on both sides by the constant $10^{-25}$
+  takes care of this problem,
+  
+  For the interval arithmetic a simple interval class template
+  \code{fixed\_precision\_interval<prec>} was written to represent
+  intervals of the form $[a,b]$ with $a$ and $b$ multiprecision floating point
+  numbers with \code{prec} bits precision. 
+  All needed operations on intervals were implemented for this class, making
+  the implementation of the algorithm straight forward.
+
+  Instead of only implementing the algorithm in the original form, generic
+  types where used such that different floating point precisions could be
+  tried.
+
+  The second implementation made is very similiar to the first one but instead
+  of using intervals with fixed precision floating point end points, \irram's
+  \code{INTERVAL} type was used.
+  The data type provides interval arithmetic for intervals with real numbered end points. 
+  The above algorithm can therefore be implemented by first computing a pseudo
+  orbit using floating point arithmetics and then computing the inverse of a
+  small interval around the last point exactly.
+
+  The last implementation uses \irram to compute a shadowing orbit exactly.
+
+  Again, a pseudo orbit is computed by using floating point arithmetic in the
+  iterations of the logistic map.
+
   Then, starting with the last point of the pseudo orbit the inverses can be computed exactly until the initial point is reached.
-  Then the distance of this real orbit and the pseudo orbit can be computed and the maximum of all those distances taken to find the shadowing distance.
-  The \irram code to compute the exact orbit is extremely simple.
-  For finding the shadowing bound, however, one has to be a little more careful, since the maximum of two real numbers is not computable and can lead to infinite recursion in \irram. 
-  Since there only had to be found a qualitative behavior of the shadowing bound depending on the various parameters instead of finding the exact distance as a real number, it does not really matter if the maximum distance was chosen or only a number that is close enough to the maximum, so that it does not matter for the analysis. 
-  \irram's support for multivalued functions yields an easy solution to this problem: 
-  The maximum computation may be wrong, when two numbers are very close to each other (their distance is orders of magnitude lower than the result we expect). 
-  This program will always terminate and give a very accurate approximation to the shadowing distance.  
+  In the end, the distance of this real orbit and the pseudo orbit can be computed and the maximum of all those distances taken to find the shadowing distance.
+
+  One advantage of the last approach is, that the \irram code to compute the exact orbit is extremely simple. 
+  Since all operations can be performed exactly there is no need for intervals
+  or other complicated structures but the data type real takes care of
+  everything.
+
+  The implementation uses again generic types, to make it possible to compute
+  the shadowing distance for various different floating point precisions.
 \section{Evaluation}
   \subsection{Breakdown points}
-  Since the inverse of the logistic map is only defined for points $x < \frac{a}{4}$, the above procedure fails, if at some point $i$ $x_i > \frac{a}{4}$. The first $N$ for that such an $i$ exists, is called the breakdown point.
-  The breakdown point depends on the precision that are used to compute the pseudo orbit. 
+  As mentioned above, the algorithm only works when at each step $x_i \leq
+  \frac{a}{4}.$ 
+  If the algorithm fails, the first $N$ for that there is some $i$ such that
+  $x_i > a_i$ is called the breakdown point.
+
+  The breakdown point depends on the precision that is used to compute the pseudo orbit. 
   \subsection{Shadowing bound and computation precision}
   The original work also deals with the question, how the computation precision is related to the shadowing bound. 
   Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed. Instead, the noise was artificially increased by setting $x_{n+1} = ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the shadowing distance in relation to $\delta_p$ measured.
@@ -223,6 +283,3 @@
   The results obtained by the \irram version and the version working with fixed precision interval arithmetic were nearly identical. 
 
 
-  Shadowing bound for different parameters
-  Breaking point for different precisions
-  Real orbit?
