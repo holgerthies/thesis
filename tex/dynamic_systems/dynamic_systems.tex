@@ -259,8 +259,16 @@
   The breakdown point depends on the precision that is used to compute the pseudo orbit. 
   \subsection{Shadowing bound and computation precision}
   The original work also deals with the question, how the computation precision is related to the shadowing bound. 
-  Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed. Instead, the noise was artificially increased by setting $x_{n+1} = ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the shadowing distance in relation to $\delta_p$ measured.
-  However, using the boost multiprecision library's \code{cpp\_bin\_float} data type, an arbitrary number of binary digits can be used for the precision.
+
+  The same was done here, but the used method is slightly different.
+  Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed.
+  Instead, the noise was artificially increased by setting $x_{n+1} =
+  ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the
+  shadowing distance in relation to $\delta_p$ measured.  
+  
+  However, using the boost multiprecision library's \code{cpp\_bin\_float} data
+  type, it is easy to change the number of binary digits of the used floating
+  point data type, instead of artificially increasing the noise.
 
   \begin{figure}[H]
     \centering
@@ -278,8 +286,18 @@
     \label{fig:shadowingdistance1}
   \end{figure}
 
-  The shadowing distance was computed for several different parameters $a$ and starting points $p_0$. THe number of iterations $N$ were also varied. 
-  The result can be seen in Figure \ref{fig:shadowingdistance1}. A complete table of all the starting values and parameters can be found in the Appendix. Hammel, Yorke and Grebogi conjecture that for $2M$-digit accuracy, that the orbit stays close to $10^{-M}$ for around $10^M$ iterates. As can be seen in the graph, for up to $10^7$ iterates the conjecture holds for all the tested values.
-  The results obtained by the \irram version and the version working with fixed precision interval arithmetic were nearly identical. 
+  The shadowing distance was computed for several different parameters $a$ and starting points $p_0$. 
+  The number of iterations $N$ were also varied. 
 
+  The result can be seen in Figure \ref{fig:shadowingdistance1}. 
+  
+  The tests were made with all versions of the algorithm described above.
+  The results obtained from the different versions were nearly identical, thus
+  only the \irram version is depicted.
+  %A complete table of all the starting values and parameters can be found in
+  %the Appendix. 
 
+  In the original paper it is conjectured that for $2M$-digit
+  accuracy, that the orbit stays close to $10^{-M}$ for around $10^M$ iterates.
+
+  As can be seen in the graph, for up to $10^7$ iterates the conjecture holds. 
