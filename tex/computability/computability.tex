@@ -2,7 +2,8 @@
 \section{Real Computability Theory}\label{sec:real computability}
 \subsection{Classical Computability Theory}
  Since in real computability theory many aspects of classical computability theory are extended, 
- a very brief overview is given in the following section.
+ a very brief overview is given in the following section. 
+ A detailed introduction can for example be found in \cite{computability}
 
  To define computability the Turing-Machine model is used.
  The Turing-Machine was invented by Alan Turing in 1936 \cite{Turing} and can
@@ -31,10 +32,10 @@
  simulate every computer algorithm.
  The widely believed \textbf{Church-Turing thesis} even states, that anything
  that is computable in an informal sense, can be computed with a
- Turing=machine.
+ Turing-machine.
 
- The following definitions for sets also play a very important role in
- computability theory:
+ Aoart from the computability notion for functions, there are also the
+following notions on sets:
  \begin{definition}
  	A set $A \subseteq \Sigma^*$ is called \textbf{decidable}, if its characteristic function is computable. 
  \end{definition}
@@ -43,35 +44,58 @@
  	it is empty or if $A$ is the domain of a computable function.   
  \end{definition}
 \subsection{Computability of real numbers}
-The previous section showed how to define computability over finite alphabets $\Sigma^* \to \Sigma^*$. 
-That is enough to define computability for finite structures. The following section defines how to extend 
-the classical notion to uncountable objects such as real or complex numbers, functions or infinite sequences.
+The previous section showed how to define computability for functions over finite alphabets $\Sigma^* \to \Sigma^*$. 
+That is enough to define computability for finite structures, but does not
+suffice to make any statements on real numbers.
+
+The following section defines how to extend the classical notion to uncountable
+objects such as real or complex numbers, functions or infinite sequences.
+
 There are several non equivalent ways, to define computability on such objects. 
-In contrast to the classical case, where the definition given in the previous section is widely accepted, there is no 
+In contrast to the classical case, where the definition using Turing-machines is widely accepted, there is no 
 generally accepted model for real complexity theory.
 
-The model used in this thesis is the so called \textbf{Type 2 Theory of Effectivity} (TTE). 
-Because... 
+One possible model is the so called \textbf{Type 2 Theory of Effectivity}
+(TTE). \cite{Weihrauch} 
+This model aims to realistically model what is possible to compute with a
+computer and is useful in the analysis of the algorithms that will follow
+later.
+It is therefore the sole model used in this thesis. 
 
-This section gives an overview of the framework used to define computability on real numbers and is therefore 
-a little more general then needed in the rest of the thesis, that focuses more on implementations of subsets of this framework.
-However,...
-
-The general definition is by Type-2 Turing Machines...
-From now on the term Turing-Machine is used both for classical and type 2 machines, when it is clear by context which model is meant.
+TTE extends the Turing-Machine model to so called type-2 Turing-machines, that
+can work on infinite strings $s \in \Sigma^w$. 
+\begin{definition}
+A type-2 Turing-machine is a multi-tape Turing-machine with two special tapes,
+an \textbf{input tape} and an \textbf{output tape}, and at least one working
+tape. 
+The input tape is read-only, i.e. it is not possible to change a cell on the
+tape. Further, the head on both input and output tape can not be moved to the
+left. In particular it is not possible to change a symbol that has been written
+on the output tape once. 
+\end{defintion}
+From now on the term Turing-Machine is used both for classical and type 2
+machines, when it is obvious by context which model is meant.
 \begin{definition}\label{def:computability_ttt}
 A function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ is called computable if there is a Turing-Machine  
-that for all infinite strings $\sigma in dom(F)$ writes the infinite string $F(\sigma)$ on its output tape. 
+that for each infinite strings $\sigma in dom(F)$ on its input tape, writes the infinite string $F(\sigma)$ on its output tape. 
 For $\sigma \not \in dom(f)$ the machine writes only finitely many symbols on the output tape.  
 \end{definition}
-To talk about computability over some set, the notion of encoding this set to $\sigma^\omega$ has to be formalized.
+To talk about computability over some arbitrary set, it has to be encoded to
+$\sigma^\omega$. 
+This encoding is formalized in the term representation.
 \begin{definition}\label{def:representation}
 	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
 	$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. \\
 	$x \in X$ is \textbf{$\alpha$-computable} if it has a decidable $\alpha$-name.
 \end{definition}
 
-Of course, the definition of representations is open wide and can lead to many different more or less useful definitions of computability.
+In contrast to the countable case, where a canonical encoding is obvious in most
+cases, finding a good representation is more challenging in the uncountable
+case.
+Different representations can lead to a different computability notion.
+Thus it is important to find a representation that leads to a useful and
+realistic notion of computability.
+
 Some possible representations for real numbers are as follows
 \begin{enumerate}
 \item A $\rho_{10}$-name of $x$ is the usual decimal expansion of $x$.
@@ -81,18 +105,42 @@ $| x_n - q_n | < \varepsilon_n$ and $\lim_{n \to \infty} \varepsilon_n = 0$
 \item $\rho_<$-name, $\rho_>$-name
 \item $\rho_n$-name 
 \end{enumerate}
+Some of the above notions lead to an equivalent definition of a computable real
+numbers, but others do not.
+
+In particular the following are equivalent
 \begin{theorem}
-The following are equivalent
-\item $x \in \RR$ is computable in the sense of Definiton 
-\item $x \in \RR$ is $\rho_{10}$ computable
-\item $x \in \RR$ is $\rho$-computable
+\begin{enumerate}
+  \item $x \in \RR$ is computable in the sense of Definiton 
+  \item $x \in \RR$ is $\rho_{10}$ computable
+  \item $x \in \RR$ is $\rho$-computable
+\end{enumerate}
 \end{theorem}
+A real number is called \textbf{computable} if it is computable in the sense of one of
+those defintiions.
+
+It can easily be seen that there must be non=computable reals, since the number
+of reals is uncountable, while the number of type-2 Turing-machines is
+countable.
+
+The following gives an explicit construction for a non-computable real number
 \begin{example}
-Specker-Sequence
+Let $A \subseteq \NN$ be any recursively enumerable, but not decidable subset
+of the natural numbers.
+Define the real number $x$ by
+$$ x := \sum_{n \in A} 2^{-n}. $$
+Note, that this is well defined since the series of partial sums is strictly
+increasing and bounded by $2$.
+
+However, $x$ can not be computable since otherwise it would yield a decision
+procedure for $A$. 
+\end{example}
+A sequence as the above, that is computable, monotonic, bounded and consists
+only of rational numbers, but has a non-computable supremum is called \textbf{Specker-sequence}.
+
 \begin{definition}\label{def:representation_composition}
 Composition of representations
 \end{definition}
-\end{example}
 This thesis does not deal with the problem of computing single real numbers, but rather with computing real functions and real functionals.
 For a function $f:\subseteq \RR \to \RR$ to be computable means, that is it possible to compute $f(x)$ arbitrarily good. 
 Also a machine can not read $x$ with infinite precision, but it can ask to get $x$ as exact as it needs it to compute the output.
