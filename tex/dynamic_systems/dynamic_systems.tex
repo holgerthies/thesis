@@ -257,10 +257,7 @@
   $x_i > a_i$ is called the breakdown point.
 
   The breakdown point depends on the precision that is used to compute the pseudo orbit. 
-  \subsection{Shadowing bound and computation precision}
-  The original work also deals with the question, how the computation precision is related to the shadowing bound. 
 
-  The same was done here, but the used method is slightly different.
   Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed.
   Instead, the noise was artificially increased by setting $x_{n+1} =
   ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the
@@ -270,7 +267,17 @@
   type, it is easy to change the number of binary digits of the used floating
   point data type, instead of artificially increasing the noise.
 
-  \begin{figure}[H]
+  
+
+  \subsection{Shadowing bound and computation precision}
+  The original paper also deals with the question, how close a pseudo-orbit is
+  shadowed depending on the computation precision. The same was also done for
+  the different implementations in this thesis.
+
+  Again, instead of artificially generating noise, the precision of the
+  floating point type was changed.
+
+  begin{figure}[H]
     \centering
     \begin{subfigure}{.45\textwidth}
       \centering
