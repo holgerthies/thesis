@@ -141,24 +141,59 @@ only of rational numbers, but has a non-computable supremum is called \textbf{Sp
 \begin{definition}\label{def:representation_composition}
 Composition of representations
 \end{definition}
-This thesis does not deal with the problem of computing single real numbers, but rather with computing real functions and real functionals.
-For a function $f:\subseteq \RR \to \RR$ to be computable means, that is it possible to compute $f(x)$ arbitrarily good. 
-Also a machine can not read $x$ with infinite precision, but it can ask to get $x$ as exact as it needs it to compute the output.
+More interesting than just computing single real numbers is computing real
+functions or even functionals.
+
+For a real valued function $f$ in general input $x$ as well as
+output $f(x)$ are infinite. 
+Thus, it is not possible to read the entire input or write the entire output in
+finite time.
+
+Instead, for a function $f: \RR \to \RR$ to be called computable, it is
+demanded that the machine can approximate the output arbitrary well.
+To do that, it can ask for arbitrary well approximations of the input $x$.
+An easy way to formalize this concept is the use of oracle Turing-Machines.
 \begin{definition}\label{def:computability_oracle_tm}
+ An \textbf{oracle Turing-machine} is a Turing-Machine $M$ with one extra special
+ tape, the \textbf{query tape}. The machine can be connected to an oracle
+ function.
+ If $M$ is connected to the function $\Phi$ it is written as $M^\Phi$. 
+ The machine behaves like a usual (type-1) Turing-machine, but has two special
+ states, the \textbf{query state} and the \textbf{response state}. 
+ When the machine enters the query state, the following happens in one time
+ step: 
+ \begin{itemize}
+    \item The string $x$ on the query tape is replaced by the string $\Phi(x)$
+    \item The machine goes into the answer state
+    \item The head of the query tape is moved on top of the first symbol of the
+      oracle's anwer
+  \end{itemize}
+
+ A real function $f: \RR \to \RR$ is called computable if there is an oracle
+ Turing-machine $M$, such that $M^\Phi$ computes at input $n \in \NN$ a dyadic rational
+ number $d \in \DD$ such that $| f(x) - d | \leq 2^{-n}$ for each oracle function
+ $\Phi: \NN \to \DD$ such that for all $m \in \NN$ $|\Phi(m) - x| \leq 2^{-m}$.   
 \end{definition}
-This concept can be generalized by the following definiton  
+A more general definition can be achieved by using representations and type-2
+Turing Machines.
 \begin{definition}\label{def:computability_function_representation}
 	A function $f: \subseteq X \to Y$ is called \textbf{$(\alpha, \beta)$}-computable, 
 	if there exists a computable function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ such that 
 	$\beta(F(\sigma)) \in f(\alpha(\sigma))$ for all $\sigma \in dom(f \circ \alpha) $.  
 \end{definition}
 The Diagram in ... shows computability.
-Examples...
+
+The choice of representation is crucial when defining computability, as the
+following theorem shows.
 \begin{theorem}
 Multiplication is not $(\rho_{10}, \rho_{10})$-computable.
 \end{theorem}
-From now on the term computable will be used to describe computability w.r.t. the Cauchy representation.
-Then all of the following functions are computable
+Thus, the decimal expansion does not seem to be useful to define computable
+real functions.
+The same holds for any other base $b$.
+
+With respect to the Cauchy representation, however, all of the following become
+computable
 \begin{enumerate}
 \item Arithmetical operations $+,-,x,/ : \subseteq \RR^2 \to \RR$
 \item The absolute value function
@@ -166,11 +201,17 @@ Then all of the following functions are computable
 \item constant functions with computable constant
 \item Projections $\RR^k \to \RR$ 
 \item polynomials with computable coefficients
-\item $exp, sin, cos$
+\item The functions $\exp, \sin, \cos$
 \item The square-root function and the logarithm function
 \end{enumerate}
+Thus, the Cauchy representation is used as the standard representation to
+define computability, and the term computable function will be used for
+functions computable with respect to the Cauchy representation.
+
+The following theorem shows, that many important functions are not computable. 
+A proof can for example be found in \cite{Wei}.
 \begin{theorem}
-	Computable functions are continuous...
+  Every computable function $f: \RR \to \RR$ is continuous.
 \end{theorem}
 
 \begin{theorem}
