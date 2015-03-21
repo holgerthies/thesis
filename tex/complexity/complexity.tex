@@ -45,7 +45,7 @@
 			The complexity classes $P, NP, PSPACE$ and $EXPTIME$ are defined as follows:
 			\begin{eqnarray*}
 				P & := & \bigcup_{k \in N} DTIME(n^k) \\
-				NP & := & \\bigcup_{k \in N} NTIME(n^k) \\
+				NP & := & \bigcup_{k \in N} NTIME(n^k) \\
 				PSPACE & := & \bigcup_{n \in N} DSPACE(n^k) \\
 				EXPTIME & := & \bigcup_{k \in N} DTIME(2^{n^k}) \\
 			\end{eqnarray*}
@@ -108,51 +108,107 @@
 		In classical complexity theory the time complexity is usually measured in terms of the input size.
 		However, when considering continuous peoblems, the input is an infinite string and thus can not 
 		be used to measure the running time of an algorithm.
+
 		In numerical computations an important parameter is the desired output precision.
 		Thus, it seems reasonable to analyze the running time as a function depending on the desired output precision.
-		The complexity of a real number can be defined as follows:
+    
+		This leads to the following definition for the complexity of a single real
+    number
 		\begin{definition}\label{def:complexity_real_number}
 			A real number $x \in \RR$ is computable in time $t$ if there is a Turing Machine $M$ that with input $n \in \NN$ in binary, 
 			outputs the binary expansion of a dyadic rational number $d$ with $| x - d | \leq 2^{-n}$.  
 		\end{definition}
-		Again this notion can be generalized by using representations, i.e. by considering the time that is needed to write the first $n$ symbols
+		Again this notion can be generalized by using representations and type-2
+    Turing machines, i.e. by considering the time that is needed to write the first $n$ symbols
 		of the name of the output.
-		One has to be careful, however, since representations that are computationally equivalent, do not necessary lead to the same complexity bounds.
-		For example, one can construct arbitrarily long Cauchy names for any rational number, so that it is not even possible to define the complexity 
-		of a real number by its Cauchy name.
-		A representation that is often considered is the signed digit representation
+      
+    One has to be careful, however, since representations that are
+    computationally equivalent, do not necessary lead to the same complexity
+    bounds.  For example, one can construct arbitrarily long Cauchy names for
+    any rational number.
+    Thus, it is not even possible to define the complexity of a real number
+    with respect to its Cauchy name.
+
+		A more useful representation for complexity is the signed-digit
+    representation.
 		\begin{definition}
-			The \textbf{signed digit representation} $\rho_sd$ is defined as follows: \\
+			The \textbf{signed digit representation} $\rho_sd$ is defined as follows: 
+
 			A $\rho_d$-name of a real number $x$ is a sequence 
 			$$a_n a_{n-1} \dots a_0 . a_{-1} a_{-2} \dots \text{ with } a_i \in \{-1,0,1\}, n \geq -1, a_n \neq 0, a_n + a_{n-1} \neq 0$$
-			$$ \text{ and } x = \sum_{i=n}^{-\infty} a_i \cdot 2^i $$  
+      and
+			$$  x = \sum_{i=n}^{-\infty} a_i \cdot 2^i $$  
 		\end{definition}
 		As with the binary expansion, the number digits after the binary point correspond to the precision.
-		The advantage to the binary expansion is that, the signed digit representation is symmetric, ,,,
+
+		\temp{The advantage to the binary expansion is that, the signed digit
+    representation is symmetric, ,,,}
 		It can be shown that the signed digit representation is computably equivalent to the Cauchy representation.
-		Definition \ref{def:complexity_real_number} can be adjusted to the signed digit representation in the obvious way.\\
-		When extending the complexity notion to functions, an additional parameter might be interesting, the precision of the input
+
+		When extending the complexity notion to functions, apart from the output
+    precision, an additional parameter might be interesting: the precision of the input
 		needed to compute the output up to the demanded precision.
-		It should also be noted, that the definition of complexity is only possible on compact sets, since otherwise the machine can already
-		spend arbitrarily much time to read the digits before the point.
+
+    This leads to the following definition
 		\begin{definition}
-			A function $f: \subseteq \RR \to \RR$ is computed on a compact set $K \subseteq dom(f)$ in time $t$ with lookahead $l$ if for all $\rho_{sd}$-names of elements $ x \in K$ by a Turing Machine $M$ if $M$ computes a $\rho_{sd}$-name of $f(x)$ and after t steps and with reading at most $l$ symbols of the input string outputs the $n$-th symbol of the output.   
-		\end{definition} 
+      A function $f: \subseteq \RR \to \RR$ is computed on a compact set $K
+      \subseteq dom(f)$ in time $t$ with lookahead $l$ if for all
+      $\rho_{sd}$-names of elements $ x \in K$ by a Turing Machine $M$ if $M$
+      computes a $\rho_{sd}$-name of $f(x)$ and after t steps and with reading
+      at most $l$ symbols of the input string outputs the $n$-th symbol of the
+      output.   
+    \end{definition} 
+    The above comolexity notion really only makes sense on a compact set, since
+    otherwise the machine could already spend arbitrarily much time on just
+    reading the input left from the binary point.
+    
+    An alternative approach to define complexity of functions is using Oracle
+    Turing Machines which have polynomial time bounded running time. 
+
+    With the above notion computable real numbers and functions can be
+    classified into complexity classes like in the discrete case.
+    An important class for practical purposes is the class of polynomial time
+    computable numbers and functions, since they usually can be computed
+    efficiently with a computer.
+   
+    An important property of polynomial time computable reals is given in the
+    following theorem.
 		\begin{theorem}[Ko and Friedmann]
 			The set of polynomial time computable real numbers forms a real algebraically closed field.
 		\end{theorem}
 		\begin{example}
-		Polynomial time computable functions...
+     The following real valued functions are polynomial time computable on a compact set
+     $K$
+     \begin{enumerate}
+       \item Addition, Subtraction and Multiplication as functions $K \times K
+         \to \RR$.
+        \item The function $x \mapsto \frac(1){x}$ if $0 \not in K$. 
+         \item The functions $\exp, \sin, \cos$ as functions $K \to \RR$.
+     \end{enumerate}
 		\end{example}
 	\subsection{Complexity of Operators}
 		Since most interesting function spaces such as $C[0,1]$ are not locally compact,
-		there is no straight forward way to generalize the above definitions to get a uniform notion of complexity on such spaces.
-		In fact, it holds
+		there is no straight forward way to generalize the above definitions to get
+    a uniform notion of complexity for operators.
+
+		In fact, the following holds
 		\begin{theorem}
-			Even restricted to continuous functions $f: [0,1] \to [0,1]$, the evaluation operator $x \to f(x)$ is not computable within time uniformly bounded in terms of the output error only.
-		\end{theorem}
-		The approach by Ko and Friedman \cite{KoBook} is to study the time complexity of the function $F(f)$ for polynomial time computable $f$.
-		This  often leads to a connection between discrete complexity classes and numerical problems, as in the following theorem:
+      Even restricted to continuous functions $f: [0,1] \to [0,1]$, the
+      evaluation operator $x \to f(x)$ is not computable within time uniformly
+      bounded in terms of the output error only.  
+    \end{theorem}
+
+	  A different approach to study the complexity of operators and functionals
+    is followed by Ko and Friedman \cite{KoBook}.
+    Instead of trying to define a complexity notion for a functional $F$, they
+    study the time complexity of the real valued function $F(f)$ where $f$ is a
+    polynomial time computable function.
+
+
+		This  method leads to many connections between discrete complexity classes
+    and numerical problems,
+
+    One example of such a connection is given in the following theorem.
 		\begin{theorem}[Friedman \cite{Fri}]
 			The following are equivalent
 			\begin{enumerate}
@@ -161,9 +217,11 @@
 					$g: [0,1] \to \R$, defined by $g(x) = \int_0^x f(t) dt$ is polynomial time computable.
 			\end{enumerate} 
 		\end{theorem}
-		In this sense, one can say that Integration is $\#P$-hard.
+		Thus, one can say that integration of polynomial time computable functions is at
+    least as hard as solving a problem in $\#P$.
+    In that sense, Integration can be called $\#P$-hard.
 
-		Second order representations
+    \temp{Maybe add something on second order representations}
  	\subsection{Parameterized Complexity}
  		Often it is not possible to bound the running time in terms of the output precision only.
  		In other cases, having some additional information about the input can increase the running time dramatically,
