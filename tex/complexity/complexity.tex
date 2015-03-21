@@ -1,29 +1,51 @@
 %!TEX root = ../../thesis.tex
 \section{Real Complexity Theory}\label{section:real_complexity}
 	\subsection{Classical Complexity Theory}
+    In contrast to computability theory, complexity theory deals with the
+    question how many resources (in form of e.g. time or space) are needed to
+    compute a computable function.
+
+    Again, the Turing-Machine model is used to describe the computations
 		\begin{definition}
 			For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ is the number of head movements 
 			the Turing Machine on input $w$ exectues before it terminates. \\
 			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in \Sigma^* and M terminates on input w \}$.\\
 			Analogously, one can define space constraints.
 		\end{definition}
+    In most cases it is not important to compute the exact running time, but
+    one rather wants to approximate how the algorithm will behave when the
+    input is getting large.
+    The standard way to compare the asymptotic running time of algorithms is
+    the use of $O$-notation.
 		\begin{definition}
 			For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$ if there are constants $M \in \RR$, $n_0 \in \NN$, such that
 			$ f(n) \leq M \cdot g(n)$ for all $n > n_0$. 
 		\end{definition}
-			$O$-notation is usually used when describing the complexity of algorithms. \\
-			Usually, complexity theory does not deal with the complexity of specific algorithms, but with the complexity of problems, 
-			i.e. the complexity of deciding subsets of $\Sigma^*$. Problems can be divided into classes depending on their running time.
+			Thus, for a given algorithm a way to measure its complexity is giving an
+      upper bound on its worst case running time for inputs of length $n$ in
+      terms of the $O$-notation. 
+
+			However, complexity theory mainly is not about the complexity of specific
+      algorithms, but rather deals with the complexity of problems. 
+      That is, trying to classify the complexity of \textbf{any} algorithm to
+      decide a subset of $\Sigma^*$.
+      
+      The following gives a classifications of problems depending on the
+      running time for algorithms solving those problems.
 		\begin{definition}
 			For a function $t: \NN \to \NN$ let 
-			$$ DTIME(t) = \{ A \subseteq \Sigma^* \,|\, \text{There is a Turingmachine } M \text{ deciding } A \text{ with } time_M(n) \in O(t(n)) \} $$
+      $$ \text{DTIME}(t) = \{ A \subseteq \Sigma^* \,|\, \text{There is a
+      Turingmachine } M \text{ deciding } A \text{ with time}_M(n) \in O(t(n)) \} $$
+
+      NTIME$(t)$ describes the same for the case of $M$ being a
+      non-deterministic Turing-machine.
 		\end{definition}
 		The above definitions suffice to define the most important complexity classes
 		\begin{definition}
 			The complexity classes $P, NP, PSPACE$ and $EXPTIME$ are defined as follows:
 			\begin{eqnarray*}
 				P & := & \bigcup_{k \in N} DTIME(n^k) \\
-				NP & := & \{A \subseteq \Sigma^* \,|\, \exists n \in \NN  \dots \} \\
+				NP & := & \\bigcup_{k \in N} NTIME(n^k) \\
 				PSPACE & := & \bigcup_{n \in N} DSPACE(n^k) \\
 				EXPTIME & := & \bigcup_{k \in N} DTIME(2^{n^k}) \\
 			\end{eqnarray*}
@@ -31,24 +53,47 @@
 		It holds $P \subseteq NP \subseteq PSPACE \subseteq EXPTIME$. 
 		It is $P \neq EXPTIME$ and for all other inclusions it is not known if equality holds, but most 
 		complexity theorists consider it as extremely unlikely.
+
+    Another way to characterize the important class $NP$ is the following
+    \begin{theorem}
+      $A \subseteq \Sigma^*$ is in $NP$ if and only if there are polynomials
+      $p$ and $q$ and a deterministic Turing-Machine $M$ such that for all $x
+      \in \Sigma^*$ with length n, there is an $y \in \Sigma*$ with length
+      bounded by $q(n)$ such that $x \in A \text{ iff } M(<x,y>) = 1$ and 
+      $x \not \in A \text{ iff } M(<x,y>) = 0$. 
+      Further $M$'s running time is bounded by $p(n)$ for all such inputs
+      $<x,y>$.  
+    \end{theorem}
 		Wheter $P = NP$ is one of the Millenium problems and one of the biggest unsolved problems in Computer Science.
-		One can also consider function problems instead of decision problems. This leads to a dual hierarchy.
+
+		One can also consider function problems instead of decision problems
+    leading to a dual hierarchy of complexity classes.
 		\begin{definition}
-			A functional problem $F: \Sigma^* \rightrightarrows \Sigma^*$, is solved by a Turing-Machine in if it writes on every $x \in \Sigma^*$ an output $z \in F(x)$ or decides that no such output exists.  \\
-			Time- and Space-Complexity can be defined accordingly. \\
-			The classes $FP$ and $FPSPACE$ are defined as the class of polynomial time resp. space computable functions. \\
-			The class $\#P$ is defined as the the class of functions that give the number of solutions to a problem in $NP$. 
-		\end{definition}
+      A functional problem $F: \Sigma^* \rightrightarrows \Sigma^*$, is solved
+      by a Turing-Machine in if it writes on every $x \in \Sigma^*$ an output
+      $z \in F(x)$ or decides that no such output exists.  \\ Time- and
+      Space-Complexity can be defined accordingly. \\ The classes $FP$ and
+      $FPSPACE$ are defined as the class of polynomial time resp. space
+      computable functions. \\ The class $\#P$ is defined as the the class of
+      functions that give the number of solutions to a problem in $NP$.
+    \end{definition}
 		It holds $FP \subseteq \#P \subseteq FPSPACE$ and if $FP = \#P$ would hold, it would follow that $P = NP$.
+     
 		Problems that are known to be in $P$ are often considered as the feasible functions, 
-		for which it is possible to find an efficient algorithm. \\
-		To compare the difficulty of problems reductions are used
+		for which it is possible to find an efficient algorithm. 
+
+    Since most of the complexity classes are not known to be distinct, they do
+    not suffice to classify problems by their difficulty.
+    To compare the difficulty of problems, reductions are used.
 		\begin{definition}
 			$A \subset \Sigma^*$ is \textbf{polynomial time reducible} to $B \subseteq \Sigma^*$ ($A \leq_P B)$, 
 			if there is a polynomial time computable function $f; \Sigma^* \to \Sigma^*$, such that
 			$$ w \in A \Leftrightarrow f(w) \in B.$$
 		\end{definition}
-		Other types of reductions exist, e.g. to compare complexity classes lower then $P$, but they are not needed in this thesis. \\
+		Many other types of reductions exist, e.g. to compare complexity classes
+    lower then $P$, but they are not needed in this thesis and therefore
+    omitted.
+
 		The hardest problems in a complexity class are called complete for this class
 		\begin{definition}
 			A set $A \subseteq \Sigma^*$ is called \textbf{$\C$-hard} (w.r.t. $\leq_P$) for a complexity class $\C$, if for all $B \in \C$ $B \leq_P A$. \\
@@ -56,7 +101,9 @@
 		\end{definition}
 		If one would show for a single $\C$-complete problem that it is in $P$, it would follow that all problems in $\C$ are in $P$.
 		Consequently a way to show that there is most likely no efficient algorithm to a problem, is to show that the problem is $NP$-hard.
-
+    For many problems it could be shown that they are $NP$-complete. 
+    Some of the most important ones can for example be found in
+    \cite{bookwithnpcompleteproblems}
 	\subsection{Complexity Theory on real numbers}
 		In classical complexity theory the time complexity is usually measured in terms of the input size.
 		However, when considering continuous peoblems, the input is an infinite string and thus can not 
