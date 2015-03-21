@@ -33,8 +33,16 @@
  The widely believed \textbf{Church-Turing thesis} even states, that anything
  that is computable in an informal sense, can be computed with a
  Turing-machine.
-main of a computable function.   
- \end{definition}
+
+ The following definitions for sets also play a very important role in
+ computability theory.
+  \begin{definition}
+A set $A \subseteq \Sigma^*$ is called \textbf{decidable}, if its characteristic function is computable.
+\end{definition}
+\begin{definition}
+A set $A \subseteq \Sigma^*$ is called \textbf{recursively enumerable} (r.e.) or \textbf{computably enumerable} (c.e.) if
+it is empty or if $A$ is the domain of a computable function.
+\end{definition}
 \subsection{Computability of real numbers}
 The previous section showed how to define computability for functions over finite alphabets $\Sigma^* \to \Sigma^*$. 
 That is enough to define computability for finite structures, but does not
@@ -64,7 +72,7 @@ The input tape is read-only, i.e. it is not possible to change a cell on the
 tape. Further, the head on both input and output tape can not be moved to the
 left. In particular it is not possible to change a symbol that has been written
 on the output tape once. 
-\end{defintion}
+\end{definition}
 From now on the term Turing-Machine is used both for classical and type 2
 machines, when it is obvious by context which model is meant.
 \begin{definition}\label{def:computability_ttt}
@@ -232,36 +240,65 @@ give slightly wrong results close to the points of non-computability.
   
   However, the multi-valued function that computes $\lfloor x \rfloor$ if the
   distance of $x$ to an integer is bigger than $2^{-k}$ and computes $\lfloor x
-  \rfloor$ or $\lfloor x-1 \rfloor$ otherwise.
+  \rfloor$ or $\lfloor x-1 \rfloor$ otherwise is computable.
 \end{example}
 
 \subsection{Computability of real operators and functionals}
+Questions of the form, given a real function, what is its maximum on $[0,1]$ 
 A real operator maps functions $\RR \to \RR$ to functions $\RR \to \RR$and a functional maps functions $\RR \to \RR$ to real numbers $\RR$.
-For that, a representation for the space to work on is needed.
+To talk about computability of operators and functionals, one first has to fix
+the space that should be represented.
+
 Continuous functions on a compact subset $X \subseteq R^d$ can be uniformly approximated by polynomials arbitrarily close.
 A possible representation for real valued functions is thus given by the following definition 
 \begin{definition}
-A $[\rho^d \to \rho]$-name of a function $f \in C([0,1]^d, \\R)$ is given by a sequence $P_n \in \\D[x1, \dots, x_d]$ of polnomials (i.e. degree and list of coefficients), such that $\vert f - P_n \vert_\infty < 2^{-n}$   
-\begin{theorem}[name?]
+A $[\rho^d \to \rho]$-name of a function $f \in C([0,1]^d, \\R)$ is given by a
+sequence $P_n \in \\D[x1, \dots, x_d]$ of polnomials (i.e. degree and list of
+coefficients), such that $\vert f - P_n \vert_\infty < 2^{-n}$
+\end{definition}
+Computability of Operators and functionals operating on functions in
+$C([0,1])^d$ can be defined with respect to this representation as seen in the
+last section.
+
+With this notion the following holds
+\begin{theorem}
 The integration operator 
 $$I: C[0,1] \ to C[0,1], f \to (x \to \int_0^x f(t) dt$$   
 is computable.
 \end{theorem}
+Unfortunately, the same does not hold for the derivative
 \begin{theorem}[Myhill 1971]
 There is a computable function $f: [0,1] \to \R$ with continuous but uncomputable derivative. 
 \end{theorem}
+For continuously differentiable functions, however, computability of the
+derivative is gicen. 
 \begin{theorem}
 The operator 
 $$ D: C^1[0,1] \to C[0,1], f \to f'$$
 is computable.
 \end{theorem}
-\end{definition}
 \subsection{Uniformity and Non-Uniformity}
-When talking about computability one has to distinguish between two types of computability, \textbf{uniform} and \textbf{non-uniform}.
-FOr non-uniform computability it suffices, that for every input, there is an algorithm that computes the output. 
+In computability theory, one has to distinguish to modes of computability, \textbf{uniform} and \textbf{non-uniform}.
+
+For non-uniform computability it suffices, that for every input, there is an algorithm that computes the output. 
 The algorithm may however depend on the input in a non-computable way.
+
 In contrast, a problem is uniformly computable only if there is one algorithm, that computes the output for every valid input. 
-Intermediate Value Theorem
+
+An example is the Intermediate Value Theorem.
+
+In practical applications, it is usually desired to have uniform algorithms.
+However, in many cases there does not exist a uniform algorithm in the standard
+input.
+One way to deal with this problem is the use of multi-valued functions.
+Another way is to give the algorithm some additional information on the input.
+In many cases it is possible to turn non-uniform algorithms into uniform ones
+by extending the input by some additional discrete information, that can not be
+computed from the input only.
+
+For example, the floor function can be computed uniformly when given one
+additional bit, that contains the information if the input is an integer or
+not.  
 \subsection{Other models for comoutable reals}
 Markov Computability \\ 
 Sequential Computabilty \\
