@@ -33,15 +33,7 @@
  The widely believed \textbf{Church-Turing thesis} even states, that anything
  that is computable in an informal sense, can be computed with a
  Turing-machine.
-
- Aoart from the computability notion for functions, there are also the
-following notions on sets:
- \begin{definition}
- 	A set $A \subseteq \Sigma^*$ is called \textbf{decidable}, if its characteristic function is computable. 
- \end{definition}
- \begin{definition}
- 	A set $A \subseteq \Sigma^*$ is called \textbf{recursively enumerable} (r.e.) or \textbf{computably enumerable} (c.e.) if 
- 	it is empty or if $A$ is the domain of a computable function.   
+main of a computable function.   
  \end{definition}
 \subsection{Computability of real numbers}
 The previous section showed how to define computability for functions over finite alphabets $\Sigma^* \to \Sigma^*$. 
@@ -82,7 +74,7 @@ For $\sigma \not \in dom(f)$ the machine writes only finitely many symbols on th
 \end{definition}
 To talk about computability over some arbitrary set, it has to be encoded to
 $\sigma^\omega$. 
-This encoding is formalized in the term representation.
+Such an encoding can be formalized in the following way
 \begin{definition}\label{def:representation}
 	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
 	$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. \\
@@ -138,9 +130,6 @@ procedure for $A$.
 A sequence as the above, that is computable, monotonic, bounded and consists
 only of rational numbers, but has a non-computable supremum is called \textbf{Specker-sequence}.
 
-\begin{definition}\label{def:representation_composition}
-Composition of representations
-\end{definition}
 More interesting than just computing single real numbers is computing real
 functions or even functionals.
 
@@ -158,6 +147,7 @@ An easy way to formalize this concept is the use of oracle Turing-Machines.
  tape, the \textbf{query tape}. The machine can be connected to an oracle
  function.
  If $M$ is connected to the function $\Phi$ it is written as $M^\Phi$. 
+
  The machine behaves like a usual (type-1) Turing-machine, but has two special
  states, the \textbf{query state} and the \textbf{response state}. 
  When the machine enters the query state, the following happens in one time
@@ -181,7 +171,7 @@ Turing Machines.
 	if there exists a computable function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ such that 
 	$\beta(F(\sigma)) \in f(\alpha(\sigma))$ for all $\sigma \in dom(f \circ \alpha) $.  
 \end{definition}
-The Diagram in ... shows computability.
+\temp{The Diagram in ... shows computability.}
 
 The choice of representation is crucial when defining computability, as the
 following theorem shows.
@@ -208,23 +198,43 @@ Thus, the Cauchy representation is used as the standard representation to
 define computability, and the term computable function will be used for
 functions computable with respect to the Cauchy representation.
 
-The following theorem shows, that many important functions are not computable. 
+Some  properties of computable functions are
+\begin{enumerate}
+  \item Computable functions map computable reals to computable reals
+  \item They map computable computavle sequences of real numbers to computable
+    sequences of real numbers
+  \item They are closed under composition
+\end{enumerate}
+
+The following theorem shows, however, that many important functions are not computable. 
 A proof can for example be found in \cite{Wei}.
 \begin{theorem}
   Every computable function $f: \RR \to \RR$ is continuous.
 \end{theorem}
 
-\begin{theorem}
-Computability is preserved under function composition, i.e.
-For sets $X,Y,Z$ with representations $\delta_X, \delta_Y, \delta_Z$, 
-$f:\subseteq X \to Y$ $(\delta_X, \delta_Y)$-computable and $g:\subseteq Y \to Z$ $(\delta_Y, \delta_Z)$-computable,
-$g \circ f$ is $(\delta_X, \delta_Z)$-computable.
-\end{theorem}
+In particular, tests of the form $\RR \to \{0,1\}$ are non-computable if their
+value is not constant. 
+A relexation can be achieved by allowing functions to be multi-valued.
 \begin{definition}
 A multi-valued function $f: \subseteq X \rightrightarrows Y$ is just an other name for a relation $f \subseteq X \times Y$.
 A multi-valued function is $(\rho_X, \rho_Y)$ computable, if there is a a comnputable (single valued) function 
 $F: \subseteq \Sigma^\omega \to \Sigma^\omega$ such that for all $\sigma \in dom(f \circ \rho_X)$, $\rho_Y(F(\sigma)) \in f(\rho_X(\sigma))$. 
 \end{definition}
+A multi-valued function can have several values for the same point and only one
+of these values has to be computed. 
+Thus the computation becomes non-deterministic in some sense.
+In practical applications of computable analysis, multi-valued functions often
+have the form of a non-computable single-valued function that is allowed to
+give slightly wrong results close to the points of non-computability.
+\begin{example}
+  The floor function $x \mapsto \lfloor x \rfloor$ is not computable due to
+  continuity reasons.
+  
+  However, the multi-valued function that computes $\lfloor x \rfloor$ if the
+  distance of $x$ to an integer is bigger than $2^{-k}$ and computes $\lfloor x
+  \rfloor$ or $\lfloor x-1 \rfloor$ otherwise.
+\end{example}
+
 \subsection{Computability of real operators and functionals}
 A real operator maps functions $\RR \to \RR$ to functions $\RR \to \RR$and a functional maps functions $\RR \to \RR$ to real numbers $\RR$.
 For that, a representation for the space to work on is needed.
