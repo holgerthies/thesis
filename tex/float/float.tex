@@ -3,7 +3,8 @@
 The standard way to compute with real numbers on a computer is the use 
 of \textbf{floating point arithmetic}. 
 
-In general, the floating point representation of a real number has a fixed number of bits (e.g. 32 or 64 bits on a modern computer architecture).
+In general, the floating point representation of a real number has a fixed
+number of bits (e.g. 32 or 64 bits on a modern computer architecture).
 \begin{definition}\label{def: floating point number}
 	A floating point representation with base $b$ and precision $p$
 	is a string $\pm d_0 . d_1 \dots d_{p-1} \times b^e$ with $0 \leq d_i < b$.	
@@ -17,12 +18,19 @@ In general, the floating point representation of a real number has a fixed numbe
 	$$ \lceil log_2(e_{max}-e_{min}+1) \rceil + \lceil  p \cdot log_2 (b) \rceil + 1 $$
 	bits.
 \end{definition}
-If a real number does not fit into the above representation, it has to be rounded apropriately.
-Also, when performing operations on floating point numbers, the result will often not fit into the finite representation anymore, 
-and has to be rounded again.
-To make the floating point representation unique, it is usually required that it is normalized, i.e. that $d_0 \neq 0$.
-Absolute and relative error.
-Floating point arithmetic usually works by operating on only a fixed number of digits for computation.
+If a real number does not fit into the above representation, it has to be
+rounded apropriately.
+Also, when performing operations on floating point
+numbers, the result will often not fit into the finite representation anymore,
+and thus has to be rounded again. 
+
+To make the floating point representation unique,
+it is usually required that it is normalized, i.e. that $d_0 \neq 0$. 
+\temp{Absolute and relative error.}
+
+Floating point arithmetic usually works by
+operating on
+only a fixed number of digits for computation.
 This makes computations fast, but can lead to large relative errors as in the following theorem: 
 \begin{theorem}
 	The relative error when computing $x-y$ for floating point numbers $x,y$ can be as large as $b-1$. 
