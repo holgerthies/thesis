@@ -1,10 +1,12 @@
 %!TEX root = ../../thesis.tex
 \section{Floating Point Arithmetic}
-The standard way to compute with real numbers on a computer is the use 
+The traditional way to compute with real numbers on a computer is the use 
 of \textbf{floating point arithmetic}. 
 
-In general, the floating point representation of a real number has a fixed
-number of bits (e.g. 32 or 64 bits on a modern computer architecture).
+The floating point representation of a real number is a bit-string with a  fixed
+length.
+
+Numbers can be represented the following way:
 \begin{definition}\label{def: floating point number}
 	A floating point representation with base $b$ and precision $p$
 	is a string $\pm d_0 . d_1 \dots d_{p-1} \times b^e$ with $0 \leq d_i < b$.	
@@ -19,14 +21,23 @@ number of bits (e.g. 32 or 64 bits on a modern computer architecture).
 	bits.
 \end{definition}
 If a real number does not fit into the above representation, it has to be
-rounded apropriately.
-Also, when performing operations on floating point
-numbers, the result will often not fit into the finite representation anymore,
-and thus has to be rounded again. 
+rounded appropriately.
 
-To make the floating point representation unique,
-it is usually required that it is normalized, i.e. that $d_0 \neq 0$. 
-\temp{Absolute and relative error.}
+Rounding also happens, when an operation (e.g. multiplication) is applied and
+the result does not fit into the finite representation anymore.
+
+With the above definition the floating point representation of a number is not
+unique. 
+To guarantee uniqueness it is usually required that the representation  is normalized, i.e. that $d_0 \neq 0$. 
+
+Of course, $0$ can not be represented in this form, so often a special
+representation is chosen for $0$.
+
+Doing real number computations using floating point numbers will in most cases
+lead to rounding errors.
+One can distinguish two cases of errors, the \textbf{absolute error}, the
+distance between the real result and the computed one, and the \textbf{relative
+error}, the absolute error divided by the real result.
 
 Floating point arithmetic usually works by
 operating on
