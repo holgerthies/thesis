@@ -39,19 +39,22 @@ One can distinguish two cases of errors, the \textbf{absolute error}, the
 distance between the real result and the computed one, and the \textbf{relative
 error}, the absolute error divided by the real result.
 
-Floating point arithmetic usually works by
-operating on
-only a fixed number of digits for computation.
-This makes computations fast, but can lead to large relative errors as in the following theorem: 
-\begin{theorem}
-	The relative error when computing $x-y$ for floating point numbers $x,y$ can be as large as $b-1$. 
-\end{theorem}
-Note: Guard digits
+Floating point arithmetic is not necessarily associative, e.g. in many
+programming languages for $x := 1e30$, $y := -1e30$ and $z := 1$ the expression
+$(x+y)+z$ evaluates to $1$ while $x+(y+z)$ evaluates to $0$.
+% Floating point arithmetic usually works by
+% operating on
+% only a fixed number of digits for computation.
+% This makes computations fast, but can lead to large relative errors as in the following theorem: 
+% \begin{theorem}
+% 	The relative error when computing $x-y$ for floating point numbers $x,y$ can be as large as $b-1$. 
+% \end{theorem}
+% Note: Guard digits
 \subsection{The IEEE Standard}
 	Floating point representations for binary base are standardized by IEEE 754 \cite{ieee}. 
 	This standard is followed by almost all modern computers.
 	The standard defines four different precisions: single, single-extended, double and double-extended.
-	  \begin{table}
+  \begin{table}
 	  	\centering
 	    \begin{tabular}{ | c || c | c | c | c | c | }
 	    \hline
@@ -62,18 +65,14 @@ Note: Guard digits
 	    Double-Extended & 64 & > 16383 & $\leq -16382$ & 15 & 79 \\ \hline
 	    \end{tabular}
 	    \caption{Parameters for the different types in the IEEE 754 standard}\label{table:IEEE floating point}
-	  \end{table}
-	  
-	The details can be seen in Table \ref{table:IEEE floating point}.
+ \end{table}
+ The details can be seen in Table \ref{table:IEEE floating point}.
+
+ Apart from the numbers definable in the way of Definition \ref{def:
+ floating point number}, the standard also introduces special quantities $-0, +0, \inf, +\inf$ and NAN (not a number). 
+    
 	The standard requires that the result of addition, subtraction, multiplication and division is exactly rounded, 
 	i.e. the operation has to be performed exactly and then rounded.
-
-	Floating point arithmetic is not necessarily associative, e.g.
-
-	The standard also introduces special quantities $-0, +0, \inf, +\inf$ and NAN (not a number). 
-
-	Rounding modes
-
 	
 
-
+  \temp{Rounding modes}
