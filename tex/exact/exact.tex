@@ -2,19 +2,35 @@
 \section{Exact Real Arithmetic}\label{sec:exact real arithmetic}
 	Using interval arithmetic or arbitrary precision arithmetic, 
 	the precision is set in the beginning and rounding and truncation errors still accumulate.
-	In the end a result is obtained that may not be as precise as needed.
+	The result obtained in the end may still not have sufficient precision.
 
 	In contrast, the goal of exact real arithmetic is to perform compuations on real numbers without 
-	accumulating errors, and that can be given up to any desired precision on demand.
-	That is, the user does not specify the precision the numbers are represented with in the beginning,
+	accumulating errors.
+  
+  On demand a number can be printed up to any desired precision. 
+	More precicely, the user does not specify the precision the numbers are represented with in the beginning,
 	but gives a desired precision \textbf{for the answer} of the computation.
+  
+  The implementation has to take care of the steps necessary to generate the
+  solution with the desired precision.
+  For the user, it should seem like real numbers are manipulated exactly.
 
 	There are several approaches to exact real arithmetic.
-	Some of them are presented below. 
-
-	\subsection{Signed-digit streams}
-	\subsection{Continued fractions}
-	\subsection{Linear fractional transformations}
+	Some of them are
+  \begin{enumerate}
+     \item Signed-digit Streams: A real number is represented as an infinite
+       string stream. This is very close to the definition with type-2
+       machines.
+     \item Continued Fractions: A real number is represented by its continued
+       fraction representation. Rational numbers have a finite representation,
+       while irrational numbers have an infinite representation.
+     \item Directed Acyclic Graphs (DAGs): A real number is given by an
+       algorithm that computes an approximation to the number with a desired
+       error bound. Arithmetic expressions are expressed as graphs with real
+       number leaves.
+  \end{enumerate}
+  The implementations in this thesis follow a form of the DAG approach, thus
+  that is the only one that will be described in more detail.
 	\subsection{DAGs}
 		An arithmetic expression over real numbers can be expressed by a directed acyclic graph (DAG)
 		where the leaf nodes are real numbers and the inner nodes are operations on real numbers.
@@ -36,7 +52,3 @@
 		Example.
 
 		In general, the DAG approach has the problem that it needs lots of memory (example).
-	\subsection{Comparison}
-
-
-
