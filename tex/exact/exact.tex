@@ -35,20 +35,34 @@
 		An arithmetic expression over real numbers can be expressed by a directed acyclic graph (DAG)
 		where the leaf nodes are real numbers and the inner nodes are operations on real numbers.
 		
-		Information in nodes??
+    The inner nodes contain the information how precise the inputs to the
+    operation have to be, to guarantee a given output precision.
+    Thus, the needed precision can be propagated down to the leaf nodes, and
+    the algorithms to approximate the real numbers can be invoked.
 
-		A DAG represents a real number and evaluating a DAG means to get an approximation to that real number
-		with a desired precision.
+	  The term evaluating is used to describe the process of getting an approximation
+    to the real number represented by a DAG with a desired output  precision.
 
 		There are essentially two ways to evaluate a DAG:
 		\begin{enumerate}
-			\item \textbf{Top=down evaluation} means, that the desired precision is computed from the top node down to the leaves.
+			\item \textbf{Top-down evaluation} means, that the desired precision is computed from the top node down to the leaves.
 			That is, a node contains the information, how precise he needs the input given by its children to deliver the output with the necessary precision and requests its children to provide it.  
 			\item \textbf{Bottom-up evaluation} means, that the computation is started with a fixed precision in the leaf nodes 
 			and it is kept track of the errors (e.g. by using interval arithmetic). 
 			If in the end, the error bound is too large, the computation is restarted with a higher precision. 
 		\end{enumerate}
-		The top-down approach suffers from the problem, that the precision can grow unnecessarily large.   
-		Example.
+		While the top-down approach seems to evade unnecessary recomputations, it
+    usually largely over-estimates the needed precision.
+    For example, to compute additions of two numbers up to precision $2^{-n}$
+    it suffices to have the inputs with precision $2^{-(n+1)}$.
+    If for example the sum $x := \sum_{i=0}^1000 x_i$ is computed iteratively (e.g. in a
+    for-loop), a DAG as in \temp{Figure} will be created. 
+    Thus, $x_0$ has to be computed with precision $2^{-(n+1000)}$ while actually
+    computing all input values with error less than $2^{-(n+10)}$ would 
+    suffice to guarantee error of the sum of less than $2^{-n}$.
 
-		In general, the DAG approach has the problem that it needs lots of memory (example).
+    In general, saving the DAG representation needs lots of memory. 
+    Especially evaluating arithmetic operations in loops that are executed many
+    times, will quickly exceed a computer's main memory.
+    The pure DAG approach is therefore not applicable for many more complicated
+    numerical algorithms.
