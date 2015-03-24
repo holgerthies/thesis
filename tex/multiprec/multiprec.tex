@@ -1,12 +1,25 @@
 %!TEX root = ../../thesis.tex
 \section{Arbitrary-Precision Arithmetic}
-	Often the precision of hardware supported floating point datatypes is not sufficent (example?).
+	The accuracy that can be obtained by using hardware floating point types
+  sometimes does not suffice.
 	
 	When precise results are more important than speed of computation, Arbitrary-precision arithmetic can be used.
 
 	Arbitrary precision means that the user is able to choose the precision with which 
 	computations are performed (usually only limited by the available main memory).
+  Usually an arbitarty-precision number is implemented as a list or array of
+  built-in data-structures together with algorithms that perform arithmetic operations on
+  this representation.
 
-	Libraries for arbitrary-precision arithmetic are available for many modern programming languages, 
-	e.g. the GNU MPFR Library for \code{C}/\cc, The Boost Multiprecision Library for \cc or \code{mpmath} for \code{Python}. 
+	Many libraries for arbitrary-precision arithmetic exist for nearly all modern
+  programming languages.
+  
+	Examples are the GNU MPFR Library for \code{C}/\cc, The Boost Multiprecision Library for \cc or \code{mpmath} for \code{Python}. 
+  
+  The floating point types defined by such libraries can have a user-defined
+  length. 
+  Thus, the precision can be arbitrarily good, but will still be fixed during
+  the program flow.
+  The user has the responsibility to choose a precision high enough to
+  guarantee, that the end result's precision will suffice.
 
