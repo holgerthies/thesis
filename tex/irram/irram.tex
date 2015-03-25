@@ -81,7 +81,7 @@
 		However, a few things have to be kept in mind when writing a program
 		\begin{enumerate}
       \item \textbf{compute function}
-        The \irram framework already writes the \cpp \code{main} function, so
+        The \irram framework already writes the \cc \code{main} function, so
         the main function can not be used.
         Instead it is replaced by a function \code{void iRRAM :: compute() }.
         The main part of the program should be written inside this function.
@@ -100,22 +100,60 @@
 		\end{enumerate}
 	\subsection{Multivalued Functions}
 		TTE can be used as a theoretical model to reason about \irram programs.
+
 		Thus, the limitations seen in Chapter \ref{sec:real computability} also hold for \irram programs.  
-		In particular, every function computable with \irram is necesserily continuous.
+		In particular, every function computable with \irram is necessarily continuous.
 		
 		That also implies, that comparisons and tests for equality of {\real}s are not computable when the input numbers are equal.
 
-		Indeed, two numbers can only be compared if the intervals they are represented by do not overlap. 
-		Thus, if the intervals overlap, \irram has to reiterate. But if the numbers are equal, the intervals will always overlap, 
-		no matter how small they are, leading to an infinite loop of iterations.
-		
-		In practice, this is achieved by letting those functions have type \code{LAZY\_BOOLEAN}.
- 		\code{LAZY\_BOOLEAN} realizes ternary logic
-		$T, F,\bot$, where $\bot$ means that the current information is not sufficent to make a decision.
-		When casting to \code{bool} $\bot$ leads to reiteration. The semantics of \code{LAZY\_BOOLEAN} can be found in Table.
+		Indeed, for the simplified representation a comparison of two numbers can be decided
+    if and only if the intervals of the two representations do not overlap.
 
-		Not being able to make comparisons might first seem like a huge disadvantage, but note that in numerical practice it is also strongly advised to never test floating point numbers on equality.
-		The \code{gnu gcc} compiler even has a warning option on that:
+	  As long as the two intervals overlap, \irram has to assume that the
+    intervals are to large to make a decision yet, and thus has to reiterate to
+    get smaller intervals.
+    But if the numbers are equal, the intervals will always overlap, 
+		no matter how small they are, leading to an infinite loop of iterations.
+    \begin{table}
+       \centering
+       \begin{tabular}{|c||c|c|c|}
+        \hline
+        $ a || b$ & $0$ & $1$ & $\bot$ \\ \hhline{|=||=|=|=|} 
+        $ 0 $     & $0$ & $1$ & $\bot$ \\ \hline
+        $ 1$      & $1$ & $1$ & $1$ \\ \hline
+        $\bot$ & $\bot$  & $1$ & $\bot$ \\ \hline
+       \end{tabular}
+       \quad
+       \begin{tabular}{|c||c|c|c|}
+        \hline
+        $ a \&\& b$ & $0$ & $1$ & $\bot$ \\ \hhline{|=||=|=|=|} 
+        $ 0 $     & $0$ & $0$ & $0$ \\ \hline
+        $ 1$      & $0$ & $1$ & $\bot$ \\ \hline
+        $\bot$ & $0$  & $\bot$ & $\bot$ \\ \hline
+       \end{tabular}
+       \quad
+       \begin{tabular}{|c||c|}
+        \hline
+        $ !a $ &   \\ \hhline{|=||=|} 
+        $ 0 $ &  1 \\ \hline
+        $ 1$ &  0 \\ \hline
+        $\bot$ & $\bot$  \\ \hline
+       \end{tabular}
+    \caption{The semantics of the \code{LAZY\_BOOLEAN} data-type}\label{table:lazy
+  boolean}
+    \end{table}
+    The reiteration is realized by the \code{LAZY\_BOOLEAN} data-type.
+    \code{LAZY\_BOOLEAN} extends the \code{boolean} type to  ternary logic
+		with values $T, F,\bot$. The semantics of \code{LAZY\_BOOLEAN} can be found
+    in Table \ref{table:lazy boolean}.
+    
+    When an expression evaluates to $\bot$, it means that the current information is not sufficient to make a decision.
+		When casting to \code{bool} $\bot$ leads to reiteration. 
+
+    Not being able to make comparisons might first seem like a huge
+    disadvantage, but note that in numerical practice it is also strongly
+    advised to never test floating point numbers on equality.  The \code{gnu
+    gcc} compiler even has a warning option on that:
 		\begin{quotation}
 				\noindent
 		\begin{verbatim}
@@ -130,12 +168,13 @@
 		    \end{verbatim}
 		\end{quotation} 
 
-		In contrast to that \irram has however, a sementically correct way to handle comparisons and other
+		In contrast to that \irram has a semantically correct way to handle comparisons and other
 		cases of non-continuity: multi-valued functions.
 
 		In \irram a multi-valued function can have multiple valid outputs for the same input and 
-		return seemingly indeterministic one of the valid outputs (of course, everything is deterministic in the 
-		interval representation of the input numbers, but that is usually not observed by the user).
+		return for the user seemingly indeterministic one of the valid outputs.  
+    Of course, the output will however be deterministic in the underlying
+    representation of the number.
 		
 		\irram already has some multi valued functions included, e.g. the function
 		\begin{equation*}
@@ -156,15 +195,21 @@
 		\code{choose} is a multi-valued function that takes up to 6 lazy booleans and returns the index of one 
 		that is evaluated to $T$ or $0$ if all evaluate to $F$ (leading to reiteration as long as neither of the two cases hold).
 
-		The possibility to have multi-valued functions introduces a new problem: 
+		The powerful feature to have multi-valued functions introduces however a
+    new problem.
+
 		A multi-valued function can have different results for different representations of the same real number,
 		thus the outcome could also change in different iterations of the \irram. 
 		Thus, the program flow could be completely change from one iteration to another, leading to unexpected results.
+
 		To prevent that from happening, the result of a multi-valued function is saved in the so called \textbf{multi-value cache}
 		and read from there when reiterating. 
-		Thus, it is guaranteed that the program flow stays the same in each iteration.
-		This makes, however, the use of multi-valued functions memory-intensive and they should therefore be used with care,
-		especially inside loops.
+		It is therefore guaranteed that the program flow stays the same in each iteration.
+		
+    Due to the cache, the use of multi-valued functions is however very memory
+    intensive.
+    Multi-valued functions should only be used rarely and one has to be
+    especially careful when they are used inside of loops.
 	\subsection{Limits}
 		\irram also has the feature to generate new user-defined {\real}s by using a special \code{limit} operator.
 		There are three types of limits
@@ -180,7 +225,7 @@
 			$$|a_p(x) - f(x)| \leq 2^p \text{ for all } x \in dom(f)$$
 			and returns the value of $f(x)$ as a \real.
 
-			There exist similiar functions to compute limits of sequences of functions with $0$ or $2$ input variables.
+			There exist similar functions to compute limits of sequences of functions with $0$ or $2$ input variables.
 			\item \textbf{Lipschitz limits} \\
 				The limit computation can be improved if a Lipschitz bound on the limit function $f$ is known, i.e. one has an $l$
 				such that
@@ -198,17 +243,27 @@
 			\item \textbf{Multi-valued limits}
 		\end{enumerate}
 	\subsection{Access to the underlying representation}
-		Even tough usually the user of \irram should work with the datatype \real
-		as if computing exactly with real numbers, sometimes it can be useful to access the internal representation.
+		Usually the user is expected to see the data-type \real as a kind of
+    black-box that makes error-free computations with real numbers possible.
+    The framework should take care of the underlying representation and it
+    should be invisible to the user.
+
+    In rare cases it may however be helpful, to access and change the
+    underlying representation of {\real}s.
+     
 		The error of a \real has the following type
 		\begin{verbatim}
 			struct sizetype { SIZETYPEMANTISSA mantissa; SIZETYPEEXPONENT exponent; }
 		\end{verbatim}
 		where \code{SIZETYPEMANTISSA} is \code{unsigned int} and \code{SIZETYPEEXPONENT} is int.
 		
-		An object of type \real has the two functions
+		An object of type \real has the two member functions
 		\begin{verbatim}
 			void seterror (sizetype error);
 			void geterror (sizetype& error) const;
 		\end{verbatim}
-		to get and set the error.
+    They can be used to get and set the error.
+    
+    The information about the current iteration can also be accessed.
+    The most notable variable is \code{ACTUAL\_STACK.ACTUAL\_PREC} that
+    contains the precision bound for the current iteration.
