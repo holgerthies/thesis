@@ -1,36 +1,65 @@
 %!TEX root = ../../thesis.tex
 \section{iRRAM}
-	Since the case studies in this thesis were all implemented  in \irram, the \irram framework 
-	is discussed in detail.
+	\irram is a \cc framework for exact real arithmetic developed by Norbert M\"uller.
 
-	\irram is a \cc framework for exact real arithmetic devoloped by Norbert M\"uller.
-	\irram extends \cc by a datatype \real for error free computations with real numbers.
+	Since the case studies in this thesis were all implemented  in \irram, the
+  following section will give a short overview over the \irram framework.
+
+	\irram extends \cc by a data-type \real for error free computations with real numbers.
+  For the user, an object of type \real behaves like a real number that can be
+  manipulated without any rounding errors.
+  The framework takes care of all details necessary to internally  finitely represent real
+  numbers, and in most cases the internal representation will be invisible for
+  the user.
 	\subsection{Real Number representation}
-		\irram's approach is similiar to the bottom-up DAG approach described in Section \ref{sec:exact real arithmetic}
-		with the difference that the DAGs are not really constructed.
+		\irram's approach is similar to the bottom-up DAG approach described in
+    Section \ref{sec:exact real arithmetic}.
 
-		Instead there is only enough information saved to repeat the whole computation when the precision is not sufficent, and thus reducing the needed memory to a minimum.
+		There is one important difference tough: The DAGs are not really
+    constructed.
+		Instead, there is only enough information saved, so that the whole
+    computation can be repeated.
+    If the precision at some point of the program does not suffice, the whole
+    program is restarted with higher precision. 
+    This reduced the needed memory to a minimum.
 
-		\irram uses simplified interval arithmetic for real number computations.
-		During the run of the program, a real number always represented by a \textbf{single} interval, more precisely by a pair $(d,e)$ such that $x \in [d-e, d+e]$.
+    For making error analysis, \irram uses a simplified form of interval
+    arithmetic.
+
+		At every time during the program execution, the internal representation of
+    a real number is always a \textbf{single} interval. 
+    More precisely a real number $x \in \RR$ is represented by a pair $(d,e)$ such that $x \in [d-e, d+e]$.
+
  		$d$ is saved as a multiple precision number and $e$ consists of two \code{long}s $p,z$ such that $e = p \cdot 2^p$.
- 		Whenever at some point in the program the precision is not sufficent, the computation is restarted with higher precision, 
- 		changing the interval representations of the real numbers.
- 		Thus, computations in \irram are done iteratively, where each iteration increases the precision of the output and the process is terminated when the desired output precision is reached. 
 
- 		The theoretical model to reason about \irram programs is TTE.
+    The internal representation of a \real can change during the run of the
+    program.
+ 		
+ 	  Whenever the precision of some \real is not sufficient at some point during
+    the program flow, the whole computation is restarted, and the
+    representations of the reals change, to admit higher precision.
+
+ 		This process of restarting the whole computation with higher precision is called
+    \textbf{iteration} in the terminology of \irram.
+    Since a reiteration is only done, when higher precision is needed, there
+    are only few operations, such as comparisons or output, that can trigger such a reiteration.
+
+    An \irram program will usually do several iterations of the computation,
+    until the desired output precision is reached.
+    
 	\subsection{Overview}
-		The following section introduces the most important classes and functions of \irram. 
-		For a complete see
+	  The following gives an overview over the most important classes and
+    functions provided by the \irram framework. For a more detailed overview
+    see \cite{irram}.
 		
-		An \irram program is written in usual \cc extended by the datatypes provided by a framework.
-		However, a few things have to be kept in mind when writing a program
-		\begin{enumerate}
-			\item compute function
-			\item Input and Output
-			\item Global variables
-		\end{enumerate}
-		\irram provides the class \real for error free computations with real numbers.
+    \irram provides some classes for discrete valued structures, in particular
+    the class \code{INTEGER} for infinite sized integers, the class
+    \code{RATIONAL} for rational numbers and the class \code{DYADIC} for dyadic
+    rational numbers. 
+
+    The most important class is \real, the class for error free computations
+    with real numbers. 
+
 		An object of type \real can be constructed from \code{int}, \code{char*}, \code{double}, \code{DYADIC} 
 		or another \real. 
 
@@ -41,11 +70,36 @@
 		\code{abs(x)}, \code{power(x, n)}, \code{exp(x)}, \code{log(x)},
 		trigonometric functions and their inverse and many more.
 
-		The operators \code{<}. \code{<=}, \code{==}. \code{>=}, \code{>} are also overloaded, but have to be used carefully.
+		The operators \code{<}, \code{<=}, \code{==}, \code{>=}, \code{>} are also
+    overloaded.
+    Note, however, that comparison operators have to be used carefully, as will be explained in the
+    next section.
+    
+   \irram further provides classes for complex numbers and real matrices.
 
-
+		An \irram program is written in usual \cc extended by the data-types provided by a framework.
+		However, a few things have to be kept in mind when writing a program
+		\begin{enumerate}
+      \item \textbf{compute function}
+        The \irram framework already writes the \cpp \code{main} function, so
+        the main function can not be used.
+        Instead it is replaced by a function \code{void iRRAM :: compute() }.
+        The main part of the program should be written inside this function.
+      \item \textbf{Input and Output}
+        The input and output streams \code{cin} and \code{cout} are overloaded
+        with \irram versions, that can read and write real numbers. 
+        The precision of the output can be adjusted with the parameterized
+        manipulator \code{setrwidth} that sets the number of digits that are
+        written. 
+        Alternatively the function \code{rwrite(REAL\& r, int prec)} can be used
+        to write a real number with a given number of decimals.
+      \item \textbf{Global variables} Since the \irram only reiterates what is
+        inside the compute function, global variables will not be part of the
+        reiteration. Therefore, \real variables should never be defined
+        globally.
+		\end{enumerate}
 	\subsection{Multivalued Functions}
-		As said before, the theoretical model to reason about \irram programs is TTE.
+		TTE can be used as a theoretical model to reason about \irram programs.
 		Thus, the limitations seen in Chapter \ref{sec:real computability} also hold for \irram programs.  
 		In particular, every function computable with \irram is necesserily continuous.
 		
