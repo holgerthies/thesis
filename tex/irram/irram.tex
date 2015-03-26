@@ -241,6 +241,14 @@
 					REAL limit_lip(REAL a(long, const REAL&), long lip, const REAL& x).
 				\end{verbatim}
 			\item \textbf{Multi-valued limits}
+      The multi-valued limit-operator has the form 
+      \begin{verbatim}
+        REAL limit(REAL f(int prec, int* choice, const REAL&), const REAL&)
+      \end{verbatim}
+      The parameter choice selects a subset of values that are possible for the
+      limit of $f$. $0$ means that all values are allowed, and changing the
+      value of choice corresponds to a reduction of the possible values.
+      The choice parameter will be saved in the multi-value cache.
 		\end{enumerate}
 	\subsection{Access to the underlying representation}
 		Usually the user is expected to see the data-type \real as a kind of
