@@ -174,12 +174,19 @@ An easy way to formalize this concept is the use of oracle Turing-Machines.
 \end{definition}
 A more general definition can be achieved by using representations and type-2
 Turing Machines.
+\begin{figure}
+  \begin{displaymath}
+    \xymatrix@C=8em@R=8em{
+        \Sigma^\omega \ar[r]^F \ar[d]_\alpha & B \ar[d]^{\beta} \\
+        X \ar[r]_{f}       & Y }
+  \end{displaymath}
+  \caption{Computability with representations}
+\end{figure}
 \begin{definition}\label{def:computability_function_representation}
 	A function $f: \subseteq X \to Y$ is called \textbf{$(\alpha, \beta)$}-computable, 
 	if there exists a computable function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ such that 
 	$\beta(F(\sigma)) \in f(\alpha(\sigma))$ for all $\sigma \in dom(f \circ \alpha) $.  
 \end{definition}
-\temp{The Diagram in ... shows computability.}
 
 The choice of representation is crucial when defining computability, as the
 following theorem shows.
