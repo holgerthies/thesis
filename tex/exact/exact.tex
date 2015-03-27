@@ -32,6 +32,27 @@
   The implementations in this thesis follow a form of the DAG approach, thus
   that is the only one that will be described in more detail.
 	\subsection{DAGs}
+  \begin{figure}[h]
+      \centering
+      \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
+
+  \node[main node] (1) {$+$};
+  \node[main node] (2) [below left of=1] {$\sqrt{}$};
+  \node[main node] (6) [below of=2] {$2$};
+  \node[main node] (3) [below right of=1] {*};
+  \node[main node] (4) [below left of=3] {5};
+  \node[main node] (5) [below right of=3] {2};
+
+  \path[every node/.style={font=\sffamily\small}]
+  (1) edge (2)
+  (2) edge (6)
+  (1) edge (3)
+  (3) edge (4)
+  (3) edge (5);
+\end{tikzpicture}
+\caption{The DAG representation for the expression $\sqrt 2 + 2*5$}
+    \end{figure}
 		An arithmetic expression over real numbers can be expressed by a directed acyclic graph (DAG)
 		where the leaf nodes are real numbers and the inner nodes are operations on real numbers.
 		
@@ -51,12 +72,36 @@
 			and it is kept track of the errors (e.g. by using interval arithmetic). 
 			If in the end, the error bound is too large, the computation is restarted with a higher precision. 
 		\end{enumerate}
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
+
+  \node[main node] (1) {$+$};
+  \node[main node] (2) [below left of=1] {$x_0$};
+  \node[main node] (3) [below right of=1] {$x_1$};
+  \node[main node] (4) [above right of=1] {$+$};
+  \node[main node] (5) [below right of=4] {$x_{n-1}$};
+  \node[main node] (6) [above right of=4] {$+$};
+  \node[main node] (7) [below right of=6] {$x_n$};
+  \path[every node/.style={font=\sffamily\small}]
+  (1) edge (2)
+  (1) edge (3)
+  (4) edge (5)
+  (6) edge (4)
+  (6) edge (7);
+  \path[every node/.style={font=\sffamily\small}]
+  (4) edge (1) [dashed] ;
+\end{tikzpicture}
+\caption{The DAG created when the expression $\sum_{i=0}^n x_i$ is computed
+iteratively}\label{fig:sum dag}
+\end{figure}
 		While the top-down approach seems to evade unnecessary recomputations, it
     usually largely over-estimates the needed precision.
     For example, to compute additions of two numbers up to precision $2^{-n}$
     it suffices to have the inputs with precision $2^{-(n+1)}$.
     If for example the sum $x := \sum_{i=0}^1000 x_i$ is computed iteratively (e.g. in a
-    for-loop), a DAG as in \temp{Figure} will be created. 
+    for-loop), a DAG as in Figure \ref{fig:sum dag} will be created. 
     Thus, $x_0$ has to be computed with precision $2^{-(n+1000)}$ while actually
     computing all input values with error less than $2^{-(n+10)}$ would 
     suffice to guarantee error of the sum of less than $2^{-n}$.
