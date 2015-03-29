@@ -1,0 +1,76 @@
+A large amount of problems that are solved with the help of computers are
+problems dealing with real numbers.
+
+The most common way to represent real numbers on a computer is the use of floating point
+arithmetic.
+The floating point representation of a real number is a finite word, consisting
+of mantissa and exponent of fixed length.
+Due to the finiteness of the representation it is unavoidable that errors
+occur.
+While in many cases the error stays small, there are also several examples
+where computations with floating point numbers yield results that are
+completely wrong.
+
+In any case, the error is not visible from the result, thus floating point
+arithmetic is not a reliable way to perform real number computations.
+
+Writing reliable algorithms on numerical problems requires however a sound
+theoretical foundation.
+
+While for discrete-valued problems there is a widely accepted theory for
+computability and complexity, there are several non-equivalent theories for
+computations on real numbers.
+
+One such theory is the Type-2 Theory of Effectivity (TTE) \cite{Wei}.
+In TTE reals are represented as infinite strings over some finite alphabet
+$\Sigma$.
+A real number is computable in TTE if it is possible to approximate it with any
+desired precision.
+
+TTE is supposed to be a realistic model, in the sense, that exactly those
+real numbers and functions are computable in TTE, that can be computed with a
+computer.
+
+Similar to the discrete-valued case a vast theory on computability and
+complexity has been built upon TTE \cite{viel}.
+
+Since TTE strives to be a realistic model, an important task is to compare
+theoretical claims with practical implementations.
+
+There are already quite a few implementations for reliable computations with
+real numbers (exact real arithmetic).
+One that has been proven to be particularly fast and therefore well-suited for
+practical implementations, is Norbert M\"uller's \cc framework \irram
+\cite{irram}.
+
+\irram extends \cc by classes and functions for error-free computations with
+real numbers.
+The details of the internal representation are taken care of by the framework. 
+Thus, the user can write ordinary \cc extended by data-type that behave like
+real numbers, without thinking about rounding errors.
+
+This thesis presents two case studies in exact real arithmetic, both using the
+\irram framework to implement the algorithms.
+
+The first case-study shows how exact real arithmetic can be used to get simpler
+algorithms for old problems in numerical analysis.
+The particular problem considered, is the shadowing distance for chaotic
+dynamic systems, i.e. how close a numerically computed orbit of a map $f: \RR
+\to \RR$ is followed by an exact orbit.
+This problem was originally considered by \temp{name} \cite{asda}. 
+Since they could not compute real numbers exactly, they used a form of interval
+arithmetic to bound the exact orbit.
+However, \irram can be used to compute the exact orbit and thus getting a
+simplified version of their algorithm.
+
+The second case-study deals with analytic functions. 
+Analytic functions have been thoroughly studied in real complexity theory, as a
+subset of real functions where many problems that are computationally hard in
+the general case become feasible. 
+To show how well those complexity claims compare with practical
+implementations, data-types to represent analytic functions have been written.
+The implementation is meant as an extension to the \irram framework, that
+provides user-friendly classes for computations with analytic functions.
+Empirical evaluation was done on the running time of those classes and compared
+with the expected running times from the theoretical examination.
+
