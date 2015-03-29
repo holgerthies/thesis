@@ -100,7 +100,7 @@ iteratively}\label{fig:sum dag}
     usually largely over-estimates the needed precision.
     For example, to compute additions of two numbers up to precision $2^{-n}$
     it suffices to have the inputs with precision $2^{-(n+1)}$.
-    If for example the sum $x := \sum_{i=0}^1000 x_i$ is computed iteratively (e.g. in a
+    If for example the sum $x := \sum_{i=0}^(1000) x_i$ is computed iteratively (e.g. in a
     for-loop), a DAG as in Figure \ref{fig:sum dag} will be created. 
     Thus, $x_0$ has to be computed with precision $2^{-(n+1000)}$ while actually
     computing all input values with error less than $2^{-(n+10)}$ would 

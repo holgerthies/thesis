@@ -10,8 +10,11 @@
     Again, the Turing-Machine model is used to describe the computations
 		\begin{definition}
 			For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ is the number of head movements 
-			the Turing Machine on input $w$ exectues before it terminates. \\
-			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in \Sigma^* and M terminates on input w \}$.\\
+			the Turing Machine on input $w$ exectues before it terminates. 
+
+			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in
+        \Sigma^* and \text{M terminates on input }w \}$.
+
 			Analogously, one can define space constraints.
 		\end{definition}
     In most cases it is not important to compute the exact running time, but
@@ -143,8 +146,8 @@
 		\end{definition}
 		As with the binary expansion, the number digits after the binary point correspond to the precision.
 
-		\temp{The advantage to the binary expansion is that, the signed digit
-    representation is symmetric, ,,,}
+		% \temp{The advantage to the binary expansion is that, the signed digit
+    % representation is symmetric, ,,,}
 		It can be shown that the signed digit representation is computably equivalent to the Cauchy representation.
 
 		When extending the complexity notion to functions, apart from the output
@@ -184,7 +187,7 @@
      \begin{enumerate}
        \item Addition, Subtraction and Multiplication as functions $K \times K
          \to \RR$.
-        \item The function $x \mapsto \frac(1){x}$ if $0 \not in K$. 
+        \item The function $x \mapsto \frac{1}{x}$ if $0 \not \in K$. 
          \item The functions $\exp, \sin, \cos$ as functions $K \to \RR$.
      \end{enumerate}
 		\end{example}
@@ -224,6 +227,6 @@
     least as hard as solving a problem in $\#P$.
     In that sense, Integration can be called $\#P$-hard.
 
-    \temp{Maybe add something on second order representations}
+    % \temp{Maybe add something on second order representations}
  	% \subsection{Parameterized Complexity}
   % \temp{Write something or remove this section.}

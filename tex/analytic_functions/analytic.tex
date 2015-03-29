@@ -1,5 +1,8 @@
 %!TEX root = ../../thesis.tex
-	Acknowledgment: Florian, Akitoshi
+  The following case study describes an implementation for a data-type for
+  analytic functions in \irram.
+  The implementation and theoretical analysis is joint work with Akitoshi Kawamura and Florian
+  Steinberg.
 	\section{Introduction}
 		In Chapter \ref{section:real_complexity} it was shown many important operators 
 		on real functions are known to be computationally hard.
@@ -527,7 +530,7 @@
 				\item A function \code{void rwrite(const POLY<coeff\_type>\& P, int precision)} that outputs the polynomial
 				in the form $a_n*X^n+ \dots a_n*X + a_0$ where the real numbers $a_0, \dots, a_n$ are written with the number of decimals given by the parameter \code{precision}.
 			\end{enumerate}
-			All methods were implemented in the most straight forward way. \temp{Evaluation should be Horner Scheme?}
+			All methods were implemented in the most straight forward way. 
 		\subsection{\func}
 			\textbf{\code{FUNC<RESULT(PARAM)>}} is a class template for functions with input 
 			of type \code{PARAM} and return type \code{RESULT}. 

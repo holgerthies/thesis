@@ -3,7 +3,7 @@
 The traditional way to compute with real numbers on a computer is the use 
 of \textbf{floating point arithmetic}. 
 
-The floating point representation of a real number is a bit-string with a  fixed
+The floating point representation of a real number is a bit-string with a fixed
 length.
 
 Numbers can be represented the following way:
@@ -20,6 +20,10 @@ Numbers can be represented the following way:
 	$$ \lceil log_2(e_{max}-e_{min}+1) \rceil + \lceil  p \cdot log_2 (b) \rceil + 1 $$
 	bits.
 \end{definition}
+
+Information on floating point arithmetic can for example be found in
+\cite{Goldberg1991}.
+
 If a real number does not fit into the above representation, it has to be
 rounded appropriately.
 
@@ -74,5 +78,21 @@ $(x+y)+z$ evaluates to $1$ while $x+(y+z)$ evaluates to $0$.
 	The standard requires that the result of addition, subtraction, multiplication and division is exactly rounded, 
 	i.e. the operation has to be performed exactly and then rounded.
 	
-
-  \temp{Rounding modes}
+  The standard also defines different rounding rules. 
+  To fulfill the requirements of the standard, the user should be able to
+  choose between the following rounding modes.
+  \begin{enumerate}
+    \item \textbf{Round to nearest} 
+      All results are rounded to the nearest representable value. 
+      If it is in the middle of two representable values, the one where the
+      lowest bit is zero is chosen.
+    \item \textbf{Round toward $\infty$}
+      All results are rounded to the smallest representable value larger than
+      the result.
+    \item \textbf{Round toward $-\infty$}
+      All results are rounded to the largest representable value smaller than
+      the result.
+    \item \textbf{Round toward $0$}
+      If the result is negative, it is rounded up, otherwise rounded down.
+  \end{enumerate}
+  
