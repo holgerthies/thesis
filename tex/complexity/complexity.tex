@@ -4,6 +4,8 @@
     In contrast to computability theory, complexity theory deals with the
     question how many resources (in form of e.g. time or space) are needed to
     compute a computable function.
+    A detailed introduction to discrete complexity theory can for example be
+    found in \cite{complexity}.
 
     Again, the Turing-Machine model is used to describe the computations
 		\begin{definition}
@@ -103,7 +105,7 @@
 		Consequently a way to show that there is most likely no efficient algorithm to a problem, is to show that the problem is $NP$-hard.
     For many problems it could be shown that they are $NP$-complete. 
     Some of the most important ones can for example be found in
-    \cite{bookwithnpcompleteproblems}
+    \cite{garey1979}
 	\subsection{Complexity Theory on real numbers}
 		In classical complexity theory the time complexity is usually measured in terms of the input size.
 		However, when considering continuous peoblems, the input is an infinite string and thus can not 
@@ -208,8 +210,9 @@
 		This  method leads to many connections between discrete complexity classes
     and numerical problems,
 
-    One example of such a connection is given in the following theorem.
-		\begin{theorem}[Friedman \cite{Fri}]
+    One example of such a connection is given in the following theorem which is
+    due to Friedmann. A proof can be found in \cite{KoBook}.
+		\begin{theorem}
 			The following are equivalent
 			\begin{enumerate}
 				\item $FP = \#P$
