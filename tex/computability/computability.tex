@@ -193,6 +193,15 @@ An easy way to formalize this concept is the use of oracle Turing-Machines.
  number $d \in \DD$ such that $| f(x) - d | \leq 2^{-n}$ for each oracle function
  $\Phi: \NN \to \DD$ such that for all $m \in \NN$ $|\Phi(m) - x| \leq 2^{-m}$.   
 \end{definition}
+\begin{figure}
+  \centering
+  \input{img/computability/oracle}
+  \caption{Computing a real function with an oracle Turing-machine. With input
+  $n \in \NN$ coded in unary, the machine has to return an approximation to
+  $f(x)$ with error bounded by $2^{-n}$. For that it can ask the oracle for
+  approximations of $x$ with error bounded by $2^{-m}$.
+  }
+\end{figure}
 A more general definition can be achieved by using representations and type-2
 Turing Machines.
 \begin{figure}
