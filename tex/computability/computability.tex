@@ -155,7 +155,7 @@ In particular the following are equivalent
   \item $x \in \RR$ is $\rho_{10}$ computable
   \item $x \in \RR$ is $\rho$-computable
 \end{enumerate}
-A real number is called \textbf{computable} if it is computable in the sense of one of
+A real number will be called \textbf{computable} if it is computable in the sense of one of
 those definitions.
 
 It can easily be seen that there must be non-computable reals, since the number
@@ -191,8 +191,8 @@ To do that, it can ask for arbitrary well approximations of the input $x$.
 An easy way to formalize this concept is the use of oracle Turing-Machines.
 \begin{definition}\label{def:computability_oracle_tm}
  An \textbf{oracle Turing-machine} is a Turing-Machine $M$ with one extra special
- tape, the \textbf{query tape}. The machine can be connected to an oracle
- function.
+ tape, the \textbf{query tape}. Further, the machine is connected to an oracle
+ function $\Phi$.
  If $M$ is connected to the function $\Phi$ it is written as $M^\Phi$. 
 
  The machine behaves like a usual (type-1) Turing-machine, but has two special
@@ -207,7 +207,7 @@ An easy way to formalize this concept is the use of oracle Turing-Machines.
   \end{itemize}
 
  A real function $f: \RR \to \RR$ is called computable if there is an oracle
- Turing-machine $M$, such that $M^\Phi$ computes at input $n \in \NN$ a dyadic rational
+ Turing-machine $M$, such that $M^\Phi$ computes with input $n \in \NN$ a dyadic rational
  number $d \in \DD$ such that $| f(x) - d | \leq 2^{-n}$ for each oracle function
  $\Phi: \NN \to \DD$ such that for all $m \in \NN$ $|\Phi(m) - x| \leq 2^{-m}$.   
 \end{definition}
@@ -264,7 +264,7 @@ functions computable with respect to the Cauchy representation.
 Some  properties of computable functions are
 \begin{enumerate}
   \item Computable functions map computable reals to computable reals
-  \item They map computable computable sequences of real numbers to computable
+  \item They map computable sequences of real numbers to computable
     sequences of real numbers
   \item They are closed under composition
 \end{enumerate}
@@ -277,19 +277,24 @@ A proof can for example be found in \cite{Wei}.
 
 In particular, tests of the form $\RR \to \{0,1\}$ are non-computable if their
 value is not constant. 
+
 A relaxation can be achieved by allowing functions to be multi-valued.
 \begin{definition}
-A multi-valued function $f: \subseteq X \rightrightarrows Y$ is just an other name for a relation $f \subseteq X \times Y$.
+A multi-valued function $f: \subseteq X \rightrightarrows Y$ is another name for a relation $f \subseteq X \times Y$.
+
 A multi-valued function is $(\rho_X, \rho_Y)$ computable, if there is a
 computable (single valued) function 
 $F: \subseteq \Sigma^\omega \to \Sigma^\omega$ such that for all $\sigma \in dom(f \circ \rho_X)$, $\rho_Y(F(\sigma)) \in f(\rho_X(\sigma))$. 
 \end{definition}
-A multi-valued function can have several values for the same point and only one
+In other words, a multi-valued function can have several values for the same point and only one
 of these values has to be computed. 
-Thus the computation becomes non-deterministic in some sense.
-In practical applications of computable analysis, multi-valued functions often
-have the form of a non-computable single-valued function that is allowed to
+This definition makes the computation becomes non-deterministic in some sense.
+
+In practical applications, a multi-valued functions often
+has the form of a non-computable single-valued function that is allowed to
 give slightly wrong results close to the points of non-computability.
+That is, the result may also depend on the given representation, and not on the
+underlying function alone.
 \begin{example}
   The floor function $x \mapsto \lfloor x \rfloor$ is not computable due to
   continuity reasons.
@@ -300,8 +305,11 @@ give slightly wrong results close to the points of non-computability.
 \end{example}
 
 \subsection{Computability of real operators and functionals}
-Questions of the form, given a real function, what is its maximum on $[0,1]$ 
-A real operator maps functions $\RR \to \RR$ to functions $\RR \to \RR$and a functional maps functions $\RR \to \RR$ to real numbers $\RR$.
+A common task in numerical analysis is providing answers to questions of the
+form, given a real function, what is its maximum on $[0,1]$.
+The input to such a question involving real operators and functionals is a real function.
+
+A real operator maps functions $\RR \to \RR$ to functions $\RR \to \RR$ and a functional maps functions $\RR \to \RR$ to real numbers $\RR$.
 To talk about computability of operators and functionals, one first has to fix
 the space that should be represented.
 
@@ -334,14 +342,23 @@ $$ D: C^1[0,1] \to C[0,1], f \to f'$$
 is computable.
 \end{theorem}
 \subsection{Uniformity and Non-Uniformity}
-In computability theory, one has to distinguish to modes of computability, \textbf{uniform} and \textbf{non-uniform}.
+In computability theory, one has to distinguish two modes of computability, \textbf{uniform} and \textbf{non-uniform}.
 
 For non-uniform computability it suffices, that for every input, there is an algorithm that computes the output. 
 The algorithm may however depend on the input in a non-computable way.
 
 In contrast, a problem is uniformly computable only if there is one algorithm, that computes the output for every valid input. 
 
-An example is the Intermediate Value Theorem.
+An example is the effective version of the Intermediate Value Theorem, i.e. the
+task to find a zero of a computable function $f : [0,1] \to \RR$ with
+$f(0)\cdot f(1) < 0$.
+
+If the set of zeros does not contain an interval it is possible to
+compute a zero.
+On the other hand, an interval always contains a computable number, thus in
+this case there also is a computable zero.
+However, it one can show that there is no Turing-machine that can decide which
+case holds and compute a zero from a given function alone.
 
 In practical applications, it is usually desired to have uniform algorithms.
 However, in many cases there does not exist a uniform algorithm in the standard
@@ -353,5 +370,5 @@ by extending the input by some additional discrete information, that can not be
 computed from the input only.
 
 For example, the floor function can be computed uniformly when given one
-additional bit, that contains the information if the input is an integer or
+additional bit, containing the information if the input is an integer or
 not.  
