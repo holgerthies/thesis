@@ -11,27 +11,28 @@
  a very brief overview is given in the following section. 
  A detailed introduction can for example be found in \cite{computability}.
 
- To define computability the Turing-Machine model is used.
+ To define computability, the Turing-Machine model is used.
  The Turing-Machine was invented by Alan Turing in 1936 \cite{turing36} and can
- be seen as simplified mathematical model for a computer.
+ be seen as a simplified mathematical model for a computer.
 
  The machine consists of an infinite tape that is divided into cells. 
  Each cell contains exactly one symbol from a predefined finite alphabet
  $\Sigma$.
- It further consists of a head that is always positioned on top of one cell 
- and can in one step read and write the content of the cell and then move one
+ It further consists of a head that is positioned on top of one cell 
+ and can (in one step) read and write the content of the cell and then move one
  cell left or right on the tape.
 
- The machine is always in one of finitely many states and has a finite
- instruction table containing instructions of the form when in state $q$ and
- reading symbol $s$, write $s'$ and move head to the left (or to the right).
+ The machine is always in one of finitely many predefined states and has a finite
+ instruction table containing instructions of the form "when in state $q$ and
+ reading symbol $s$, write $s'$ and move head to the left (or to the right)".
 
- A formal definition can for example be found in \cite{hopcroft2013}.
+ A formal definition of the Turing-machine can for example be found in \cite{hopcroft2013}.
  
  \begin{definition}
  	A possibly partial function $f:\subseteq \Sigma^* \to \Sigma^*$ is called \textbf{computable} if there exists 
- 	a Turing-Machine, so that for all $x \in dom(f)$ the machine terminates after finitely many steps with $f(x)$ on its 
- 	tape and for $x \not \in dom(f)$ the machine does not terminate.
+ 	a Turing-Machine, such that for all $x \in dom(f)$ the machine terminates after finitely many steps with $f(x)$ on its 
+ 	tape and the head positioned on the first symbol of $f(x)$. 
+  For $x \not \in dom(f)$ the machine does not terminate.
  \end{definition}
 
  Even tough the Turing-Machine model is quite simple, it can be used to
@@ -40,13 +41,14 @@
  that is computable in an informal sense, can be computed with a
  Turing-machine.
 
- There are many different variations on the Turing-Machine model, and many
- different ways to define computability, that will however all lead to an
- equivalent notion.
- 
+ Many other definitions to formalize the computability notion have been thought
+ of, that could all be shown to be equivalent to the Turing-machine.
+
+ Sometimes it is easier to proof something using a slight variation of the
+ Turing-machine, that is however computationally equivalent.
  Some variations on the model that will be useful later are the following
  \begin{enumerate}
-   \item A multi-tape Turing-machine has $k$ independent tapes for some $k \in
+   \item A multi-tape Turing-machine has $k$ independent tapes for some fixed $k \in
      \NN$. Each tape has its own head that can move independently from the
      others.
    \item A non-deterministic Turing-machine can have several possible resulting
@@ -65,36 +67,50 @@ it is empty or if $A$ is the domain of a computable function.
 \end{definition}
 \subsection{Computability of real numbers}
 The previous section showed how to define computability for functions over finite alphabets $\Sigma^* \to \Sigma^*$. 
-That is enough to define computability for finite structures, but does not
-suffice to make any statements on real numbers.
+That is enough to define computability for finite structures like natural
+numbers or graphs, but does not suffice to make any statements on real numbers.
 
 The following section defines how to extend the classical notion to uncountable
 objects such as real or complex numbers, functions or infinite sequences.
 
-There are several non equivalent ways, to define computability on such objects. 
+There are several non equivalent ways to define computability on such objects. 
 In contrast to the classical case, where the definition using Turing-machines is widely accepted, there is no 
 generally accepted model for real complexity theory.
 
-One possible model is the so called \textbf{Type 2 Theory of Effectivity}
-(TTE). A detailed overview can for example be found in \cite{Wei} or
+The model used for this thesis is the so called \textbf{Type 2 Theory of Effectivity}
+(TTE). 
+A detailed overview of this model can for example be found in \cite{Wei} or
 \cite{Brattka2008a}.
 This model aims to realistically model what is possible to compute with a
-computer and is useful in the analysis of the algorithms that will follow
-later.
-It is therefore the sole model used in this thesis. 
+computer and gives a tool to analyze computability and complexity of real
+numbers and functions.
 
-TTE extends the Turing-Machine model to so called type-2 Turing-machines, that
-can work on infinite strings $s \in \Sigma^w$. 
+Since real numbers are infinite, it is not possible to read or write them in
+finite time.
+
+A first definition can therefore look as the following.
+\begin{definition}\label{def:computable real1}
+ A real number is computable if there is a Turing-Machine, that has no input
+ and writes without terminating the binary expansion of $x$ on its tape.
+\end{definition}
+To extend the definition to other uncountable structures, like real or complex
+functions, a slightly different approach is more convenient.
+
+TTE extends the Turing-Machine model to so called type-2 Turing-machines.
+In contrast to an ordinary Turing-machine a type-2 machine can work on infinite strings $s \in \Sigma^w$. 
 \begin{definition}
 A type-2 Turing-machine is a multi-tape Turing-machine with two special tapes,
-an \textbf{input tape} and an \textbf{output tape}, and at least one working
-tape. 
+an \textbf{input tape} and an \textbf{output tape}.
+There also exists at least one working tape. 
+
 The input tape is read-only, i.e. it is not possible to change a cell on the
-tape. Further, the head on both input and output tape can not be moved to the
-left. In particular it is not possible to change a symbol that has been written
+tape. 
+Further, the head on both input and output tape can not be moved to the
+left. 
+In particular it is not possible to change a symbol that has been written
 on the output tape once. 
 \end{definition}
-From now on the term Turing-Machine is used both for classical and type 2
+The term Turing-Machine will be used both for classical and type-2
 machines, when it is obvious by context which model is meant.
 \begin{definition}\label{def:computability_ttt}
 A function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ is called computable if there is a Turing-Machine  
@@ -103,16 +119,19 @@ For $\sigma \not \in dom(f)$ the machine writes only finitely many symbols on th
 \end{definition}
 To talk about computability over some arbitrary set, it has to be encoded to
 $\sigma^\omega$. 
-Such an encoding can be formalized in the following way
+Such an encoding can be formalized in the following way:
 \begin{definition}\label{def:representation}
-	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. \\
-	$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. \\
+	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. 
+
+	$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. 
+
 	$x \in X$ is \textbf{$\alpha$-computable} if it has a decidable $\alpha$-name.
 \end{definition}
 
 In contrast to the countable case, where a canonical encoding is obvious in most
 cases, finding a good representation is more challenging in the uncountable
 case.
+
 Different representations can lead to a different computability notion.
 Thus it is important to find a representation that leads to a useful and
 realistic notion of computability.
@@ -130,13 +149,12 @@ Some of the above notions lead to an equivalent definition of a computable real
 numbers, but others do not.
 
 In particular the following are equivalent
-\begin{theorem}
 \begin{enumerate}
-  \item $x \in \RR$ is computable in the sense of Definition 
+  \item $x \in \RR$ is computable in the sense of Definition
+    \ref{def:computable real1}
   \item $x \in \RR$ is $\rho_{10}$ computable
   \item $x \in \RR$ is $\rho$-computable
 \end{enumerate}
-\end{theorem}
 A real number is called \textbf{computable} if it is computable in the sense of one of
 those definitions.
 
