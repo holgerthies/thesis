@@ -9,19 +9,20 @@
 
     Again, the Turing-Machine model is used to describe the computations
 		\begin{definition}
-			For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ is the number of head movements 
-			the Turing Machine on input $w$ exectues before it terminates. 
+			For a given Turing Machine $M$ and $w \in \Sigma^*$, $time_M(w)$ denotes the number of head movements 
+			the Turing Machine on input $w$ executes before it terminates. 
 
 			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in
         \Sigma^* and \text{M terminates on input }w \}$.
 
-			Analogously, one can define space constraints.
+        Space constraints can be defined similarly.
 		\end{definition}
     In most cases it is not important to compute the exact running time, but
     one rather wants to approximate how the algorithm will behave when the
-    input is getting large.
+    input is getting larger.
+    
     The standard way to compare the asymptotic running time of algorithms is
-    the use of $O$-notation.
+    the use of the $O$-notation.
 		\begin{definition}
 			For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$ if there are constants $M \in \RR$, $n_0 \in \NN$, such that
 			$ f(n) \leq M \cdot g(n)$ for all $n > n_0$. 
@@ -33,14 +34,14 @@
 			However, complexity theory mainly is not about the complexity of specific
       algorithms, but rather deals with the complexity of problems. 
       That is, trying to classify the complexity of \textbf{any} algorithm to
-      decide a subset of $\Sigma^*$.
+      decide some subset of $\Sigma^*$.
       
       The following gives a classifications of problems depending on the
       running time for algorithms solving those problems.
 		\begin{definition}
 			For a function $t: \NN \to \NN$ let 
       $$ \text{DTIME}(t) = \{ A \subseteq \Sigma^* \,|\, \text{There is a
-      Turingmachine } M \text{ deciding } A \text{ with time}_M(n) \in O(t(n)) \} $$
+      Turing-machine } M \text{ deciding } A \text{ with time}_M(n) \in O(t(n)) \} $$
 
       NTIME$(t)$ describes the same for the case of $M$ being a
       non-deterministic Turing-machine.
@@ -56,31 +57,38 @@
 			\end{eqnarray*}
 		\end{definition}
 		It holds $P \subseteq NP \subseteq PSPACE \subseteq EXPTIME$. 
-		It is $P \neq EXPTIME$ and for all other inclusions it is not known if equality holds, but most 
-		complexity theorists consider it as extremely unlikely.
+		It is $P \neq EXPTIME$ while for all other inclusions it is not known if equality holds.
+    Most researchers in complexity theory, however, believe that equality does
+    not hold for any of the inclusions.
 
     Another way to characterize the important class $NP$ is the following
     \begin{theorem}
       $A \subseteq \Sigma^*$ is in $NP$ if and only if there are polynomials
       $p$ and $q$ and a deterministic Turing-Machine $M$ such that for all $x
-      \in \Sigma^*$ with length n, there is an $y \in \Sigma*$ with length
+      \in \Sigma^*$ with length $n$, there is an $y \in \Sigma*$ with length
       bounded by $q(n)$ such that $x \in A \text{ iff } M(<x,y>) = 1$ and 
       $x \not \in A \text{ iff } M(<x,y>) = 0$. 
       Further $M$'s running time is bounded by $p(n)$ for all such inputs
       $<x,y>$.  
     \end{theorem}
-		Wheter $P = NP$ is one of the Millenium problems and one of the biggest unsolved problems in Computer Science.
+		Whether $P = NP$ is one of the Millennium problems and one of the biggest unsolved problems in Computer Science.
 
 		One can also consider function problems instead of decision problems
     leading to a dual hierarchy of complexity classes.
 		\begin{definition}
       A functional problem $F: \Sigma^* \rightrightarrows \Sigma^*$, is solved
-      by a Turing-Machine in if it writes on every $x \in \Sigma^*$ an output
-      $z \in F(x)$ or decides that no such output exists.  \\ Time- and
-      Space-Complexity can be defined accordingly. \\ The classes $FP$ and
-      $FPSPACE$ are defined as the class of polynomial time resp. space
-      computable functions. \\ The class $\#P$ is defined as the the class of
-      functions that give the number of solutions to a problem in $NP$.
+      by a Turing-Machine if it writes on every $x \in \Sigma^*$ an output
+      $z \in F(x)$ or decides that no such output exists.  
+      
+      The definitions of time- and space complexity can easily be adopted to
+      functional problems.
+
+      The classes $FP$ and $FPSPACE$ are defined as the class of polynomial
+      time resp. space computable functions.  
+      
+      The class $\#P$ is defined as the class of functions that give the number
+      of solutions to a problem in
+      $NP$.
     \end{definition}
 		It holds $FP \subseteq \#P \subseteq FPSPACE$ and if $FP = \#P$ would hold, it would follow that $P = NP$.
      
@@ -89,9 +97,10 @@
 
     Since most of the complexity classes are not known to be distinct, they do
     not suffice to classify problems by their difficulty.
-    To compare the difficulty of problems, reductions are used.
+
+    To compare the difficulty of problems, reductions can be used.
 		\begin{definition}
-			$A \subset \Sigma^*$ is \textbf{polynomial time reducible} to $B \subseteq \Sigma^*$ ($A \leq_P B)$, 
+			$A \subset \Sigma^*$ is \textbf{polynomial time reducible} to $B \subseteq \Sigma^*$ ($A \leq_P B$), 
 			if there is a polynomial time computable function $f; \Sigma^* \to \Sigma^*$, such that
 			$$ w \in A \Leftrightarrow f(w) \in B.$$
 		\end{definition}
@@ -99,25 +108,27 @@
     lower then $P$, but they are not needed in this thesis and therefore
     omitted.
 
-		The hardest problems in a complexity class are called complete for this class
+		The "hardest" problems in a complexity class are called complete for this class
 		\begin{definition}
-			A set $A \subseteq \Sigma^*$ is called \textbf{$\C$-hard} (w.r.t. $\leq_P$) for a complexity class $\C$, if for all $B \in \C$ $B \leq_P A$. \\
+			A set $A \subseteq \Sigma^*$ is called \textbf{$\C$-hard} (w.r.t. $\leq_P$) for a complexity class $\C$, if for all $B \in \C$ $B \leq_P A$. 
+
 			$A$ is called \textbf{$\C$-complete} (w.r.t. $\leq_P$), if $A$ is $\C-hard$ and $A \in \C$.  
 		\end{definition}
 		If one would show for a single $\C$-complete problem that it is in $P$, it would follow that all problems in $\C$ are in $P$.
 		Consequently a way to show that there is most likely no efficient algorithm to a problem, is to show that the problem is $NP$-hard.
+
     For many problems it could be shown that they are $NP$-complete. 
     Some of the most important ones can for example be found in
     \cite{garey1979}
 	\subsection{Complexity Theory on real numbers}
 		In classical complexity theory the time complexity is usually measured in terms of the input size.
-		However, when considering continuous peoblems, the input is an infinite string and thus can not 
+		However, when considering continuous problems, the input is an infinite string and thus can not 
 		be used to measure the running time of an algorithm.
 
 		In numerical computations an important parameter is the desired output precision.
 		Thus, it seems reasonable to analyze the running time as a function depending on the desired output precision.
     
-		This leads to the following definition for the complexity of a single real
+		This leads to the following definition for the complexity of a real
     number
 		\begin{definition}\label{def:complexity_real_number}
 			A real number $x \in \RR$ is computable in time $t$ if there is a Turing Machine $M$ that with input $n \in \NN$ in binary, 
@@ -129,7 +140,8 @@
       
     One has to be careful, however, since representations that are
     computationally equivalent, do not necessary lead to the same complexity
-    bounds.  For example, one can construct arbitrarily long Cauchy names for
+    bounds.  
+    For example, one can construct arbitrarily long Cauchy names for
     any rational number.
     Thus, it is not even possible to define the complexity of a real number
     with respect to its Cauchy name.
@@ -137,9 +149,9 @@
 		A more useful representation for complexity is the signed-digit
     representation.
 		\begin{definition}
-			The \textbf{signed digit representation} $\rho_sd$ is defined as follows: 
+			The \textbf{signed digit representation} $\rho_{sd}$ is defined as follows: 
 
-			A $\rho_d$-name of a real number $x$ is a sequence 
+      A $\rho_{sd}$-name of a real number $x$ is a sequence 
 			$$a_n a_{n-1} \dots a_0 . a_{-1} a_{-2} \dots \text{ with } a_i \in \{-1,0,1\}, n \geq -1, a_n \neq 0, a_n + a_{n-1} \neq 0$$
       and
 			$$  x = \sum_{i=n}^{-\infty} a_i \cdot 2^i $$  
@@ -159,11 +171,11 @@
       A function $f: \subseteq \RR \to \RR$ is computed on a compact set $K
       \subseteq dom(f)$ in time $t$ with lookahead $l$ if for all
       $\rho_{sd}$-names of elements $ x \in K$ by a Turing Machine $M$ if $M$
-      computes a $\rho_{sd}$-name of $f(x)$ and after t steps and with reading
+      computes a $\rho_{sd}$-name of $f(x)$ and after $t$ steps and with reading
       at most $l$ symbols of the input string outputs the $n$-th symbol of the
       output.   
     \end{definition} 
-    The above comolexity notion really only makes sense on a compact set, since
+    The above complexity notion really only makes sense on a compact set, since
     otherwise the machine could already spend arbitrarily much time on just
     reading the input left from the binary point.
     
@@ -171,14 +183,15 @@
     Turing Machines which have polynomial time bounded running time. 
 
     With the above notion computable real numbers and functions can be
-    classified into complexity classes like in the discrete case.
+    classified into complexity classes analogously to the discrete case.
+
     An important class for practical purposes is the class of polynomial time
-    computable numbers and functions, since they usually can be computed
-    efficiently with a computer.
+    computable numbers and functions, since in many cases they correspond to
+    the ones that can be computed efficiently with a computer.
    
     An important property of polynomial time computable reals is given in the
     following theorem.
-		\begin{theorem}[Ko and Friedmann]
+		\begin{theorem}[Ko and Friedman]
 			The set of polynomial time computable real numbers forms a real algebraically closed field.
 		\end{theorem}
 		\begin{example}
@@ -209,18 +222,17 @@
     study the time complexity of the real valued function $F(f)$ where $f$ is a
     polynomial time computable function.
 
-
 		This  method leads to many connections between discrete complexity classes
-    and numerical problems,
+    and numerical problems.
 
     One example of such a connection is given in the following theorem which is
-    due to Friedmann. A proof can be found in \cite{KoBook}.
+    due to Friedman. A proof can be found in \cite{KoBook}.
 		\begin{theorem}
 			The following are equivalent
 			\begin{enumerate}
 				\item $FP = \#P$
-				\item For every polynomial time computable function $f: [0,1] \to \R$, the function
-					$g: [0,1] \to \R$, defined by $g(x) = \int_0^x f(t) dt$ is polynomial time computable.
+				\item For every polynomial time computable function $f: [0,1] \to \RR$, the function
+					$g: [0,1] \to \RR$, defined by $g(x) = \int_0^x f(t) dt$ is polynomial time computable.
 			\end{enumerate} 
 		\end{theorem}
 		Thus, one can say that integration of polynomial time computable functions is at
