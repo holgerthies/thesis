@@ -1,18 +1,25 @@
 %!TEX root = ../../thesis.tex
 \section{Interval Arithmetic}
 	When using floating point arithmetics several real numbers are mapped to the
-  same floating point representation, thus in most cases the number will not be
-  represented exactly.
+  same floating point representation. 
+  This leads to numbers not being represented exactly in almost all cases.
 
 	Further, a single floating point number does not contain any information
-  about its accuracy, and so it is impossible to know how big the error is.
+  about its accuracy, and so there is no way to find out if the result of a
+  computation can be trusted or not.
 
-	Often, one wants to at least bound the error. 
+  Even if exact computation is not necessary, often one wants to have at least
+  a bound on the error of the result, to decide if it is useful or not.
     
-  An easy way to do this, is using interval arithmetic \cite{Kearfott1996}, i.e. instead of making
-  computations on isolated single real numbers, whole intervals are used.
+  A rather easy way to get error bounds, is using interval arithmetic
+  \cite{Kearfott1996}.
+  Interval arithmetic means, that instead of making computations on isolated single real numbers, whole
+  intervals are used.
 
-	This means a real number $r \in \RR$ is represented by an interval $x := [x_l,x_r]$, so that $r \in x$.
+	A real number $r \in \RR$ is represented by an interval $x := [x_l,x_r]$, so that $r \in x$.
+  When performing operations (addition, multiplication, etc.) a new interval,
+  containing each possible result that can be obtained from performing the
+  operation on the original intervals, has to be computed.
 	The advantage to floating point arithmetics is that the length of the interval gives a bound on the rounding error, 
 	thus making it possible to guarantee the accuracy of computed results.
 
@@ -22,7 +29,7 @@
 
 	The interval extension of a function is not unique, but usually one tries to
   find a mapping that is as tight as possible, i.e. the length of the resulting interval
-  should be small.
+  should be as small as possible.
   
   Basic arithmetic operations can be easily defined on intervals:
 	\begin{theorem}
@@ -66,10 +73,10 @@
 	The strength of interval arithmetic is, that it can easily be implemented even when the above 
 	operations on the interval endpoints are not computed exactly, but finite approximations are used.
 	
-	For that to work, the only thing that is important, is that outward rounding is used, i.e. 
+	This does, however, only work if outward rounding is used, i.e. 
 	after every operation the left point of the interval has to be rounded down and the right point rounded up.
 
-	IEEE 754 requires, that the user is able to specify the rounding mode, thus interval arithmetic can be implemented 
+	Since IEEE 754 requires, that the user is able to specify the rounding mode, interval arithmetic can be implemented 
 	using standard floating point numbers.
 
 	Note that the length of the interval can increase quickly.
@@ -77,7 +84,9 @@
 	There are many implementations of interval arithmetic in different programming languages, e.g. 
 	for \cc the boost interval arithmetic library can be used.
 
-  Interval arithmetic can be combined with arbitrary-precision arithmetic to
+  When using floating point arithmetic, the minimal interval length is bounded
+  by the machine epsilon.
+  Interval arithmetic can, however, also be combined with arbitrary-precision arithmetic to
   get arbitrarily small intervals, leading to arbitrarily exact computations
   with the possibility to bound the rounding error after the computation.
 
