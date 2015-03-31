@@ -253,11 +253,17 @@
 \section{Evaluation}
   \subsection{Breakdown points}
   As mentioned above, the algorithm only works when at each step $x_i \leq
-  \frac{a}{4}.$ 
+  \frac{a}{4}$.  
   If the algorithm fails, the first $N$ for that there is some $i$ such that
   $x_i > a_i$ is called the breakdown point.
 
   The breakdown point depends on the precision that is used to compute the pseudo orbit. 
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/dynamic_systems/breakdown}
+    \caption{Breakdown points depending on $N$ for different parameters $a$ and
+    $p_0$}\label{fig:breakdown}
+  \end{figure}
 
   Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed.
   Instead, the noise was artificially increased by setting $x_{n+1} =
@@ -273,8 +279,10 @@
 
   Interestingly no such relation could be found for the modified version that
   uses \code{cpp\_bin\_float} instead of a noise amplitude.
-  In this version breakdowns very rarely occur during the first $10^7$
+  As can be seen in \ref{fig:breakdown}, in this version breakdowns very rarely occur during the first $10^7$
   iterations.
+  There are, however, some parameters for that a breakdown occurs, but in most
+  cases it will occur rather quickly, during the first 1000 iterates.
 
   The reason for that is probably, that the correct rounding compensates much
   of the errors, which is not the case when the noise is artificially generated

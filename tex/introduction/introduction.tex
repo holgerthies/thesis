@@ -1,30 +1,42 @@
 A large amount of problems that are solved with the help of computers are
 problems dealing with real numbers.
+Examples include computing zeroes, maxima or minima of real functions, solving
+differential equations or determining eigenvalues.
 
 The most common way to represent real numbers on a computer is the use of floating point
 arithmetic.
 The floating point representation of a real number is a finite word, consisting
-of mantissa and exponent of fixed length.
-Due to the finiteness of the representation it is unavoidable that errors
+of a mantissa and an exponent of fixed length.
+Due to the finiteness of the representation, it is unavoidable that errors
 occur.
 While in many cases the error stays small, there are also several examples
 where computations with floating point numbers yield results that are
-completely wrong.
+completely wrong and far off from the correct value.
 
-In any case, the error is not visible from the result, thus floating point
-arithmetic is not a reliable way to perform real number computations.
+In any case, the error is not visible from the representation, thus without
+additional analysis it is impossible to know, if the error is too big or not.
+Floating point arithmetic is therefore not a reliable way to perform real number
+computations.
 
-Writing reliable algorithms on numerical problems requires however a sound
+There are many cases where reliable results are necessary.
+Writing reliable algorithms on numerical problems requires, however, a sound
 theoretical foundation.
 
-While for discrete-valued problems there is a widely accepted theory for
+While every natural number is obviously computable, the same can not hold for
+real numbers for countability reasons.
+
+Computable real numbers were already introduced by Alan Turing in his famous
+paper "On computable numbers, with an application to the Entscheidungsproblem"
+\cite{turing36}.
+However, while for discrete-valued problems there is a widely accepted theory for
 computability and complexity, there are several non-equivalent theories for
-computations on real numbers.
+computations on real numbers and none of them is universally accepted among
+researchers.
 
 One such theory is the Type-2 Theory of Effectivity (TTE) \cite{Wei}.
 In TTE reals are represented as infinite strings over some finite alphabet
 $\Sigma$.
-A real number is computable in TTE if it is possible to approximate it with any
+Informally, a real number is computable in TTE if it is possible to approximate it with any
 desired precision.
 
 TTE is supposed to be a realistic model, in the sense, that exactly those
@@ -37,8 +49,9 @@ complexity has been built upon TTE.
 Since TTE strives to be a realistic model, an important task is to compare
 theoretical claims with practical implementations.
 
-There are already quite a few implementations for reliable computations with
-real numbers (exact real arithmetic).
+Using computers to perform exact computations on real numbers is called exact
+real arithmetic.
+There are already quite a few implementations for exact real arithmetic.
 One that has been proven to be particularly fast and therefore well-suited for
 practical implementations, is Norbert M\"uller's \cc framework \irram
 \cite{irram}.
@@ -53,7 +66,7 @@ This thesis presents two case studies in exact real arithmetic, both using the
 \irram framework to implement the algorithms.
 
 The first case-study shows how exact real arithmetic can be used to get simpler
-algorithms for old problems in numerical analysis.
+algorithms for classical problems in numerical analysis.
 The particular problem considered, is the shadowing distance for chaotic
 dynamic systems, i.e. how close a numerically computed orbit of a map $f: \RR
 \to \RR$ is followed by an exact orbit.

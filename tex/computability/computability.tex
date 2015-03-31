@@ -46,7 +46,7 @@
  
  Some variations on the model that will be useful later are the following
  \begin{enumerate}
-   \item A multi-tape Turing-machine has k independent tapes for some $k \in
+   \item A multi-tape Turing-machine has $k$ independent tapes for some $k \in
      \NN$. Each tape has its own head that can move independently from the
      others.
    \item A non-deterministic Turing-machine can have several possible resulting
@@ -185,7 +185,7 @@ An easy way to formalize this concept is the use of oracle Turing-Machines.
     \item The string $x$ on the query tape is replaced by the string $\Phi(x)$
     \item The machine goes into the answer state
     \item The head of the query tape is moved on top of the first symbol of the
-      oracle's anwer
+      oracle's answer
   \end{itemize}
 
  A real function $f: \RR \to \RR$ is called computable if there is an oracle
@@ -259,10 +259,11 @@ A proof can for example be found in \cite{Wei}.
 
 In particular, tests of the form $\RR \to \{0,1\}$ are non-computable if their
 value is not constant. 
-A relexation can be achieved by allowing functions to be multi-valued.
+A relaxation can be achieved by allowing functions to be multi-valued.
 \begin{definition}
 A multi-valued function $f: \subseteq X \rightrightarrows Y$ is just an other name for a relation $f \subseteq X \times Y$.
-A multi-valued function is $(\rho_X, \rho_Y)$ computable, if there is a a comnputable (single valued) function 
+A multi-valued function is $(\rho_X, \rho_Y)$ computable, if there is a
+computable (single valued) function 
 $F: \subseteq \Sigma^\omega \to \Sigma^\omega$ such that for all $\sigma \in dom(f \circ \rho_X)$, $\rho_Y(F(\sigma)) \in f(\rho_X(\sigma))$. 
 \end{definition}
 A multi-valued function can have several values for the same point and only one
