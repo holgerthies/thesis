@@ -1,12 +1,12 @@
 %!TEX root = ../../thesis.tex
 \section{Floating Point Arithmetic}
-The traditional way to compute with real numbers on a computer is the use 
+The traditional way to perform computations with real numbers on a computer is the use 
 of \textbf{floating point arithmetic}. 
 
 The floating point representation of a real number is a bit-string with a fixed
 length.
 
-Numbers can be represented the following way:
+Numbers are represented the following way:
 \begin{definition}\label{def: floating point number}
 	A floating point representation with base $b$ and precision $p$
 	is a string $\pm d_0 . d_1 \dots d_{p-1} \times b^e$ with $0 \leq d_i < b$.	
@@ -32,13 +32,15 @@ the result does not fit into the finite representation anymore.
 
 With the above definition the floating point representation of a number is not
 unique. 
-To guarantee uniqueness it is usually required that the representation  is normalized, i.e. that $d_0 \neq 0$. 
+To guarantee uniqueness it is usually required that the representation  is
+normalized, i.e. that $d_0 \neq 0$. 
 
 Of course, $0$ can not be represented in this form, so often a special
 representation is chosen for $0$.
 
 Doing real number computations using floating point numbers will in most cases
 lead to rounding errors.
+
 One can distinguish two cases of errors, the \textbf{absolute error}, the
 distance between the real result and the computed one, and the \textbf{relative
 error}, the absolute error divided by the real result.
@@ -54,9 +56,13 @@ $(x+y)+z$ evaluates to $1$ while $x+(y+z)$ evaluates to $0$.
 % 	The relative error when computing $x-y$ for floating point numbers $x,y$ can be as large as $b-1$. 
 % \end{theorem}
 % Note: Guard digits
+
+Floating point types are often built into hardware, and thus computations can
+be performed extremely quickly.
 \subsection{The IEEE Standard}
 	Floating point representations for binary base are standardized by IEEE 754 \cite{ieee}. 
 	This standard is followed by almost all modern computers.
+
 	The standard defines four different precisions: single, single-extended, double and double-extended.
   \begin{table}
 	  	\centering
@@ -75,12 +81,11 @@ $(x+y)+z$ evaluates to $1$ while $x+(y+z)$ evaluates to $0$.
  Apart from the numbers definable in the way of Definition \ref{def:
  floating point number}, the standard also introduces special quantities $-0, +0, \inf, +\inf$ and NAN (not a number). 
     
-	The standard requires that the result of addition, subtraction, multiplication and division is exactly rounded, 
-	i.e. the operation has to be performed exactly and then rounded.
+	It is required that the result of addition, subtraction, multiplication and division is exactly rounded, 
+	i.e. the operation has to be performed exactly and then rounded afterwards.
 	
-  The standard also defines different rounding rules. 
-  To fulfill the requirements of the standard, the user should be able to
-  choose between the following rounding modes.
+  The rules for rounding are also defined in the standard.
+  It is required to offer at least the following four rounding modes.
   \begin{enumerate}
     \item \textbf{Round to nearest} 
       All results are rounded to the nearest representable value. 
@@ -95,4 +100,5 @@ $(x+y)+z$ evaluates to $1$ while $x+(y+z)$ evaluates to $0$.
     \item \textbf{Round toward $0$}
       If the result is negative, it is rounded up, otherwise rounded down.
   \end{enumerate}
-  
+  The user should be able to select which of the rounding modes should be
+  applied.
