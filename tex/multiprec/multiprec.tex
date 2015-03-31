@@ -7,7 +7,8 @@
 
 	Arbitrary precision means that the user is able to choose the precision with which 
 	computations are performed (usually only limited by the available main memory).
-  Usually an arbitarty-precision number is implemented as a list or array of
+
+  Usually an arbitrary-precision number is implemented as a list or array of
   built-in data-structures together with algorithms that perform arithmetic operations on
   this representation.
 
@@ -22,6 +23,8 @@ Library for \cc \cite{boostmultiprecision} or \code{mpmath} for \code{Python}
   length. 
   Thus, the precision can be arbitrarily good, but will still be fixed during
   the program flow.
-  The user has the responsibility to choose a precision high enough to
-  guarantee, that the end result's precision will suffice.
+  Rounding errors still occur and in most implementations it is not possible to
+  get bounds on the error from the computation result.
 
+  The user usually has to perform additional analysis on the problem, to choose
+  a computation precision that yields exact enough results.
