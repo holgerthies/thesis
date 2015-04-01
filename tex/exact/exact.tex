@@ -4,11 +4,11 @@
 	the precision is set in the beginning and rounding and truncation errors still accumulate.
 	The result obtained in the end may still not have sufficient precision.
 
-	In contrast, the goal of exact real arithmetic is to perform compuations on real numbers without 
+	In contrast, the goal of exact real arithmetic is to perform computations on real numbers without 
 	accumulating errors.
   
   On demand a number can be printed up to any desired precision. 
-	More precicely, the user does not specify the precision the numbers are represented with in the beginning,
+	More precisely, the user does not specify the precision the numbers are represented with in the beginning,
 	but gives a desired precision \textbf{for the answer} of the computation.
   
   The implementation has to take care of the steps necessary to generate the
@@ -35,7 +35,7 @@
   \begin{figure}[h]
       \centering
       \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
+  thick,minimum size=1cm,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
 
   \node[main node] (1) {$+$};
   \node[main node] (2) [below left of=1] {$\sqrt{}$};
@@ -74,8 +74,8 @@
 		\end{enumerate}
     \begin{figure}
       \centering
-      \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
+      \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,minimum
+          size=1cm,thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
 
   \node[main node] (1) {$+$};
   \node[main node] (2) [below left of=1] {$x_0$};
