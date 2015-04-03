@@ -114,8 +114,7 @@ The term Turing-Machine will be used both for classical and type-2
 machines, when it is obvious by context which model is meant.
 \begin{definition}\label{def:computability_ttt}
 A function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ is called computable if there is a Turing-Machine  
-that for each infinite strings $\sigma in dom(F)$ on its input tape, writes the infinite string $F(\sigma)$ on its output tape. 
-For $\sigma \not \in dom(f)$ the machine writes only finitely many symbols on the output tape.  
+that for each infinite string $\sigma \in dom(F)$ on its input tape, writes the infinite string $F(\sigma)$ on its output tape. 
 \end{definition}
 To talk about computability over some arbitrary set, it has to be encoded to
 $\sigma^\omega$. 
@@ -316,8 +315,8 @@ the space that should be represented.
 Continuous functions on a compact subset $X \subseteq R^d$ can be uniformly approximated by polynomials arbitrarily close.
 A possible representation for real valued functions is thus given by the following definition 
 \begin{definition}
-A $[\rho^d \to \rho]$-name of a function $f \in C([0,1]^d, \\R)$ is given by a
-sequence $P_n \in \\D[x1, \dots, x_d]$ of polynomials (i.e. degree and list of
+A $[\rho^d \to \rho]$-name of a function $f \in C([0,1]^d, \RR)$ is given by a
+sequence $P_n \in \DD[x1, \dots, x_d]$ of polynomials (i.e. degree and list of
 coefficients), such that $\vert f - P_n \vert_\infty < 2^{-n}$
 \end{definition}
 Computability of Operators and functionals operating on functions in
@@ -327,7 +326,7 @@ last section.
 With this notion the following holds
 \begin{theorem}
 The integration operator 
-$$I: C[0,1] \ to C[0,1], f \to (x \to \int_0^x f(t) dt$$   
+$$I: C[0,1] \to C[0,1], f \to \left(x \to \int_0^x f(t) dt\right)$$   
 is computable.
 \end{theorem}
 Unfortunately, the same does not hold for the derivative

@@ -13,7 +13,7 @@
 			the Turing Machine on input $w$ executes before it terminates. 
 
 			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in
-        \Sigma^* and \text{M terminates on input }w \}$.
+        \Sigma^* \text{ and M terminates on input }w \}$.
 
         Space constraints can be defined similarly.
 		\end{definition}
@@ -66,10 +66,10 @@
       $A \subseteq \Sigma^*$ is in $NP$ if and only if there are polynomials
       $p$ and $q$ and a deterministic Turing-Machine $M$ such that for all $x
       \in \Sigma^*$ with length $n$, there is an $y \in \Sigma*$ with length
-      bounded by $q(n)$ such that $x \in A \text{ iff } M(<x,y>) = 1$ and 
-      $x \not \in A \text{ iff } M(<x,y>) = 0$. 
+      bounded by $q(n)$ such that $x \in A \text{ iff } M(\langle x,y \rangle = 1$ and 
+      $x \not \in A \text{ iff } M(\langle x,y \rangle = 0$. 
       Further $M$'s running time is bounded by $p(n)$ for all such inputs
-      $<x,y>$.  
+      $\langle x,y \rangle$
     \end{theorem}
 		Whether $P = NP$ is one of the Millennium problems and one of the biggest unsolved problems in Computer Science.
 
@@ -196,7 +196,7 @@
 		\end{theorem}
 		\begin{example}
      The following real valued functions are polynomial time computable on a compact set
-     $K$
+     $K$ of real numbers.
      \begin{enumerate}
        \item Addition, Subtraction and Multiplication as functions $K \times K
          \to \RR$.
