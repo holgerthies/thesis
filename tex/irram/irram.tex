@@ -2,46 +2,46 @@
 \section{iRRAM}
 	\irram is a \cc framework for exact real arithmetic developed by Norbert M\"uller.
 
-	Since the case studies in this thesis were all implemented  in \irram, the
-  following section will give a short overview over the \irram framework.
+  The case studies in the next chapters were all implemented using the \irram
+  framework. 
+  This chapter gives therefore a short introduction to this framework.
 
 	\irram extends \cc by a data-type \real for error free computations with real numbers.
   For the user, an object of type \real behaves like a real number that can be
   manipulated without any rounding errors.
-  The framework takes care of all details necessary to internally  finitely represent real
-  numbers, and in most cases the internal representation will be invisible for
+  The framework takes care of all details necessary to finitely represent real
+  numbers internally, and in most cases this internal representation will be invisible for
   the user.
 	\subsection{Real Number representation}
-		\irram's approach is similar to the bottom-up DAG approach described in
+		{\irram}'s approach is similar to the bottom-up DAG approach described in
     Section \ref{sec:exact real arithmetic}.
 
 		There is one important difference tough: The DAGs are  stored only
     implicitly.
 		Instead, there is only enough information saved, so that the whole
-    computation can be repeated.
+    computation can be repeated from the beginning.
     If the precision at some point of the program does not suffice, the whole
     program is restarted with higher precision. 
-    This reduced the needed memory to a minimum.
+    This drastically reduces the memory needed for the computation.
 
     For making error analysis, \irram uses a simplified form of interval
     arithmetic.
 
 		At every time during the program execution, the internal representation of
     a real number is always a \textbf{single} interval. 
-    More precisely a real number $x \in \RR$ is represented by a pair $(d,e)$ such that $x \in [d-e, d+e]$.
+    More precisely, a real number $x \in \RR$ is represented by a pair $(d,e)$ such that $x \in [d-e, d+e]$.
 
  		$d$ is saved as a multiple precision number and $e$ consists of two \code{long}s $p,z$ such that $e = p \cdot 2^p$.
 
     The internal representation of a \real can change during the run of the
     program.
  		
- 	  Whenever the precision of some \real is not sufficient at some point during
-    the program flow, the whole computation is restarted, and the
-    representations of the reals change, to admit higher precision.
+ 	  Whenever the precision of some \real is not sufficient at some point, the whole computation is restarted.
+    This is, when the representations of the reals change to admit higher precision.
 
  		This process of restarting the whole computation with higher precision is called
-    \textbf{iteration} in the terminology of \irram.
-    Since a reiteration is only done, when higher precision is needed, there
+    \textbf{iteration} in {\irram}'s terminology.
+    Since a reiteration is only done when higher precision is needed, there
     are only few operations, such as comparisons or output, that can trigger such a reiteration.
 
     An \irram program will usually do several iterations of the computation,
@@ -57,16 +57,16 @@
     \code{RATIONAL} for rational numbers and the class \code{DYADIC} for dyadic
     rational numbers. 
 
-    The most important class is \real, the class for error free computations
+    The most important class is \real, the class for error-free computations
     with real numbers. 
 
 		An object of type \real can be constructed from \code{int}, \code{char*}, \code{double}, \code{DYADIC} 
 		or another \real. 
 
-		Arithmetic operations can be applied on \real s by using the overloaded operators \code{+}, \code{-}, \code{*},
+		Arithmetic operations can be applied on {\real}s by using the overloaded operators \code{+}, \code{-}, \code{*},
 		\code{/}.
 
-		Many functions on \real s are already included in the \irram package, e.g. 
+		Many functions on {\real}s are already included in the \irram package, e.g. 
 		\code{abs(x)}, \code{power(x, n)}, \code{exp(x)}, \code{log(x)},
 		trigonometric functions and their inverse and many more.
 
@@ -81,20 +81,20 @@
 		However, a few things have to be kept in mind when writing a program
 		\begin{enumerate}
       \item \textbf{compute function}
-        The \irram framework already writes the \cc \code{main} function, so
-        the main function can not be used.
+        The \irram framework overwrites the \cc \code{main} function, so
+        it can not be written by the user.
         Instead it is replaced by a function \code{void iRRAM :: compute() }.
-        The main part of the program should be written inside this function.
+        The main part of the program should be written inside this function. 
       \item \textbf{Input and Output}
         The input and output streams \code{cin} and \code{cout} are overloaded
-        with \irram versions, that can read and write real numbers. 
+        with {\irram}'s own versions, that can read and write real numbers. 
         The precision of the output can be adjusted with the parameterized
         manipulator \code{setrwidth} that sets the number of digits that are
         written. 
         Alternatively the function \code{rwrite(REAL\& r, int prec)} can be used
         to write a real number with a given number of decimals.
-      \item \textbf{Global variables} Since the \irram only reiterates what is
-        inside the compute function, global variables will not be part of the
+      \item \textbf{Global variables} Since \irram only reiterates the code
+        executed inside the compute function, global variables will not be part of the
         reiteration. Therefore, \real variables should never be defined
         globally.
 		\end{enumerate}
@@ -102,15 +102,15 @@
 		TTE can be used as a theoretical model to reason about \irram programs.
 
 		Thus, the limitations seen in Chapter \ref{sec:real computability} also hold for \irram programs.  
-		In particular, every function computable with \irram is necessarily continuous.
+		In particular, every function computable with \irram necessarily has to be continuous.
 		
-		That also implies, that comparisons and tests for equality of {\real}s are not computable when the input numbers are equal.
+		That also implies, that comparisons and tests for equality of {\real}s are not computable.
 
 		Indeed, for the simplified representation a comparison of two numbers can be decided
     if and only if the intervals of the two representations do not overlap.
 
 	  As long as the two intervals overlap, \irram has to assume that the
-    intervals are to large to make a decision yet, and thus has to reiterate to
+    intervals are to large to make a decision yet, and has to reiterate to
     get smaller intervals.
     But if the numbers are equal, the intervals will always overlap, 
 		no matter how small they are, leading to an infinite loop of iterations.
@@ -147,13 +147,14 @@
 		with values $T, F,\bot$. The semantics of \code{LAZY\_BOOLEAN} can be found
     in Table \ref{table:lazy boolean}.
     
-    When an expression evaluates to $\bot$, it means that the current information is not sufficient to make a decision.
-		When casting to \code{bool} $\bot$ leads to reiteration. 
+    The informal meaning of $\bot$ is, that the precision is not yet sufficient
+    to make a decision.
+		When casting to \code{bool} $\bot$ leads to a reiteration. 
 
     Not being able to make comparisons might first seem like a huge
     disadvantage, but note that in numerical practice it is also strongly
     advised to never test floating point numbers on equality.  The \code{gnu
-    gcc} compiler even has a warning option on that:
+    gcc} compiler even has a warning option on that \cite{GCCMan}:
 		\begin{quotation}
 				\noindent
 		\begin{verbatim}
@@ -172,11 +173,13 @@
 		cases of non-continuity: multi-valued functions.
 
 		In \irram a multi-valued function can have multiple valid outputs for the same input and 
-		return for the user seemingly indeterministic one of the valid outputs.  
-    Of course, the output will however be deterministic in the underlying
-    representation of the number.
+		return one of the valid outputs.
+    For the user the choice of output can seem indeterministic. 
+    Of course, the output will be deterministic in the underlying
+    finite representation of the number, but the representation might differ even when
+    the real number represented is the same.
 		
-		\irram already has some multi valued functions included, e.g. the function
+		\irram already has some multi-valued functions included, e.g. the function
 		\begin{equation*}
 			bound(x,k) = 
 			\begin{cases}
@@ -195,19 +198,20 @@
 		\code{choose} is a multi-valued function that takes up to 6 lazy booleans and returns the index of one 
 		that is evaluated to $T$ or $0$ if all evaluate to $F$ (leading to reiteration as long as neither of the two cases hold).
 
-		The powerful feature to have multi-valued functions introduces however a
+		The powerful feature to have multi-valued functions introduces, however, a
     new problem.
 
-		A multi-valued function can have different results for different representations of the same real number,
-		thus the outcome could also change in different iterations of the \irram. 
-		Thus, the program flow could be completely change from one iteration to another, leading to unexpected results.
+		A multi-valued function can have different results for different representations of the same real number.
+    Since the internal representation of a real number changes when the
+    computation is reiterated, a reiteration could lead to a completely
+    different result of the multi-valued function.
+		Thus, the program flow could change from one iteration to another, leading to unexpected results.
 
-		To prevent that from happening, the result of a multi-valued function is saved in the so called \textbf{multi-value cache}
+		To prevent that from happening, the result of a multi-valued function is always saved in the so called \textbf{multi-value cache}
 		and read from there when reiterating. 
-		It is therefore guaranteed that the program flow stays the same in each iteration.
+		It is therefore guaranteed that the program flow stays the same in all iterations.
 		
-    Due to the cache, the use of multi-valued functions is however very memory
-    intensive.
+    Saving everything in the cache will, however, increase the needed memory.
     Multi-valued functions should only be used rarely and one has to be
     especially careful when they are used inside of loops.
 	\subsection{Limits}
@@ -220,7 +224,7 @@
 				REAL limit(REAL a(long, const REAL&), const REAL& x).
 			\end{verbatim}
 
-			The limit operator takes a sequence of real functions that converges to a single-valued function $f: \RR \to \RR$
+			The limit operator takes a sequence of real functions converging to a single-valued function $f: \RR \to \RR$
 			rapidly, i.e. such that 
 			$$|a_p(x) - f(x)| \leq 2^p \text{ for all } x \in dom(f)$$
 			and returns the value of $f(x)$ as a \real.
@@ -253,11 +257,12 @@
 	\subsection{Access to the underlying representation}
 		Usually the user is expected to see the data-type \real as a kind of
     black-box that makes error-free computations with real numbers possible.
-    The framework should take care of the underlying representation and it
-    should be invisible to the user.
+    The framework should take care of all the underlying representations and
+    the finite representation should be invisible to the user.
 
     In rare cases it may however be helpful, to access and change the
     underlying representation of {\real}s.
+    This is also possible in \irram.
      
 		The error of a \real has the following type
 		\begin{verbatim}

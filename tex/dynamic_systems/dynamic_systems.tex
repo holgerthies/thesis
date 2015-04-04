@@ -30,7 +30,7 @@
     $[0,1]$ & Stabilizes at $0$ \\ \hline
     $(1,3]$ & Stabilizes at $\frac{a-1}{r}$ \\ \hline 
     $(3, \approx 3.544]$ & oscillates between $2$, $4$, $8$, $\dots$ values. \\ \hline 
-    $(\approx 3.544, 4]$ & \begin{tabular}{l}For almost all inital points no oscillation with finite period. \\ Small changes in the initial point yield large differences over the iterations. \end{tabular} \\ \hline
+    $(\approx 3.544, 4]$ & \begin{tabular}{l}For almost all initial points no oscillation with finite period. \\ Small changes in the initial point yield large differences over the iterations. \end{tabular} \\ \hline
     $(4, \infty)$ & The values eventually leave the interval [0,1] and diverge for almost all initial points \\ 
     \hline
     \end{tabular}
@@ -45,15 +45,15 @@
     \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
-    \caption{Maximal precision iRRAM uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
+    \caption{Maximal precision \irram uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
     \label{fig:logmapprec}
   \end{figure}
-  The behaviour of the logistic map depends on the parameter $a$.\\
+  The behavior of the logistic map depends on the parameter $a$.\\
   Table \ref{table:logmapbehaviour} shows the behavior for different values for this parameter.
 
-  The interesting case for this thesis is for $a \in (3.544, 4)$, because this is  where the iteration of the map leads to chaotic behaviour.
+  The interesting case for this thesis is for $a \in (3.544, 4)$, because this is  where the iteration of the map leads to chaotic behavior.
 
-  The \irram framework can be used to compute iterations of the logistic map exactly. It is therefore very well suited to invesitgate this chaotic behaviour.
+  The \irram framework can be used to compute iterations of the logistic map exactly. It is therefore very well suited to investigate this chaotic behavior.
   
   Figure \ref{fig:logmaperror1} shows how sensitive the map is to small errors that occur because of finite precision computations. 
   When using 10 significant digits for the computation, it can be seen that after around 50 iterations the finite precision version diverges from the \irram version and then behaves completely differently. 
@@ -63,7 +63,7 @@
   Thus, the internal precision at the end of the computation gives a measure of this complexity. 
 
   As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
-  To compute 10 significant digits of the $20000$-th iterate, \irram interally computes already with precision nearly $2^{-50000}$, which is of course far from what is possible with any standard floating point datatype.   
+  To compute 10 significant digits of the $20000$-th iterate, \irram internally computes already with precision nearly $2^{-50000}$, which is of course far from what is possible with any standard floating point data type.   
   \subsection{The Shadowing Lemma}
     The next section deals with the relation between exactly computed and approximately computed orbits and how much numerical orbits have to do with real orbits. 
     \begin{definition}\label{def:pseudoorbit}
@@ -93,7 +93,7 @@
 
     The goal of this the case study is to investigate such orbits, in particular to find out how long there is an orbit staying close to the pseudo orbit,
     The basis for this case study is a paper by Hammel, Yorke and Grebogi from 1987 \cite{Hammel1987}.
-    The paper deals with the question, how long numerical orbits of the logitstic map can be shadowed by true orbits.
+    The paper deals with the question, how long numerical orbits of the logistic map can be shadowed by true orbits.
 
     The authors show that for $a = 3.8$ and $x_0 = 0.4$, there is a true orbit $(y_i)_{i \in \NN}$ of the logistic map, so that $\| x_n - y_n \| < 10^{-7}$ for $n \leq 10^7$.
 
@@ -213,7 +213,7 @@
   floating point arithmetics, this is however not enough to guarantee the condition
   \ref{eqn:nesting condition}.
   
-  Further enlargening the interval on both sides by the constant $10^{-25}$
+  Further enlarging the interval on both sides by the constant $10^{-25}$
   takes care of this problem,
   
   For the interval arithmetic a simple interval class template
@@ -227,7 +227,7 @@
   types where used such that different floating point precisions could be
   tried.
 
-  The second implementation made is very similiar to the first one but instead
+  The second implementation made is very similar to the first one but instead
   of using intervals with fixed precision floating point end points, \irram's
   \code{INTERVAL} type was used.
   The data type provides interval arithmetic for intervals with real numbered end points. 

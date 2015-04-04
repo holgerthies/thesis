@@ -2,35 +2,37 @@
 \section{Exact Real Arithmetic}\label{sec:exact real arithmetic}
 	Using interval arithmetic or arbitrary precision arithmetic, 
 	the precision is set in the beginning and rounding and truncation errors still accumulate.
-	The result obtained in the end may still not have sufficient precision.
+	Without previous careful analysis, there is no guarantee that the result's
+  precision will suffice.
 
 	In contrast, the goal of exact real arithmetic is to perform computations on real numbers without 
 	accumulating errors.
   
-  On demand a number can be printed up to any desired precision. 
+  In practice, that means that on demand a number can be printed up to any desired precision. 
 	More precisely, the user does not specify the precision the numbers are represented with in the beginning,
 	but gives a desired precision \textbf{for the answer} of the computation.
   
-  The implementation has to take care of the steps necessary to generate the
-  solution with the desired precision.
-  For the user, it should seem like real numbers are manipulated exactly.
+  The implementation has to take care of the steps necessary to achieve the
+  precision.
+  For the user, it should seem like real numbers are manipulated exactly, while
+  of course internally the implementation still works on finite approximations.
 
 	There are several approaches to exact real arithmetic.
-	Some of them are
+	For example
   \begin{enumerate}
-     \item Signed-digit Streams: A real number is represented as an infinite
+      \item \textbf{Signed-digit Streams}: A real number is represented as an infinite
        string stream. This is very close to the definition with type-2
        machines.
-     \item Continued Fractions: A real number is represented by its continued
+     \item \textbf{Continued Fractions}: A real number is represented by its continued
        fraction representation. Rational numbers have a finite representation,
        while irrational numbers have an infinite representation.
-     \item Directed Acyclic Graphs (DAGs): A real number is given by an
+     \item \textbf{Directed Acyclic Graphs (DAGs)}: A real number is given by an
        algorithm that computes an approximation to the number with a desired
        error bound. Arithmetic expressions are expressed as graphs with real
        number leaves.
   \end{enumerate}
-  The implementations in this thesis follow a form of the DAG approach, thus
-  that is the only one that will be described in more detail.
+  Since the approach followed in this thesis is the DAG approach, it is the
+  only one that will be described in more detail.
 	\subsection{DAGs}
   \begin{figure}[h]
       \centering
@@ -57,22 +59,28 @@
 		where the leaf nodes are real numbers and the inner nodes are operations on real numbers.
 		
     The inner nodes contain the information how precise the inputs to the
-    operation have to be, to guarantee a given output precision.
+    operation have to be to guarantee a given output precision.
     Thus, the needed precision can be propagated down to the leaf nodes, and
     the algorithms to approximate the real numbers can be invoked.
 
-	  The term evaluating is used to describe the process of getting an approximation
+    The term \textbf{evaluating} is used to describe the process of getting an approximation
     to the real number represented by a DAG with a desired output  precision.
 
 		There are essentially two ways to evaluate a DAG:
 		\begin{enumerate}
-			\item \textbf{Top-down evaluation} means, that the desired precision is computed from the top node down to the leaves.
-			That is, a node contains the information, how precise he needs the input given by its children to deliver the output with the necessary precision and requests its children to provide it.  
-			\item \textbf{Bottom-up evaluation} means, that the computation is started with a fixed precision in the leaf nodes 
-			and it is kept track of the errors (e.g. by using interval arithmetic). 
-			If in the end, the error bound is too large, the computation is restarted with a higher precision. 
+			\item \textbf{Top-down evaluation}: The desired precision is computed from the top node down to the leaves.
+			That is, a node contains the information how precisely it needs the
+      input given by its children to compute the output with the necessary precision.
+      The top node is given the desired output precision, and it then asks its
+      children to provide this input.
+			\item \textbf{Bottom-up evaluation}:  the computation is started with a fixed precision in the leaf nodes. 
+			It is kept track of the errors when going upward in the DAG (this can
+      be done e.g. by using interval arithmetic). 
+			At the top the error bound is compared to the desired output precision. 
+      If the error is too large, the computation is restarted with higher
+      precision.
 		\end{enumerate}
-    \begin{figure}
+    \begin{figure}[h]
       \centering
       \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,minimum
           size=1cm,thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
@@ -96,18 +104,22 @@
 \caption{The DAG created when the expression $\sum_{i=0}^n x_i$ is computed
 iteratively}\label{fig:sum dag}
 \end{figure}
-		While the top-down approach seems to evade unnecessary recomputations, it
-    usually largely over-estimates the needed precision.
-    For example, to compute additions of two numbers up to precision $2^{-n}$
+		While the top-down approach seems to evade unnecessary recomputations, the
+    precision needed is usually largely overestimated.
+
+    For example, to compute additions of two numbers up to precision $2^{-n}$,
     it suffices to have the inputs with precision $2^{-(n+1)}$.
-    If for example the sum $x := \sum_{i=0}^(1000) x_i$ is computed iteratively (e.g. in a
+    Now, if the sum $x := \sum_{i=0}^(1000) x_i$ is computed iteratively (e.g. in a
     for-loop), a DAG as in Figure \ref{fig:sum dag} will be created. 
     Thus, $x_0$ has to be computed with precision $2^{-(n+1000)}$ while actually
     computing all input values with error less than $2^{-(n+10)}$ would 
     suffice to guarantee error of the sum of less than $2^{-n}$.
+    This makes the bottom-up approach more feasible in many cases.
 
-    In general, saving the DAG representation needs lots of memory. 
-    Especially evaluating arithmetic operations in loops that are executed many
-    times, will quickly exceed a computer's main memory.
-    The pure DAG approach is therefore not applicable for many more complicated
+    In general, the DAG approach has the problem, that saving the DAG needs a
+    huge amount of memory.
+    Arithmetic operations in loops, that are executed many times, quickly grow
+    the created DAG and thus may exceed the computer's main memory.
+
+    The pure DAG approach is therefore not applicable for many 
     numerical algorithms.
