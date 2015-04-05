@@ -2,7 +2,10 @@
   The following case study describes an implementation for a data-type for
   analytic functions in \irram.
   The implementation and theoretical analysis is joint work with Akitoshi Kawamura and Florian
-  Steinberg.
+  Steinberg \cite{analyticpaper}.
+
+  The theoretical foundation for the case study can be found in
+  \cite{Kawamura}
 	\section{Introduction}
 		In Chapter \ref{section:real_complexity} it was shown many important operators 
 		on real functions are known to be computationally hard.
@@ -19,7 +22,8 @@
 			\item What kind of implicit assumptions are made about the functions and in what way do they allow faster computations? 
 		\end{enumerate}
 
-    Thus, it might be useful to consider subsets of real functions and investigate which of the operations become feasible.
+    Consequently, it might be useful to consider subsets of real functions and
+    investigate which of the operations become feasible.
 
 		A subset of real functions that has been thoroughly studied in computable analysis are the analytic functions.
     It could be shown that many operators that are hard in the general case become polynomial time computable when restricting 
@@ -40,8 +44,9 @@
 			such that $T(x) \rightarrow f(x)$.
 
 		\end{definition}
-		The above definition can also be generalized to higher dimension. \\
-		If $f$ is analytic then all its derivatives $f^{(n)}(x)$ exist and it holds
+		The above definition can also be generalized to higher dimension. 
+
+		If $f$ is analytic, all its derivatives $f^{(n)}(x)$ exist and it holds
 		$$ a_n = \frac{f^{(n)}(x_0)}{n!}. $$    
 
 		The set of functions analytic on $D$ will be denoted by $C^\infty(D)$. \\		
@@ -61,7 +66,9 @@
     The next theorem shows, that the property of being analytic is very useful when it comes to computability and complexity considerations.
 
     \begin{theorem}[Pour-El, Richards, Ko, Friedman \cite{pour1989computability}]\label{theorem:computable equiv series computable} 
-			The following are equivalent
+      Let $f \in C^\infty(B(x_0, \varepsilon)$ and $(a_n)_{n \in \NN}$ the Taylor series
+      valid on $B(x_0, \varepsilon)$. 
+			Then the following are equivalent
 			\begin{enumerate}
 				\item $f$ is computable 
 				\item The series $(a_n)_{n \in \NN}$ is computable. 
@@ -84,53 +91,66 @@
 			\end{enumerate}
 		\end{corollary}
 		
-		The above theorems show that computing with analytic functions is in some sense much easier than the general case.
+    Thus, restriction to analytic functions reduces the computational
+    complexity of many important operations on real functions.
 
 		However, those theorems are non-uniform in the following sense:
 
-		The theorems only say that, that $f$ being polynomial time computable implies the existence of a polynomial time computable sequence
+		The theorems only say that $f$ being polynomial time computable implies the existence of a polynomial time computable sequence
 		and the existence of such a sequence implies that there exists some algorithm computing $f$ in polynomial time. \\
 		In no way, however, do they say, how to compute the sequence from a given representation of the function and vice versa.
 
-		In fact the following theorems show, that this is not a problem of those theorems, but it's inherently impossible to do so.
+		In fact the following shows, that this is not a problem of those theorems, but it's inherently impossible to do so.
 		\begin{theorem}[M\"uller \cite{mueller1987uniform}]
-			Let $f$ given as in Definition \ref{def:representation} then the operator $f \to (a_n)_{n \in \NN}$ computing the Taylor series around $0$ (or any other point) is not computable.
-		\end{theorem} 
+      Let $f$ given as in Definition \ref{def:representation} then the operator
+      $f \to (a_n)_{n \in \NN}$, computing the Taylor series around $0$ (or any
+      other point) is not computable.  \end{theorem} 
 		\begin{theorem}[M\"uller \cite{mueller1987uniform}]\label{theorem: evaluation not uniformly computable from powerseries}
-			Let $(a_n)_{n \in \NN}$ be the series expansion around $0$ for some $f \in C^\omega(D)$.\\
-			The evaluation operator $((a_n)_{n \in \NN}, x) \to f(x)$ that, given a series and a point, computes the value of the corresponding function at that point, is not computable.
+      Let $(a_n)_{n \in \NN}$ be the series expansion around $0$ for some $f
+      \in C^\omega(D)$.
+
+      The evaluation operator $((a_n)_{n \in \NN}, x) \to
+      f(x)$ that, given a series and a point, computes the value of the
+      corresponding function at that point, is not computable.
 		\end{theorem} 
 
 		The reason for the non-uniformity is, that any algorithm can only read a finite number of 
-		coefficients from the series. But from the power series alone, it is impossible to know how many coefficients are needed to make
-		a good enough approximation. This information can not be (computably) extracted from the Taylor-series, thus the algorithms have to 
+		coefficients from the series.
+    But from the power series alone, it is impossible to know how many coefficients are needed to make
+		a good enough approximation.
+    This information can not be (computably) extracted from the Taylor-series, thus the algorithms have to 
     be given some additional information.
 
 		The goal of this case study was to write a general data type for analytic functions. 
-		Due to the above any such data type will need more information than only the series of Taylor coefficients. \\
+		Due to the above any such data type will need more information than only the series of Taylor coefficients. 
+
 		The next section will deal with the question, what additional information is needed to get uniform versions of the above theorems.
 
 	\section{Representation of Analytic Functions}
 	 As seen in the previous section, the information given by the series expansion is not enough to make reasonable computations with analytic functions.
 	 However, by enriching the information by some finite discrete parameters, the translation between Taylor-series and function representation can be made uniform 
-   and even polynomial time computable.
+   and even (parameterized) polynomial time computable.
 	 
 	 Two possible representations for analytic functions on the closed unit disc are as follows
 	 \begin{definition}\label{def:series_name_ball}
 	 	A \textbf{series-name} $\rho_s$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $((a_n)_{n \in \NN}, k, A)$ where 
 	 	\begin{enumerate}
 	 		\item $(a_n)_{n \in \NN}$ is the series expansion of $f$ around $0$
-	 		\item $\sqrt[k]{2} \leq R$ 
+	 		\item $\sqrt[k]{2} \leq r$ 
 	 		\item $|a_j|r^j \leq A$ for all $j \in \NN$
 	 	\end{enumerate}
-	 	and $R = (\limsup |a_j|^{\frac{1}{j}})^{-1}$ denotes the radius of convergence of the series.
+	 	and $r = (\limsup |a_j|^{\frac{1}{j}})^{-1}$ denotes the radius of convergence of the series.
 	 \end{definition}
 	 The two additional parameters are useful, because they can be used to make a tail estimate 
 	 \begin{equation}\label{eqn:tail_estimate}
 	  \left | \sum_{n \geq N} a_nx^n \right | \leq A \frac{(|z|/r)^N}{1-|z|/r}
 	 \end{equation}
-	 A name as in Definition \ref{def:series_name_ball} can be found by choosing any appropriate $k$ (note that the radius of convergence is always bigger than $1$) and choosing $A$ as an upper bound of $f$ extended to $\overline{B_{\sqrt[k]{2}}(0)}$. 
-	 \begin{definition}\label{def: function name ball}
+   A name as in Definition \ref{def:series_name_ball} can be found by choosing
+   any appropriate $k$ (note that the radius of convergence is always bigger
+   than $1$) and choosing $A$ as an upper bound of $f$ extended to
+   $\overline{B_{\sqrt[k]{2}}(0)}$.  
+   \begin{definition}\label{def: function
+     name ball}
 	 	A \textbf{function-name} $\rho_f$ of $f \in C^\omega(\overline{B_1(0)})$ is a triple $(f, l, B)$ such that
 		B is an upper bound of $f$ on $\overline{B_{\sqrt[l]{2}}(0)}$.
 	 \end{definition}
@@ -138,23 +158,29 @@
 	 	The mapping between $\rho_s$-name and $\rho_f$-names is computable in time polynomial in 
 	 	$n+k+\log(A)$ and the inverse mapping is computable in time polynomial in $n+l+\log(B)$ 
 	 \end{theorem}
-	 Note that the above translation becomes fully polynomial time when in the representations $k$ resp. $l$ are required to be encoded in unary, while $A$ resp. $B$ are given in binary.
-	 Thus, from now on the term polynomial time computable will be used when referring to running time bounds as in Theorem \ref{thm:representation_conversion}.
+   Note that the above translation becomes fully polynomial time when in the
+   representations $k$ resp. $l$ are required to be encoded in unary, while $A$
+   resp. $B$ are given in binary. 
+   Thus, from now on the term polynomial time computable will be used when
+   referring to running time bounds as in Theorem
+   \ref{thm:representation_conversion}.
 
 	 A full proof of Theorem \ref{thm:representation_conversion} can be found in \cite{Kawamura}. 
 
-   Some details that are important for the implementation are given below as seperate theorems.
+   Some details that are important for the implementation are given below as separate theorems.
 
    \begin{theorem}
      A series name can be used to evaluate the corresponding function in polynomial time.
      \begin{proof}
-       According to Equation \ref{eqn:tail_estimate} if the first $N := nk+\log A$ terms are summed up then the error 
+       According to Equation \ref{eqn:tail_estimate}, if the first $N :=
+       nk+\log A$ terms are summed up then for the error
        $$ \left | \sum_{j > N} a_j r^j \right | \leq 2^{-n} $$
+       holds.
      \end{proof}
    \end{theorem}
 
    \begin{theorem}
-    Given a function name it is possible to compute any Taylor coefficient $a_n$ around $0$ of the function
+    Given a function name it is possible to compute any Taylor coefficient $a_k$ around $0$ of the function
     in polynomial time.
     
 	 \begin{proof}
@@ -184,7 +210,8 @@
 	 	$O((k+1)\cdot \M(n+k+\sigma) + k^2 \M (k \log k)$
 
     The coefficients $L_{m,i}^{(k)}(0) $ in Equation \ref{eqn:interpolation_polynomial_diff} 
-    are rational numbers and can be computed by a recursion formula.
+    are rational numbers and can be computed by a recursion formula that is
+    also given in \cite{Muller1993}. 
 	 \end{proof}
    \end{theorem}
 
@@ -198,7 +225,8 @@
 	 		\item $d$-fold Anti-differentiation $(f,d) \to \int \dots \int f$ where $d$ is given in unary
 	 	\end{enumerate}
     \begin{proofsketch}
-	 		Evaluation follows from \ref{thm:representation_conversion}. \\
+	 		Evaluation follows from \ref{thm:representation_conversion}. 
+
 	 		The manipulations that have to be done on the Taylor series are straight forward, 
       e.g. addition can be done by just adding the coefficients of the two series.
       
@@ -214,11 +242,16 @@
 	 	\end{proofsketch}
 	 \end{theorem}
 
-	The above can be extended to a data type for analytic functions on arbitrary ball-shaped domains.\\
+	The above can be extended to a data type for analytic functions on arbitrary ball-shaped domains.
+
 	But of course, most domains are not ball-shaped and one would also like to represent such domains.
 	
-	One possible way to represent functions on such a domain, is to cover the domain with balls and use the representation from Definition \ref{def:series_name_ball} on each ball.
-	As an example, consider functions analytic on the real line $[-1,1]$ (this implies being analytic on a rectangle around the line $[-1,1]$ in the complex plane).
+  One possible way to represent functions on such a domain, is to cover the
+  domain with balls and use the representation from Definition
+  \ref{def:series_name_ball} on each ball.
+  As an example, consider functions analytic on the real line $[-1,1]$ (this
+  implies being analytic on a rectangle around the line $[-1,1]$ in the complex
+  plane).
 	
 
 	 \begin{figure}
@@ -250,7 +283,7 @@
 			    \node [color=red] at (3,1.45) {$singularity$};
 			\end{tikzpicture}
 			\caption{For a series name the domain is covered with equally sized balls. 
-			For each ball a Taylor series around the center of the ball is given and the properties of Definition \ref{def:series_name_ball} hold.}\label{fig: analytic function representation series name}
+			For each ball, a Taylor series around the center of the ball is given and the properties of Definition \ref{def:series_name_ball} hold.}\label{fig: analytic function representation series name}
 		\end{subfigure}
 		\centering
 	 	\begin{subfigure}{.45\textwidth}
@@ -284,7 +317,7 @@
 		A \textbf{series-name} for $f$ is a 5-tuple $(M, (x_m), (a_{n, j}), k, A)$ where $M \in \NN$
 		$1 \leq j \leq M$, $n \in \NN$, $x_m \in [-1,1]$ and it holds
 		\begin{enumerate}
-			\item $[-1,1] \subseteq \bigcup_{m=1}^M [x_m - \frac{i}{4k}, x_m + \frac{1}{4k}]$
+			\item $[-1,1] \subseteq \bigcup_{m=1}^M [x_m - \frac{1}{4k}, x_m + \frac{1}{4k}]$
 			\item $(a_{n,i})_{n \in \NN}$ is the series expansion of $f$ around $x_i$
 			\item $|a_{n,i}| \leq Ak^n$ for all $n \in N$, $1 \leq i \leq M$
 		\end{enumerate}
@@ -298,7 +331,7 @@
 
 	A function name as in Definition \ref{def: function name ball} can also be defined
 	\begin{definition}
-		Let $R_l := [-\frac{1}{l}, 1+\frac{1}{l}] \times [-\frac{1}{l}, \frac{1}{l}]$ the closed rectangle with distance $\frac{1}{l}$ around $[-1,1]$ .\\
+		Let $R_l := [-1-\frac{1}{l}, 1+\frac{1}{l}] \times [-\frac{1}{l}, \frac{1}{l}]$ the closed rectangle with distance $\frac{1}{l}$ around $[-1,1]$ .\\
 		A \textbf{function-name} for a function $f \in C^\omega([-1,1])$ is a 3-tuple $(f|_{[-1,1]}, B, l)$ with $B, l \in \NN$ such that 
 		\begin{enumerate}
 			\item $f \in C^\omega(R_l)$
@@ -311,8 +344,12 @@
 	Again it can be shown that the two representations are polynomial time equivalent, and that the equivalent to
 	Theorem \ref{thm:polytime_on_ball} holds.
 	\section{Analytic Continuation}
-		One problem with the representation in Definition \ref{def:series_name_rect} is that when thinking of this representation as an interface for a data type, it is very cumbersome for the user to provide all the information needed. 
-		He would need to give an algorithm for as many Taylor series as needed to cover the interval.
+    One problem with the representation in Definition
+    \ref{def:series_name_rect} is that when thinking of this representation as
+    an interface for a data type, it is very cumbersome for the user to provide
+    all the information needed.  
+    He would need to give an algorithm for as many
+    Taylor series as needed to cover the interval.
 		\begin{figure}
 			\centering
 			\begin{tikzpicture}[scale=1.6]
@@ -349,16 +386,24 @@
 			\begin{enumerate}
 				\item $(a_n)_{n \in \NN}$ is the series expansion of $x$ around $x_0$
 				\item $A$ and $k$ are such that $| a_m | \leq Ak^m$ 
+         \item The parameters $A$ and $k$ are valid on the entire rectangle
+           $R_l$
 			\end{enumerate}
 		\end{definition}
-		A series name can be obtained from a single series name by computing the series expansion on another point on the domain and then iterating this process until the series cover $[-1,1]$.
+    A series name can be obtained from a single series name by computing the
+    series expansion on another point on the domain and then iterating this
+    process until the series cover $[-1,1]$.
 
 		Since the parameters $A$ and $k$ are such that they hold on the entire rectangle, 
 		the new series will be valid on a ball with the same radius as the original series, effectively extending the domain.
-		This process is called \textbf{analytic continuation},
+		This process is called \textbf{analytic continuation}.
 		
-		The series can be computed either by applying the algorithm from the proof of Theorem \ref{thm:representation_conversion} or by directly computing the derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
-		Note however, that iterating this process will break the polynomial time computability, as will be shown in the next
+    The series can be computed either by applying the algorithm from the proof
+    of Theorem \ref{thm:representation_conversion} or by directly computing the
+    derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
+
+    Note however, that iterating this process will break the polynomial time
+    computability, as will be shown in the next
 		section.
 	\section{Complexity Analysis}
 		The previous section gave an overview of the representations and how they can be used to yield efficient 
@@ -368,14 +413,17 @@
 
 		The goal is to establish time bounds in terms of the $O$-notation.
 		
-		Most of this has already been done in \cite{mypaper}, thus proofs are omitted or only sketched.
+		Most of this has already been done in \cite{analyticpaper}, thus proofs are omitted or only sketched.
 
 		Let $T(a_m, n)$ denote the running time needed to compute the coefficient $a_m$ from the Taylor series with an error 
 		less than $2^{-n}$.
 		The running time of all operations on the Taylor series will depend on this factor.
 
-		Let further denote $\M(n)$ the time needed to multiply two $n$-bit numbers (e.g. $\M(n) = O(n\log n \log \log n)$ when using the Schoenhage-Strassen Algorithm \cite{Schonhage1971}). 		
-		\begin{theorem}
+    Let further denote $\M(n)$ the time needed to multiply two $n$-bit numbers
+    (e.g. $\M(n) = O(n\log n \log \log n)$ when using the Schoenhage-Strassen
+    Algorithm \cite{Schonhage1971}). 	
+    The following theorems have been shown in \cite{analyticpaper}
+    \begin{theorem}
 			Given a series name of $f \in C^\omega(D)$.
 			To evaluate $f$ with error less than $2^{-n}$ 
 			$$N = k(n+\lceil log_2(log_2 (e^2) kA \rceil)$$
@@ -430,14 +478,15 @@
 				 O(l(N^{(l)})^2\M(N^{(l)})+N^{(l)}T(a_{N(l)}, l N^{(l)}\log_2(N^{(l)}))) 
 			\end{equation}
 		\end{theorem}
-		Due to the number of parameters the running time depends on, the above bounds are quite complicated.\\
+		Due to the number of parameters the running time depends on, the above bounds are quite complicated.
+    
 		To get get simple bounds the following assumptions were made
 		\begin{enumerate}
 			\item $A$ and $k$ are usually very small compared to the other parameters, 
 			thus they are neglected except for the case when $k$ is in the base of an exponentiation.
 			\item The time $T(a_m, n)$ to read a coefficient of the series is neglected. 
 			Although this time has a huge impact on the overall running time, for reasonably fast sequences it 
-			the time will be dominated by the other parameters.
+			will be dominated by the other parameters.
 		\end{enumerate}
 		This leads to the following simplified bounds
 		\begin{enumerate}
@@ -445,7 +494,7 @@
 			\item Evaluation of the $d$-fold (anti-)derivative is possible in time $O((n+d)\M(n+d))$
 			\item Evaluation of the $l$ times iterated analytic continuation is possible in time $O((2k \log k)^{2l}n^2\M((2k\log k)^ln)$
 			\item The number of coefficients that have to be read from the original series to evaluate a series gained by 
-			$l$-times iterated analytic continuation is bound by $O((2\log_2(\log_2(e)+1))^l) = O(2.56^l)$
+			$l$-times iterated analytic continuation is bounded by $O((2\log_2(\log_2(e)+1))^l) = O(2.56^l)$
 		\end{enumerate}
 
 	\section{Implementation}
@@ -468,29 +517,40 @@
 			\item It is possible to get the coefficients of the underlying Taylor series.
 		\end{enumerate}
 
-    Since a power series is an infinite object, some thought has to be put into how to represent it on a computer.
+    Since a power series is an infinite object, some thought has to be put into
+    how to store it on a computer.
 
     Some reasonable approaches are for example
 		\begin{enumerate}
-			\item A finite representation, i.e. at every point of time during the execution of the program, 
-			only a finite initial segment of the power series is known. 
-			Thus, all computations are performed on polynomials. 
-			The length of the initial segment depends on the desired precision and grows 
-			with the iterations of \irram.
-			\item A functional representation, i.e. a powerseries is a function from an integer $n$ to the coefficient
-			$a_n$ (or a pointer to such a function). If a coefficient is needed it can be simply computed by calling the function.
+			\item A finite implementation. 
+        At every point during the execution of the program, a finite initial
+        segment of the power series is precomputed and stored in memory.
+        The length of the initial segment depends on the required precision and
+        can change during the run of the program (e.g. with reiterations in
+        \irram).
+        All algorithms performing operations on analytic functions will be
+        given only polynomials, and thus only operate on them.
+			\item A functional implementation.
+        The coefficients are not precomputed and saved.
+        All algorithms are given the power series as a function from an integer $n$ to the coefficient
+			$a_n$ (or a pointer to such a function).
+      If an algorithm needs to read a coefficient it calls the function.
 		\end{enumerate}
 		
-		The second method is very similiar to the DAG approach and can therefore suffer from the same memory issues.
-		Even tough this is true and also the first method is arguably more in the spirit of the \irram framework, a decision was made to follow the second approch.
+		The second method is very similar to the DAG approach, that is when
+    performing operations that generate new power series pointers to all
+    functions used have to be saved. 
+    It can therefore suffer from the same memory issues as the DAG approach.
+		Despite that fact and even though the first method is arguably more in the spirit of the \irram framework, a decision was made to follow the second approach.
 
-		There are several reasons for that. Firstly, the number of coefficients needed from the power series depends heavily on the point where the analytic function is evaluated. 
+		There are several reasons for that. 
+    Firstly, the number of coefficients needed from the power series depends heavily on the point where the analytic function is evaluated. 
 		If the length of the used initial segment grows with the internal precision of \irram, worst case assumptions have to be 
 		made on the needed number of coefficients. 
 		This would in most cases be a huge overestimation and therefore lead to longer computation times.
 
 		Secondly, the memory issue does not play such a big role in this case. 
-		Usually, operations like derivation or analytic continuation, that increase the size of the DAG 
+		Usually, operations like differentiation or analytic continuation, that increase the size of the DAG 
 		are not applied hundred thousands of times, but orders of magnitude less. 
 		Thus, the DAGs stay rather small and easily fit into the main memory of a modern computer.
 
@@ -499,9 +559,9 @@
 		Depending on the algorithm, this can lead to very poor performance.
 
 		To prevent this, a form of caching was implemented. The coefficient function is only called the first time, when a 
-		coefficient needs to be computed and then saved to the cache. The next time the coefficient is accesed it is taken from 
+		coefficient needs to be computed and then saved to the cache. The next time the coefficient is accessed it is taken from 
 		the cache instead of calling the function again. 
-    Thus the coefficient is only recomputed when the precision is not sufficent and \irram reiterates the computation.
+    Thus the coefficient is only recomputed when the precision is not sufficient and \irram reiterates the computation.
 
 
 
@@ -603,7 +663,7 @@
 			\item Composition using the \code{()} operator.
 		\end{enumerate}
 		
-		\baana uses two representation classes, \code{rep\_pi}, the representation by a power series, and \code{rep\_rho\_D\_refined}, the represention as a function. 
+		\baana uses two representation classes, \code{rep\_pi}, the representation by a power series, and \code{rep\_rho\_D\_refined}, the representation as a function. 
 		All operations except evaluation use the power series representation. 
 		If the constructor from a function object is called, the power series will also be computed, 
 		thus the \code{rep\_pi}-name is always available.
@@ -625,7 +685,7 @@
    
 	\subsection{\anarect}
 		The class \anarect represents complex functions that are analytic on an interval $[a, b] \subseteq \RR$.
-		The internal representation is very similiar to the one in Definition \ref{def:series_name_rect}.
+		The internal representation is very similar to the one in Definition \ref{def:series_name_rect}.
 		That is, a finite sequence of (overlapping) equidistant Taylor sequences covering the interval and parameters $A$ and $k$ 
 		that are valid for all the series.
 
@@ -652,7 +712,7 @@
 		other series are computed from that.    
 	\section{Usage}
 		The following \cc program gives an example how the \baana class can be used. 
-    \anarect can be used similiarily.
+    \anarect can be used similarly.
     \lstinputlisting[numbers=left,stepnumber=1,firstnumber=1,numberfirstline=true,frame=L,xleftmargin=\parindent]
     {code/analytic_example.cc}
    The snippet defines a \baana object for the sine function.\\ 
@@ -660,7 +720,7 @@
    Instead of defining a function it is also possible to use {\ccx}'s lambda feature to define a function object. \\
    The main part of the program happens in {\irram}'s compute function. \\
    Line 18 defines a \powerseries object from the series function. \\
-   In Line 19 the \baana object is defined from the powerseries and the parameters $A=2$ and $k=2$.\\
+   In Line 19 the \baana object is defined from the power series and the parameters $A=2$ and $k=2$.\\
    This object is then differentiated two times (line 20) and then evaluated at $0.2$ (line 21). \\
    The \code{rwrite} function is used to output the resulting real number with 20 valid decimal digits.
 
@@ -671,31 +731,32 @@
 		Due to the chosen functional approach, most operations like differentiation do by themselves not perform any time critical operations 
     but instead only define a new function to compute the coefficient series of the result.
     
-		As long as no coefficient is accesed, this function is not called and thus no operations performed.
+		As long as no coefficient is accessed, this function is not called and thus no operations performed.
 		Thus, the only time critical operations are evaluation and printing coefficients.
 
 		Consequently the way to measure the complexity of the other operations, is evaluating the resulting function at some point.
 
-		For example for measuring the complexity of differentiation, one can  first derive the function and then measure the running time 
-    of evaluating the derived function.
+		For example for measuring the complexity of differentiation, one can  first
+    differentiate the function and then measure the running time 
+    of evaluating the differentiated function.
 
-    Running time measures were performed for several different test functions.
+    Running time measurements were performed for several different test functions.
  		In particular, a number of tests were performed on the functions $x \to sin(x)$, $x \to \frac{1}{1+x^2}$, $x \to ln(2+x)$ and $x \to \sqrt{2+x}$. 
     
     The additional parameters $A$ and $k$ for those functions were chosen as small as possible and are between $1$ and $2$ for all functions.
 
-    As the running times are very similiar for all the functions, only a few examples are included here.
+    As the running times are very similar for all the functions, only a few examples are included here.
 
  		To better understand the generated graphs, it is important to note that due to the iterative concept of the \irram,
     the running time is not continuous in the desired output precision, but grows stepwise with the iteration of the \irram.
 
-    All the evaluations were performed using a Mac-Book Pro with a 2 GHz Intel Core i7 processor and 4GB of RAM.
+    All the evaluations were performed using a Mac-Book Pro with a 2 GHZ Intel Core i7 processor and 4GB of RAM.
     The code was compiled using gcc version 4.9.1 and \irram version 2013 01.
 
     To get a reliable estimate for the running time, all evaluation scripts were run twice and 
     the average of the two runs taken.
 
-    Below the results for both the evaluations performed on the both the \baana and the \anarect datatype are shown. 
+    Below the results for both the evaluations performed on the both the \baana and the \anarect data-type are shown. 
 		\subsection{\baana}
 
 			\begin{figure}[h]
@@ -716,24 +777,24 @@
 
       This could be verified in the performed tests. 
       Figure \ref{fig:ba_ana dep on n} depicts the running time for the two real-valued functions $x \to \sin(x)$ and $x \to \frac{1}{1+x^2}$.
-      Similiar results were obtained for other functions.
+      Similar results were obtained for other functions.
 
       Of course it's possible to compute those functions much faster, e.g. by using {\irram}'s built-in $\sin$ function.
       However to obtain the above results no special properties of those functions were used, but only the information 
       contained in the Taylor series and the two additional parameters.
       Thus, the results obtained are very general and should hold for all kind of functions (as long as the complexity to compute
-      the series is similiar).
+      the series is similar).
 
       \ref{fig:ba_ana dep on differentiation} shows how the running time
       depends on the number of differentiation. 
 
-      Other operations like addition and multiplication yield similiar running times and the results are therefore omitted.
+      Other operations like addition and multiplication yield similar running times and the results are therefore omitted.
 
       All in all, the running times obtained for the tested examples were very close to what was expected from the theoretical analysis, and seem to
-      be quite good, although due to the lack of similiar approaches to compute analytic functions, it is hard to make any comparisons.
+      be quite good, although due to the lack of similar approaches to compute analytic functions, it is hard to make any comparisons.
 
       \subsection{\anarect}
-			Since most operations on the power series on \anarect and \baana are identical‚ and are therefore expected to behave similiarily, 
+			Since most operations on the power series on \anarect and \baana are identical‚ and are therefore expected to behave similarly, 
 			the crucial part of evaluating \baana is the evaluation using analytic continuation.
 			
 			In particular the following questions are interesting
@@ -748,7 +809,7 @@
 
     In the number of analytic continuations it should grow exponentially.
     
-    A similiar dependency on output precision and number of analytic continuations should hold for number of coefficients that are read 
+    A similar dependency on output precision and number of analytic continuations should hold for number of coefficients that are read 
     from the original series given to the constructor of the \anarect object.
 
 
@@ -835,12 +896,14 @@
           % 541 & 258 & 571 & 1118 & 2116 & 3993\\
           % \hline
           % \end{tabular}
-			\caption{Number of coefficients accessed in an iRRAM iteration of precision \sprec when evaluating at on the boundary of the first and third series.}
+			\caption{Number of coefficients accessed in an \irram iteration of precision \sprec when evaluating at on the boundary of the first and third series.}
 			\label{fig:xinv coeff 0 dep on n}
 		\end{table}
 
-		Table \ref{fig:xinv coeff 0 dep on n} shows the number $N^{(l)}$ of coeffcients accesed from the original series, when evaluated at a point where $l$ analytic continuations are necessary depending on 
-		the internal precision of \irram.
+    Table \ref{fig:xinv coeff 0 dep on n} shows the number $N^{(l)}$ of
+    coefficients accessed from the original series, when evaluated at a point
+    where $l$ analytic continuations are necessary depending on the internal
+    precision of \irram.
 
 		\begin{figure}[h]
 			\centering
@@ -875,4 +938,4 @@
     It can be seen that the number of coefficients read approximately doubles in each analytic continuation and thus grows 
     a little slower than the upper bound established in the theoretical analysis.
 
-		All in all the figures are very well in accordance with the qualitative behaviour expected from the analysis in the theory section.
+		All in all the figures are very well in accordance with the qualitative behavior expected from the analysis in the theory section.
