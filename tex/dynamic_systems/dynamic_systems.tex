@@ -2,20 +2,23 @@
 \section{Introduction}
   A dynamical system describes how the state of a system evolves with time. Formally
   \begin{definition}
-    A \textbf{discrete dynamical system} is a triple $(\NN,X,\Phi)$ with $X$ a non empty set (the state space) and an operation $\Phi : \NN \times X \to X$, so that
-    $\Phi(0,x) = x$ and $\Phi(n,\Phi(m,x)) = \Phi(n+m, x)$. 
+    A \textbf{discrete dynamical system} is a triple $(\NN,X,\Phi)$ with a non
+    empty set $X$ (the state space) and an operation $\Phi : \NN \times X \to
+    X$, so that $\Phi(0,x) = x$ and $\Phi(n,\Phi(m,x)) = \Phi(n+m, x)$. 
   \end{definition}
-  Thus, a discrete dynamical system is the model of a system, that evolves over discrete time steps.
+  Thus, a discrete dynamical system is the model of a system that evolves over discrete time steps.
 
-  The simplest case of a discrete dynamical system, is when the state space is 1-dimensional (say $X \subseteq \RR$) and 
-  the transition function only depends on the previous value, i.e. $\Phi(1,x) = f(x)$ for some $f : \RR \to \RR$. 
-  In which case it can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \RR$.
+  The simplest case of a discrete dynamical system is when the state space is 1-dimensional (say $X \subseteq \RR$) and 
+  the transition function only depends on the previous value,
+  formally $\Phi(1,x) = f(x)$ for some $f : \RR \to \RR$. 
+  In this case it can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \RR$.
   The set of the $x_n$ is called \textbf{orbit} of the map $f$.
 
-  In this thesis only very simple examples of dynamical systems are used. A broader introduction can for example be found in \cite{katok1997introduction}.
+  In this thesis only very simple examples of dynamical systems are used. 
+  A broader introduction can for example be found in \cite{katok1997introduction}.
 
-  A chaotic system is a dynamical system, that is highly sensitive to initial conditions.
-  A consequence of that is that even relatively small numerical errors in the computation grow exponentially fast.
+  A chaotic system is a dynamical system that is highly sensitive to initial conditions.
+  As a consequence even relatively small numerical errors made during the computation grow exponentially fast.
 
   A prototypical example of a chaotic system is the logistic map.
   \begin{definition}\label{def:logmap}
@@ -51,19 +54,27 @@
   The behavior of the logistic map depends on the parameter $a$.\\
   Table \ref{table:logmapbehaviour} shows the behavior for different values for this parameter.
 
-  The interesting case for this thesis is for $a \in (3.544, 4)$, because this is  where the iteration of the map leads to chaotic behavior.
+  The interesting case for this thesis is for $a \in (3.544, 4)$, since this is  where the iteration of the map leads to chaotic behavior.
 
-  The \irram framework can be used to compute iterations of the logistic map exactly. It is therefore very well suited to investigate this chaotic behavior.
+  The \irram framework can be used to compute iterations of the logistic map
+  exactly.
+  It is therefore very well suited to investigate this chaotic behavior.
   
-  Figure \ref{fig:logmaperror1} shows how sensitive the map is to small errors that occur because of finite precision computations. 
-  When using 10 significant digits for the computation, it can be seen that after around 50 iterations the finite precision version diverges from the \irram version and then behaves completely differently. 
+  Figure \ref{fig:logmaperror1} shows how sensitive the map is to small errors
+  that occur because of finite precision computations.
+  When using 10 significant digits for the computation, it can be seen that
+  after around 50 iterations, the finite precision version diverges from the
+  \irram version and after that behaves completely differently. 
 
   \irram can also be used to approximate the complexity in terms of needed computation precision. 
   \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits.
   Thus, the internal precision at the end of the computation gives a measure of this complexity. 
 
-  As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision grows extremely quickly with the number of iterations.
-  To compute 10 significant digits of the $20000$-th iterate, \irram internally computes already with precision nearly $2^{-50000}$, which is of course far from what is possible with any standard floating point data type.   
+  As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision
+  grows extremely quickly with the number of iterations.  
+  To compute 10 significant digits of the $20000$-th iterate, \irram internally
+  computes already with precision nearly $2^{-50000}$, which is of course far
+  from what is possible with any standard floating point data type.   
   \subsection{The Shadowing Lemma}
     The next section deals with the relation between exactly computed and approximately computed orbits and how much numerical orbits have to do with real orbits. 
     \begin{definition}\label{def:pseudoorbit}
@@ -78,7 +89,8 @@
     % \begin{definition}
     %   A dynamic system is called \textbf{uniformly hyperbolic} if ...
     % \end{definition}
-    For systems that are uniformly hyperbolic Anosov and Bowen could show the following result \cite{anosov1967} \cite{Bowen1975} \cite{Hasselblatt:2008}:
+    For systems that have a certain property, namely being uniformly
+    hyperbolic, Anosov and Bowen could show the following result \cite{anosov1967} \cite{Bowen1975} \cite{Hasselblatt:2008}:
     \begin{theorem}[Shadowing Lemma]
      Let $f: \RR \to \RR$ be a uniformly hyperbolic map.
      Then it holds that for all $\beta > 0$ there exists an $\alpha > 0$ such that for every $\alpha$-pseudo-orbit $(x_i)_{i \in \NN}$
@@ -89,10 +101,13 @@
     Unfortunately, many maps including the logistic map, are not uniformly hyperbolic. 
 
     For non-hyperbolic $f$, it can not be expected, that there is a real orbit that stays close to the pseudo orbit forever.
-    Instead, there will be an orbit staying close to $(x_i)$ for some time, say up to some point $n_0$, and then starting to diverge. 
+    Instead, there will be an orbit staying close to $(x_i)$ for some time (say up to some point $n_0$) and then starting to diverge. 
 
-    The goal of this the case study is to investigate such orbits, in particular to find out how long there is an orbit staying close to the pseudo orbit,
-    The basis for this case study is a paper by Hammel, Yorke and Grebogi from 1987 \cite{Hammel1987}.
+    The goal of this the case study is to investigate such orbits, in
+    particular to find out how long there is an orbit staying close to the
+    pseudo orbit. 
+    The basis for this case study is a paper by Hammel, Yorke
+    and Grebogi from 1987 \cite{Hammel1987}.
     The paper deals with the question, how long numerical orbits of the logistic map can be shadowed by true orbits.
 
     The authors show that for $a = 3.8$ and $x_0 = 0.4$, there is a true orbit $(y_i)_{i \in \NN}$ of the logistic map, so that $\| x_n - y_n \| < 10^{-7}$ for $n \leq 10^7$.
@@ -110,18 +125,20 @@
     shadowing orbit $(y_i)_{i \in \NN}$ of size $N$ for a given pseudo orbit
     $(x_n)_{n \in \NN}$ of the logistic map $f$.
 
-    Instead of computing the shadowing orbit from the first point, the algorithm computes the inverse orbit by starting with the last point and then iteratively computing the predecessor. 
-    Since the logistic map is not injective, there is not a unique choice for this predecessor. 
+    Instead of computing the shadowing orbit from the first point, the
+    algorithm computes the inverse orbit by starting with the last point and
+    then iteratively computing the predecessor.  Since the logistic map is not
+    injective, there is not a unique choice for this predecessor. 
 
     For some point $f(x)$ there are normally two possible values for the
     inverse given by $$f^{-1}_{1,2}(x) = 0.5 \pm \sqrt{0.25 + \frac{x}{a}} $$
 
     An orbit can be computed by setting $y_N = x_N$ and then iteratively
-    applying one of the inverse map $y_{n-1} = f^{-1}(y_n)$.  
+    applying one of the inverse maps $y_{n-1} = f^{-1}(y_n)$.  
 
     To stay close to the pseudo orbit, in every step the point on the same side
     of $0.5$ as $x_n$ is chosen.
-    This function will just be denoted by $f^{-1}$ when the choice of index is
+    In the following, this function will just be denoted by $f^{-1}$ when the choice of index is
     obvious.
     
     The backward procedure will give an orbit close to the pseudo-orbit since the
@@ -138,10 +155,10 @@
     y_n \| + \varepsilon $$   
 
     Of course, using only floating point arithmetics, the inverse can not be
-    computed exactly and thus the shadowing orbit can not be computed.
+    computed exactly and thus the shadowing orbit itself can not be computed.
 
-    Instead of computing the orbit, an error bound can be computed using
-    interval arithmetics. 
+    Instead of computing the orbit, an error bound can be computed with the
+    help of interval arithmetics. 
     That is, a sequence of intervals $(I_n)_{0 \leq n \leq N}$ giving upper and
     lower bounds for $y_n$ is computed, i.e Intervals $I_n$ such that
     $$y_n \in I_n \text{ for } 0 \leq n \leq N.$$
@@ -150,7 +167,7 @@
     selected so that $I_n \subseteq f(I_{n-1})$ holds.\\
     In each step, $I_n$ is chosen as small as possible. 
 
-    If at some point $x_n < \frac{a}{4}$ the inverse in not defined and the
+    If at some point $x_n < \frac{a}{4}$ the inverse is not defined and the
     procedure fails.
     
     In the other case, an upper bound on the maximal distance between all points in
@@ -192,9 +209,8 @@
   
   The Cray-MP's floating point data types had different sizes than the
   standard types in modern programming languages.
-  To get similar results as
-  in the original work,  the cray double precision data type therefore had to be
-  simulated using software implementations.
+  To get similar results as in the original work,  the cray double precision
+  data type therefore had to be simulated using software implementations.
   
   For the \cc implementation, the boost multiprecision library \cite{boostmultiprecision} was used. 
   The library provides data types that replace the native \cc floating point types, but with a user defined precision. 
@@ -215,12 +231,13 @@
   \ref{eqn:nesting condition}.
   
   Further enlarging the interval on both sides by the constant $10^{-25}$
-  takes care of this problem,
+  takes care of this problem.
   
   For the interval arithmetic a simple interval class template
   \code{fixed\_precision\_interval<prec>} was written to represent
   intervals of the form $[a,b]$ with $a$ and $b$ multiprecision floating point
   numbers with \code{prec} bits precision. 
+
   All needed operations on intervals were implemented for this class, making
   the implementation of the algorithm straight forward.
 
@@ -231,6 +248,7 @@
   The second implementation made is very similar to the first one but instead
   of using intervals with fixed precision floating point end points, \irram's
   \code{INTERVAL} type was used.
+
   The data type provides interval arithmetic for intervals with real numbered end points. 
   The above algorithm can therefore be implemented by first computing a pseudo
   orbit using floating point arithmetics and then computing the inverse of a
@@ -242,18 +260,20 @@
   iterations of the logistic map.
 
   Then, starting with the last point of the pseudo orbit the inverses can be computed exactly until the initial point is reached.
-  In the end, the distance of this real orbit and the pseudo orbit can be computed and the maximum of all those distances taken to find the shadowing distance.
+  In the end, the distance of this real orbit and the pseudo orbit can be
+  computed and the maximum of all those distances taken to find the shadowing
+  distance.
 
   One advantage of the last approach is, that the \irram code to compute the exact orbit is extremely simple. 
   Since all operations can be performed exactly there is no need for intervals
-  or other complicated structures but the data type real takes care of
-  everything.
+  or other complicated structures. 
+  The data type real takes care of everything.
 
-  The implementation uses again generic types, to make it possible to compute
+  Again, the implementation uses generic types, to make it possible to compute
   the shadowing distance for various different floating point precisions.
 \section{Evaluation}
   \subsection{Breakdown points}
-  As mentioned above, the algorithm only works when at each step $x_i \leq
+  As mentioned above, the algorithm only works if at each step $x_i \leq
   \frac{a}{4}$.  
   If the algorithm fails, the first $N$ for that there is some $i$ such that
   $x_i > a_i$ is called the breakdown point.
@@ -266,33 +286,35 @@
     $p_0$}\label{fig:breakdown}
   \end{figure}
 
-  Since the computation precision on the Clay X-MP was determined by the available floating point data types, it was not changed.
+  Since the computation precision on the Clay X-MP was determined by the
+  available floating point data types, it was not possible to just adjust it.
+
   Instead, the noise was artificially increased by setting $x_{n+1} =
   ax_n(a-x_n)+\delta_p \cos (\Theta)$ with $\Theta = n (mod 997)$ and then the
   shadowing distance in relation to $\delta_p$ measured.  
   
   However, using the boost multiprecision library's \code{cpp\_bin\_float} data
   type, it is easy to change the number of binary digits of the used floating
-  point data type, instead of artificially increasing the noise.
+  point data type instead of artificially increasing the noise.
 
   In the original work the relation $N \approx \frac{1}{\sqrt \delta_p}$
-  between the noise amplitude and the breakdown points.
+  between the noise amplitude and the breakdown points was found.
 
   Interestingly no such relation could be found for the modified version that
   uses \code{cpp\_bin\_float} instead of a noise amplitude.
-  As can be seen in \ref{fig:breakdown}, in this version breakdowns very rarely occur during the first $10^7$
-  iterations.
-  There are, however, some parameters for that a breakdown occurs, but in most
-  cases it will occur rather quickly, during the first 1000 iterates.
+  As can be seen in \ref{fig:breakdown}, in this version breakdowns very rarely
+  occur at all during the first $10^7$ iterations.
+  There are, however, still some parameters for that a breakdown occurs.
+  In most of this cases it occurs rather quickly, during the first 1000 iterates.
 
-  The reason for that is probably, that the correct rounding compensates much
+  The reason for that is probably that the correct rounding compensates much
   of the errors, which is not the case when the noise is artificially generated
   by the noise amplitude.
 
   \subsection{Shadowing bound and computation precision}
   The original paper also deals with the question, how close a pseudo-orbit is
-  shadowed depending on the computation precision. The same was also done for
-  the different implementations in this thesis.
+  shadowed depending on the computation precision. 
+  The same was also done for the different implementations in this thesis.
 
   Again, instead of artificially generating noise, the precision of the
   floating point type was changed.
