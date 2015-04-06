@@ -1,23 +1,73 @@
-Exact Real Arithmetic 
+Two case studies have been presented, showing some of the possibilities and
+limitations of exact real arithmetic.
 
-Two case studies have been presented, that show some of the possibilities and
-limits of exact real arithmetic.
+The first case study was a reimplementation of a algorithm on floating point
+numbers in exact real arithmetic.
+The automatic precision control in \irram made the implementation much simpler.
+Also, the \irram version makes it possible, to compute any point of the
+shadowing orbit with arbitrary little error, instead of just giving bounds for
+the position.
 
+The second case study gave an example on how the theoretical results from
+computable analysis can be applied to yield practical algorithms. 
+The empirical evaluation of the running time, showed that the bounds found with
+the help of real complexity theory correspond well with the implementation.
+This can be seen as evidence, that the models used in computable analysis
+map the reality quite well.
 
 \section{Possible Future Work}
-There are several possible extensions to the implemented case studies.
+There are several possible extensions for both case studies.
+In general, it would be interesting to reimplement the algorithms in some other
+exact real arithmetic framework and compare the results.
 
-Some shall be listed here
+Apart from that some possible extensions are listed below.
 
 For the dynamical systems case studies the following is possible
 \begin{enumerate}
   \item \textbf{Forward algorithm}
+    An alternative to the algorithm implemented in the case study can be found in \cite{chow1991}.
+    Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
+    This algorithm could also be implemented in \irram and the results compared
+    to the ones obtained in this thesis.
   \item \textbf{Multi-dimensional shadowing}
+    Hammel, Yorke and Grebogi also briefly mention their results obtained for
+    the two-dimensional case in their paper.
+    They examined the Henon map
+    \begin{eqnarray*}
+      x_{n+1} &=& 1-ax_n^2+y_n \\
+      y_{n+1} &=& -Jx_n
+    \end{eqnarray*}
+    where $J$ is the determinant of the Jacobian of the map.
+    They found a similar shadowing result to the one mentioned in the case
+    study for this map.
+    In their implementation the true orbit is confined in a parallelogram to
+    bound the position.
+    \irram could be used to compute such an orbit exactly.
 \end{enumerate}
 
 The data-type for analytic functions could be extended in the following ways
 \begin{enumerate}
-  \item \textbf{Improvement of Running time}
+  \item \textbf{Improvement of Running Time}
+    The current implementation of the data type for functions analytic on
+    $[0,1]$ uses iterated analytic continuation to evaluate the function at points where
+    the given Taylor series is not valid. 
+    This makes the representation simple, but the running time is exponential
+    in the number of continuations.
+    In practice, it is therefore not possible to have more than a few analytic
+    continuations,
+    Additional theoretical investigation should be done to find out, if it is
+    possible to improve the running time, or if a high computational complexity
+    is inherent to the problem.
   \item \textbf{Multi-dimensional functions}
+    The implementation presented in this thesis only works with 1-dimensional
+    functions. 
+    For many applications, however, the analytic functions are
+    more-dimensional.
+    The data-type should be extended to work with multi-dimensional Taylor
+    series.
   \item \textbf{Applications}
+    It would also be interesting, to use the implementation to solve a
+    practical problem involving analytic functions.
+    Such problems could for example be found in the theory of Ordinary
+    Differential Equations.
 \end{enumerate}
