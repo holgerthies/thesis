@@ -27,7 +27,7 @@ Information on floating point arithmetic can for example be found in
 If a real number does not fit into the above representation, it has to be
 rounded appropriately.
 
-Rounding also happens, when an operation (e.g. multiplication) is applied and
+Rounding also happens when an operation (e.g. multiplication) is applied and
 the result does not fit into the finite representation anymore.
 
 With the above definition the floating point representation of a number is not
@@ -89,7 +89,7 @@ be performed extremely quickly.
   \begin{enumerate}
     \item \textbf{Round to nearest} 
       All results are rounded to the nearest representable value. 
-      If it is in the middle of two representable values, the one where the
+      If a result is in the middle of two representable values, the one where the
       lowest bit is zero is chosen.
     \item \textbf{Round toward $\infty$}
       All results are rounded to the smallest representable value larger than

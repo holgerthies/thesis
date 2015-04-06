@@ -109,14 +109,14 @@ iteratively}\label{fig:sum dag}
 
     For example, to compute additions of two numbers up to precision $2^{-n}$,
     it suffices to have the inputs with precision $2^{-(n+1)}$.
-    Now, if the sum $x := \sum_{i=0}^(1000) x_i$ is computed iteratively (e.g. in a
+    Now, if the sum $x := \sum_{i=0}^{1000} x_i$ is computed iteratively (e.g. in a
     for-loop), a DAG as in Figure \ref{fig:sum dag} will be created. 
     Thus, $x_0$ has to be computed with precision $2^{-(n+1000)}$ while actually
     computing all input values with error less than $2^{-(n+10)}$ would 
     suffice to guarantee error of the sum of less than $2^{-n}$.
     This makes the bottom-up approach more feasible in many cases.
 
-    In general, the DAG approach has the problem, that saving the DAG needs a
+    In general, the DAG approach has the problem that saving the DAG needs a
     huge amount of memory.
     Arithmetic operations in loops, that are executed many times, quickly grow
     the created DAG and thus may exceed the computer's main memory.

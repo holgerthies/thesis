@@ -13,7 +13,7 @@
 			the Turing Machine on input $w$ executes before it terminates. 
 
 			For $n \in \NN$ define $time_M(n) = \max \{ time_M(w) \,|\, w \in
-        \Sigma^* \text{ and M terminates on input }w \}$.
+        \Sigma^n \text{ and M terminates on input }w \}$.
 
         Space constraints can be defined similarly.
 		\end{definition}
@@ -24,15 +24,15 @@
     The standard way to compare the asymptotic running time of algorithms is
     the use of the $O$-notation.
 		\begin{definition}
-			For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$ if there are constants $M \in \RR$, $n_0 \in \NN$, such that
+			For functions $f, g: \NN \to \NN$ one writes $f \in O(g(n))$, if there are constants $M \in \RR$, $n_0 \in \NN$, such that
 			$ f(n) \leq M \cdot g(n)$ for all $n > n_0$. 
 		\end{definition}
 			Thus, for a given algorithm a way to measure its complexity is giving an
       upper bound on its worst case running time for inputs of length $n$ in
       terms of the $O$-notation. 
 
-			However, complexity theory mainly is not about the complexity of specific
-      algorithms, but rather deals with the complexity of problems. 
+			However, complexity theory is not only about the complexity of specific
+      algorithms, but also deals with the complexity of problems. 
       That is, trying to classify the complexity of \textbf{any} algorithm to
       decide some subset of $\Sigma^*$.
       
@@ -45,10 +45,12 @@
 
       NTIME$(t)$ describes the same for the case of $M$ being a
       non-deterministic Turing-machine.
+
+      Similarly, DSPACE can be defined for the space.
 		\end{definition}
 		The above definitions suffice to define the most important complexity classes
 		\begin{definition}
-			The complexity classes $P, NP, PSPACE$ and $EXPTIME$ are defined as follows:
+			The complexity classes $P$, $NP$, $PSPACE$ and $EXPTIME$ are defined as follows:
 			\begin{eqnarray*}
 				P & := & \bigcup_{k \in N} DTIME(n^k) \\
 				NP & := & \bigcup_{k \in N} NTIME(n^k) \\
@@ -65,19 +67,19 @@
     \begin{theorem}
       $A \subseteq \Sigma^*$ is in $NP$ if and only if there are polynomials
       $p$ and $q$ and a deterministic Turing-Machine $M$ such that for all $x
-      \in \Sigma^*$ with length $n$, there is an $y \in \Sigma*$ with length
+      \in \Sigma^*$ with length $n$, there is an $y \in \Sigma^*$ with length
       bounded by $q(n)$ such that $x \in A \text{ iff } M(\langle x,y \rangle = 1$ and 
       $x \not \in A \text{ iff } M(\langle x,y \rangle = 0$. 
       Further $M$'s running time is bounded by $p(n)$ for all such inputs
-      $\langle x,y \rangle$
+      $\langle x,y \rangle$.
     \end{theorem}
 		Whether $P = NP$ is one of the Millennium problems and one of the biggest unsolved problems in Computer Science.
 
 		One can also consider function problems instead of decision problems
     leading to a dual hierarchy of complexity classes.
 		\begin{definition}
-      A functional problem $F: \Sigma^* \rightrightarrows \Sigma^*$, is solved
-      by a Turing-Machine if it writes on every $x \in \Sigma^*$ an output
+      A function $F: \Sigma^* \rightrightarrows \Sigma^*$ is computed
+      by a Turing-Machine if the machine writes on every $x \in \Sigma^*$ an output
       $z \in F(x)$ or decides that no such output exists.  
       
       The definitions of time- and space complexity can easily be adopted to
@@ -92,8 +94,8 @@
     \end{definition}
 		It holds $FP \subseteq \#P \subseteq FPSPACE$ and if $FP = \#P$ would hold, it would follow that $P = NP$.
      
-		Problems that are known to be in $P$ are often considered as the feasible functions, 
-		for which it is possible to find an efficient algorithm. 
+		Problems that are known to be in $P$ are often considered as the feasible
+    ones, for which it is possible to find an efficient algorithm. 
 
     Since most of the complexity classes are not known to be distinct, they do
     not suffice to classify problems by their difficulty.
@@ -101,7 +103,7 @@
     To compare the difficulty of problems, reductions can be used.
 		\begin{definition}
 			$A \subset \Sigma^*$ is \textbf{polynomial time reducible} to $B \subseteq \Sigma^*$ ($A \leq_P B$), 
-			if there is a polynomial time computable function $f; \Sigma^* \to \Sigma^*$, such that
+			if there is a polynomial time computable function $f: \Sigma^* \to \Sigma^*$, such that
 			$$ w \in A \Leftrightarrow f(w) \in B.$$
 		\end{definition}
 		Many other types of reductions exist, e.g. to compare complexity classes
@@ -119,7 +121,7 @@
 
     For many problems it could be shown that they are $NP$-complete. 
     Some of the most important ones can for example be found in
-    \cite{garey1979}
+    \cite{garey1979}.
 	\subsection{Complexity Theory on real numbers}
 		In classical complexity theory the time complexity is usually measured in terms of the input size.
 		However, when considering continuous problems, the input is an infinite string and thus can not 
@@ -134,7 +136,7 @@
 			A real number $x \in \RR$ is computable in time $t$ if there is a Turing Machine $M$ that with input $n \in \NN$ in binary, 
 			outputs the binary expansion of a dyadic rational number $d$ with $| x - d | \leq 2^{-n}$.  
 		\end{definition}
-		Again this notion can be generalized by using representations and type-2
+		Again this notion can be generalized by using representations and Type-2
     Turing machines, i.e. by considering the time that is needed to write the first $n$ symbols
 		of the name of the output.
       

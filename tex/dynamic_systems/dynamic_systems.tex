@@ -1,4 +1,18 @@
 %!TEX root = ../../thesis.tex
+\begin{table}[h]
+    \centering 
+    \begin{tabular}{ | c | c | }
+    \hline
+    $\textbf{a}$ & \textbf{behavior} \\\hhline{|=|=|}
+    $[0,1]$ & Stabilizes at $0$ \\ \hline
+    $(1,3]$ & Stabilizes at $\frac{a-1}{r}$ \\ \hline 
+    $(3, \approx 3.544]$ & oscillates between $2$, $4$, $8$, $\dots$ values. \\ \hline 
+    $(\approx 3.544, 4]$ & \begin{tabular}{l}For almost all initial points no oscillation with finite period. \\ Small changes in the initial point yield large differences over the iterations. \end{tabular} \\ \hline
+    $(4, \infty)$ & The values eventually leave the interval [0,1] and diverge for almost all initial points \\ 
+    \hline
+    \end{tabular}
+    \caption{behavior of iterating the logistic map for different values of the parameter $a$}\label{table:logmapbehaviour}
+  \end{table}
 \section{Introduction}
   A dynamical system describes how the state of a system evolves with time. Formally
   \begin{definition}
@@ -25,32 +39,6 @@
     The \textbf{logistic map} is given by the recurrence relation 
     $ x_{n+1} = ax_n(1-x_n) \text{ with } a,\, x_0 \in \RR$.
   \end{definition} 
-  \begin{table}
-    \centering 
-    \begin{tabular}{ | c | c | }
-    \hline
-    $\textbf{a}$ & \textbf{behavior} \\\hhline{|=|=|}
-    $[0,1]$ & Stabilizes at $0$ \\ \hline
-    $(1,3]$ & Stabilizes at $\frac{a-1}{r}$ \\ \hline 
-    $(3, \approx 3.544]$ & oscillates between $2$, $4$, $8$, $\dots$ values. \\ \hline 
-    $(\approx 3.544, 4]$ & \begin{tabular}{l}For almost all initial points no oscillation with finite period. \\ Small changes in the initial point yield large differences over the iterations. \end{tabular} \\ \hline
-    $(4, \infty)$ & The values eventually leave the interval [0,1] and diverge for almost all initial points \\ 
-    \hline
-    \end{tabular}
-    \caption{behavior of iterating the logistic map for different values of the parameter $a$}\label{table:logmapbehaviour}
-  \end{table}
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
-    \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
-    \label{fig:logmaperror1}  
-  \end{figure}
-    \begin{figure}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
-    \caption{Maximal precision \irram uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
-    \label{fig:logmapprec}
-  \end{figure}
   The behavior of the logistic map depends on the parameter $a$.\\
   Table \ref{table:logmapbehaviour} shows the behavior for different values for this parameter.
 
@@ -70,6 +58,18 @@
   \irram automatically increases the internal precision until it suffices to output the result with the demanded number of digits.
   Thus, the internal precision at the end of the computation gives a measure of this complexity. 
 
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap1}
+    \caption{100 Iterations of the logistic map with $a=3.8$ and $x_0 = 0.4$ computed with 10 decimals precision and exactly.}
+    \label{fig:logmaperror1}  
+  \end{figure}
+    \begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/dynamic_systems/logmap2}
+    \caption{Maximal precision \irram uses to compute iterations of the logistic map and output the points with 10 decimal digits.}
+    \label{fig:logmapprec}
+  \end{figure}
   As can be seen in Figure \ref{fig:logmapprec}, the needed internal precision
   grows extremely quickly with the number of iterations.  
   To compute 10 significant digits of the $20000$-th iterate, \irram internally

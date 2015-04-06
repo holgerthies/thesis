@@ -9,11 +9,11 @@
   computation can be trusted or not.
 
   Even if exact computation is not necessary, often one wants to have at least
-  a bound on the error of the result, to decide if it is useful or not.
+  a bound on the error of the result to decide whether it is useful or not.
     
-  A rather easy way to get error bounds, is using interval arithmetic
+  A rather easy way to get error bounds is using interval arithmetic
   \cite{Kearfott1996}.
-  Interval arithmetic means, that instead of making computations on isolated single real numbers, whole
+  Interval arithmetic means that instead of making computations on isolated single real numbers whole
   intervals are used.
 
 	A real number $r \in \RR$ is represented by an interval $x := [x_l,x_r]$, so that $r \in x$.
@@ -43,7 +43,7 @@
 		\end{eqnarray}
 	\end{theorem}
 	It is easy to see, that addition and multiplication are associative and commutative.
-	However, the following example shows, that the distributive law does not necesserily hold
+	However, the following example shows that the distributive law does not necessarily hold
 	\begin{example}
 		\begin{align*}
 			[-1,1] \times ([-1,0] + [3,4])  &= [-1,1] \times [2,4] = [-4,4] \\
@@ -67,16 +67,17 @@
 				\end{cases} 
 		\end{equation} 
 	\end{theorem}
-	In a similiar way, interval version for $\exp, \log, \sin, \cos$ and other elementary functions can be found, 
+	In a similar way, interval version for $\exp, \log, \sin, \cos$ and other
+  elementary functions can be found
 	that can then be used to find the interval versions of more complicated functions.
 
-	The strength of interval arithmetic is, that it can easily be implemented even when the above 
-	operations on the interval endpoints are not computed exactly, but finite approximations are used.
+	The strength of interval arithmetic is that it can easily be implemented even when the above 
+	operations on the interval endpoints are not computed exactly but finite approximations are used.
 	
 	This does, however, only work if outward rounding is used, i.e. 
 	after every operation the left point of the interval has to be rounded down and the right point rounded up.
 
-	Since IEEE 754 requires, that the user is able to specify the rounding mode, interval arithmetic can be implemented 
+	Since IEEE 754 requires that the user is able to specify the rounding mode, interval arithmetic can be implemented 
 	using standard floating point numbers.
 
 	Note that the length of the interval can increase quickly.
