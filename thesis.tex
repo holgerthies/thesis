@@ -56,6 +56,10 @@
   \newcommand{\demph}{\textbf}
   \newcommand{\sdzero}{\texttt{0}}
 % ntheorem environments
+  \renewenvironment{abstract}{%
+    \hfill\begin{minipage}{0.95\textwidth}
+      \small \textbf{\abstractname.}}
+      {\end{minipage}}
   \theoremseparator{:}
   \theorembodyfont{\itshape}
   \newtheorem{definition}{Definition}[section] 
@@ -82,7 +86,14 @@
   \makethesistitle
   \affidavit{H. Thies}
 \begin{abstract}
- abstract\dots
+ The thesis gives examples for the possibilities and limits of exact real
+ arithmetic in form of two case studies.
+ Theoretical results from real complexity theory are compared with
+ time measurements obtained from empirical evaluation of algorithms implemented
+ in the \irram
+ \cc framework for exact real arithmetic.
+ An overview on some results from computable analysis and an introduction to
+ the \irram framework is included.
 \end{abstract}  
 \vfill
   \dedication{
