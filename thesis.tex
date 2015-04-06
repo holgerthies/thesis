@@ -62,11 +62,11 @@
       {\end{minipage}}
   \theoremseparator{:}
   \theorembodyfont{\itshape}
-  \newtheorem{definition}{Definition}[section] 
+  \newtheorem{definition}{Definition}[section]
   \theorembodyfont{\upshape}
-  \newtheorem{theorem}{Theorem}[section] 
-  \newtheorem{corollary}{Corollary}[section] 
-  \newtheorem{example}{Example}[section]
+  \newtheorem{theorem}[definition]{Theorem}
+  \newtheorem{corollary}[definition]{Corollary}
+  \newtheorem{example}[definition]{Example}
   \newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
   \newenvironment{proofsketch}{\paragraph{Proof (Sketch):}}{\hfill$\square$}
 \lstset{language={C++},
@@ -86,7 +86,7 @@
   \makethesistitle
   \affidavit{H. Thies}
 \begin{abstract}
- The thesis gives examples for the possibilities and limits of exact real
+ The thesis gives examples for the possibilities and limitations of exact real
  arithmetic in form of two case studies.
  Theoretical results from real complexity theory are compared with
  time measurements obtained from empirical evaluation of algorithms implemented
@@ -98,7 +98,7 @@
 \vfill
   \dedication{
     \textbf{Acknowledgments.} I first want to thank my supervisor, Martin Ziegler, for giving me the
-    opportunity to work on this topic and his helpful advice. 
+    opportunity to work on this topic and the helpful advice he provided. 
     I would also like to thank him for his kind and constant support during my graduate
     and undergraduate education.
 
@@ -140,4 +140,5 @@
   % \section{Evaluation}
   \chapter{Conclusion}
   \include*{tex/conclusion/conclusion}
+  \bibliography{thesis}
 \end{document}

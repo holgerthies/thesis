@@ -31,21 +31,21 @@
  \begin{definition}
  	A possibly partial function $f:\subseteq \Sigma^* \to \Sigma^*$ is called \textbf{computable} if there exists 
  	a Turing-Machine, such that for all $x \in dom(f)$ the machine terminates after finitely many steps with $f(x)$ on its 
- 	tape and the head positioned on the first symbol of $f(x)$. 
+ 	tape and the head is positioned on the first symbol of $f(x)$. 
   For $x \not \in dom(f)$ the machine does not terminate.
  \end{definition}
 
  Even tough the Turing-Machine model is quite simple, it can be used to
  simulate every computer algorithm.
- The widely believed \textbf{Church-Turing thesis} even states, that anything
- that is computable in an informal sense, can be computed with a
+ The widely believed \textbf{Church-Turing thesis} even states that anything
+ that is computable in an informal sense can be computed with a
  Turing-machine.
 
  Many other definitions to formalize the computability notion have been thought
- of, that could all be shown to be equivalent to the Turing-machine.
+ of that could all be shown to be equivalent to the Turing-machine.
 
- Sometimes it is easier to proof something using a slight variation of the
- Turing-machine, that is however computationally equivalent.
+ Sometimes it is more convenient to consider a slightly modified model instead
+ of the standard Turing-machine.
  Some variations on the model that will be useful later are the following
  \begin{enumerate}
    \item A multi-tape Turing-machine has $k$ independent tapes for some fixed $k \in
@@ -55,7 +55,10 @@
      actions in the same situation. A valid computation can take any of these
      actions. 
  \end{enumerate}
-
+ The above modifications do not alter the computability notion, i.e. the
+ functions computable will be exactly the same, no matter which kind of
+ Turing-machine is used.
+ 
  The following definitions for sets also play a very important role in
  computability theory.
   \begin{definition}
@@ -70,7 +73,7 @@ The previous section showed how to define computability for functions over finit
 That is enough to define computability for finite structures like natural
 numbers or graphs, but does not suffice to make any statements on real numbers.
 
-The following section defines how to extend the classical notion to uncountable
+The following section extends the classical notion to uncountable
 objects such as real or complex numbers, functions or infinite sequences.
 
 There are several non equivalent ways to define computability on such objects. 
@@ -81,22 +84,21 @@ The model used for this thesis is the so called \textbf{Type 2 Theory of Effecti
 (TTE). 
 A detailed overview of this model can for example be found in \cite{Wei} or
 \cite{Brattka2008a}.
-This model aims to realistically model what is possible to compute with a
+TTE aims to realistically model what is possible to compute with a
 computer and gives a tool to analyze computability and complexity of real
 numbers and functions.
 
 Since real numbers are infinite, it is not possible to read or write them in
 finite time.
-
 A first definition can therefore look as the following.
 \begin{definition}\label{def:computable real1}
  A real number is computable if there is a Turing-Machine, that has no input
- and writes without terminating the binary expansion of $x$ on its tape.
+ and writes the binary expansion of $x$ on its tape without ever terminating.
 \end{definition}
 To extend the definition to other uncountable structures, like real or complex
 functions, a slightly different approach is more convenient.
 
-TTE extends the Turing-Machine model to so called type-2 Turing-machines.
+TTE extends the Turing-Machine model to so called Type-2 Turing-machines.
 In contrast to an ordinary Turing-machine a type-2 machine can work on infinite strings $s \in \Sigma^w$. 
 \begin{definition}
 A type-2 Turing-machine is a multi-tape Turing-machine with two special tapes,
@@ -117,10 +119,10 @@ A function $F:\subseteq \Sigma^\omega \to \Sigma^\omega$ is called computable if
 that for each infinite string $\sigma \in dom(F)$ on its input tape, writes the infinite string $F(\sigma)$ on its output tape. 
 \end{definition}
 To talk about computability over some arbitrary set, it has to be encoded to
-$\sigma^\omega$. 
+$\Sigma^\omega$. 
 Such an encoding can be formalized in the following way:
 \begin{definition}\label{def:representation}
-	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \sigma^\omega \to X$. 
+	A \textbf{representation} of a set $X$ is a partial surjective mapping $\alpha: \Sigma^\omega \to X$. 
 
 	$\bar \sigma \in \alpha^{-1}(\sigma)$ is called an \textbf{$\alpha$-name} of $\sigma$. 
 
@@ -132,7 +134,7 @@ cases, finding a good representation is more challenging in the uncountable
 case.
 
 Different representations can lead to a different computability notion.
-Thus it is important to find a representation that leads to a useful and
+Thus, it is important to find a representation that leads to a useful and
 realistic notion of computability.
 
 Some possible representations for real numbers are as follows
@@ -141,8 +143,8 @@ Some possible representations for real numbers are as follows
 \item A $\rho$-name of $x \in \RR$ is a sequence $a_n \in \ZZ$ s.t. $| x - a_n | \leq 2^{-n}$
 \item  A $\rho_C$-name of $x \in \RR$ consists of two sequences rational $(q_n)_{n \in \NN}$ and $(\varepsilon_n)_{n \in \NN}$, so that 
 $| x_n - q_n | < \varepsilon_n$ and $\lim_{n \to \infty} \varepsilon_n = 0$  
-\item $\rho_<$-name, $\rho_>$-name
-\item $\rho_n$-name 
+\item A $\rho_<$-name enumerates all $q \in \QQ$ with $q < x$, similar a
+  $\rho_>$-name can be defined
 \end{enumerate}
 Some of the above notions lead to an equivalent definition of a computable real
 numbers, but others do not.
@@ -158,13 +160,14 @@ A real number will be called \textbf{computable} if it is computable in the sens
 those definitions.
 
 It can easily be seen that there must be non-computable reals, since the number
-of reals is uncountable, while the number of type-2 Turing-machines is
+of reals is uncountable, while the number of Type-2 Turing-machines is
 countable.
 
 The following gives an explicit construction for a non-computable real number
 \begin{example}
 Let $A \subseteq \NN$ be any recursively enumerable, but not decidable subset
 of the natural numbers.
+
 Define the real number $x$ by
 $$ x := \sum_{n \in A} 2^{-n}. $$
 Note, that this is well defined since the series of partial sums is strictly
@@ -173,10 +176,10 @@ increasing and bounded by $2$.
 However, $x$ can not be computable since otherwise it would yield a decision
 procedure for $A$. 
 \end{example}
-A sequence as the above, that is computable, monotonic, bounded and consists
+A sequence as the one from the partial sums used to define $x$, i.e. a sequence that is computable, monotonic, bounded and consists
 only of rational numbers, but has a non-computable supremum is called \textbf{Specker-sequence}.
 
-More interesting than just computing single real numbers is computing real
+For practical applications more interesting than just computing single real numbers is computing real
 functions or even functionals.
 
 For a real valued function $f$ in general input $x$ as well as
@@ -188,6 +191,15 @@ Instead, for a function $f: \RR \to \RR$ to be called computable, it is
 demanded that the machine can approximate the output arbitrary well.
 To do that, it can ask for arbitrary well approximations of the input $x$.
 An easy way to formalize this concept is the use of oracle Turing-Machines.
+\begin{figure}
+  \centering
+  \input{img/computability/oracle}
+  \caption{Computing a real function with an oracle Turing-machine. With input
+  $n \in \NN$ coded in unary, the machine has to return an approximation to
+  $f(x)$ with error bounded by $2^{-n}$. For that it can ask the oracle for
+  approximations of $x$ with error bounded by $2^{-m}$.
+  }
+\end{figure}
 \begin{definition}\label{def:computability_oracle_tm}
  An \textbf{oracle Turing-machine} is a Turing-Machine $M$ with one extra special
  tape, the \textbf{query tape}. Further, the machine is connected to an oracle
@@ -210,15 +222,6 @@ An easy way to formalize this concept is the use of oracle Turing-Machines.
  number $d \in \DD$ such that $| f(x) - d | \leq 2^{-n}$ for each oracle function
  $\Phi: \NN \to \DD$ such that for all $m \in \NN$ $|\Phi(m) - x| \leq 2^{-m}$.   
 \end{definition}
-\begin{figure}
-  \centering
-  \input{img/computability/oracle}
-  \caption{Computing a real function with an oracle Turing-machine. With input
-  $n \in \NN$ coded in unary, the machine has to return an approximation to
-  $f(x)$ with error bounded by $2^{-n}$. For that it can ask the oracle for
-  approximations of $x$ with error bounded by $2^{-m}$.
-  }
-\end{figure}
 A more general definition can be achieved by using representations and type-2
 Turing Machines.
 \begin{figure}
@@ -287,7 +290,7 @@ $F: \subseteq \Sigma^\omega \to \Sigma^\omega$ such that for all $\sigma \in dom
 \end{definition}
 In other words, a multi-valued function can have several values for the same point and only one
 of these values has to be computed. 
-This definition makes the computation becomes non-deterministic in some sense.
+This definition allows the computation to be non-deterministic in some sense.
 
 In practical applications, a multi-valued functions often
 has the form of a non-computable single-valued function that is allowed to
@@ -305,8 +308,8 @@ underlying function alone.
 
 \subsection{Computability of real operators and functionals}
 A common task in numerical analysis is providing answers to questions of the
-form, given a real function, what is its maximum on $[0,1]$.
-The input to such a question involving real operators and functionals is a real function.
+following form: given a real function, what is its maximum on $[0,1]$.
+The input to such a question is a real function.
 
 A real operator maps functions $\RR \to \RR$ to functions $\RR \to \RR$ and a functional maps functions $\RR \to \RR$ to real numbers $\RR$.
 To talk about computability of operators and functionals, one first has to fix
@@ -316,29 +319,29 @@ Continuous functions on a compact subset $X \subseteq R^d$ can be uniformly appr
 A possible representation for real valued functions is thus given by the following definition 
 \begin{definition}
 A $[\rho^d \to \rho]$-name of a function $f \in C([0,1]^d, \RR)$ is given by a
-sequence $P_n \in \DD[x1, \dots, x_d]$ of polynomials (i.e. degree and list of
+sequence $P_n \in \DD[x_1, \dots, x_d]$ of polynomials (i.e. degree and list of
 coefficients), such that $\vert f - P_n \vert_\infty < 2^{-n}$
 \end{definition}
 Computability of Operators and functionals operating on functions in
-$C([0,1])^d$ can be defined with respect to this representation as seen in the
-last section.
+$C([0,1])^d$ can be defined with respect to this representation analogously to
+the definitions in the last section.
 
 With this notion the following holds
 \begin{theorem}
 The integration operator 
-$$I: C[0,1] \to C[0,1], f \to \left(x \to \int_0^x f(t) dt\right)$$   
+$$I: C[0,1] \to C[0,1],\, f \to \left(x \to \int_0^x f(t) dt\right)$$   
 is computable.
 \end{theorem}
 Unfortunately, the same does not hold for the derivative
 \begin{theorem}[Myhill 1971]
-There is a computable function $f: [0,1] \to \R$ with continuous but uncomputable derivative. 
+There is a computable function $f: [0,1] \to \RR$ with continuous but uncomputable derivative. 
 \end{theorem}
 However, if the function is two times continuously differentiable, the
 following holds
 \begin{theorem}
   Every computable function $f \in C^2([0,1])$ has a computable derivative.
 \end{theorem}
-Note, that this does not mean that the operator is computable, but only that
+This does not imply that the operator is computable, but only that
 a computable derivative exists. 
 In fact, the derivative operator is still uncomputable when restricting the
 input to functions in $C^2([0,1])$ unless some additional discrete information
@@ -348,10 +351,10 @@ This difference will be further explained in the next section.
 \subsection{Uniformity and Non-Uniformity}
 In computability theory, one has to distinguish two modes of computability, \textbf{uniform} and \textbf{non-uniform}.
 
-For non-uniform computability it suffices, that for every input, there is an algorithm that computes the output. 
+For non-uniform computability it suffices that for every input, there is an algorithm that computes the output. 
 The algorithm may however depend on the input in a non-computable way.
 
-In contrast, a problem is uniformly computable only if there is one algorithm, that computes the output for every valid input. 
+In contrast, a problem is uniformly computable only if there is \textbf{one} algorithm, that computes the output for every valid input. 
 
 An example is the effective version of the Intermediate Value Theorem, i.e. the
 task to find a zero of a computable function $f : [0,1] \to \RR$ with
@@ -361,18 +364,20 @@ If the set of zeros does not contain an interval it is possible to
 compute a zero.
 On the other hand, an interval always contains a computable number, thus in
 this case there also is a computable zero.
-However, it one can show that there is no Turing-machine that can decide which
+However, it can be shown that there is no Turing-machine that can decide which
 case holds and compute a zero from a given function alone.
 
-In practical applications, it is usually desired to have uniform algorithms.
+In practical applications it is usually desired to have uniform algorithms.
 However, in many cases there does not exist a uniform algorithm in the standard
-input.
+representation of the input.
+
 One way to deal with this problem is the use of multi-valued functions.
+
 Another way is to give the algorithm some additional information on the input.
 In many cases it is possible to turn non-uniform algorithms into uniform ones
-by extending the input by some additional discrete information, that can not be
+by extending the input by some additional discrete information that can not be
 computed from the input only.
 
 For example, the floor function can be computed uniformly when given one
-additional bit, containing the information if the input is an integer or
+additional bit containing the information if the input is an integer or
 not.  

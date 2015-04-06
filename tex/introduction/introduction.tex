@@ -1,6 +1,6 @@
 A large amount of problems that are solved with the help of computers are
 problems dealing with real numbers.
-Examples include computing zeroes, maxima or minima of real functions, solving
+Examples include computing zeros, maxima or minima of real functions, solving
 differential equations or determining eigenvalues.
 
 The most common way to represent real numbers on a computer is the use of floating point
@@ -14,7 +14,8 @@ where computations with floating point numbers yield results that are
 completely wrong and far off from the correct value.
 
 In any case, the error is not visible from the representation, thus without
-additional analysis it is impossible to know, if the error is too big or not.
+additional analysis it is impossible to know if the error is too big for a
+particular application or not.
 Floating point arithmetic is therefore not a reliable way to perform real number
 computations.
 
@@ -36,11 +37,11 @@ researchers.
 One such theory is the Type-2 Theory of Effectivity (TTE) \cite{Wei}.
 In TTE reals are represented as infinite strings over some finite alphabet
 $\Sigma$.
-Informally, a real number is computable in TTE if it is possible to approximate it with any
+Informally one can say, a real number is computable in TTE if it is possible to approximate it with any
 desired precision.
 
-TTE is supposed to be a realistic model, in the sense, that exactly those
-real numbers and functions are computable in TTE, that can be computed with a
+TTE is supposed to be a realistic model in the sense that exactly those
+real numbers and functions are computable in TTE that can be computed with a
 computer.
 
 Similar to the discrete-valued case a vast theory on computability and
@@ -48,7 +49,6 @@ complexity has been built upon TTE.
 
 Since TTE strives to be a realistic model, an important task is to compare
 theoretical claims with practical implementations.
-
 Using computers to perform exact computations on real numbers is called exact
 real arithmetic.
 There are already quite a few implementations for exact real arithmetic.
@@ -59,7 +59,7 @@ practical implementations, is Norbert M\"uller's \cc framework \irram
 \irram extends \cc by classes and functions for error-free computations with
 real numbers.
 The details of the internal representation are taken care of by the framework. 
-Thus, the user can write ordinary \cc extended by data-type that behave like
+The user can write ordinary \cc extended by a data-type that behaves like
 real numbers, without thinking about rounding errors.
 
 This thesis presents two case studies in exact real arithmetic, both using the
@@ -67,20 +67,19 @@ This thesis presents two case studies in exact real arithmetic, both using the
 
 The first case-study shows how exact real arithmetic can be used to get simpler
 algorithms for classical problems in numerical analysis.
-The particular problem considered, is the shadowing distance for chaotic
+The particular problem considered is the shadowing distance for chaotic
 dynamic systems, i.e. how close a numerically computed orbit of a map $f: \RR
 \to \RR$ is followed by an exact orbit.
 This problem was originally considered by Hammel, Yorke and Grebogi in 1987
 \cite{Hammel1987}. 
 Since they could not compute real numbers exactly, they used a form of interval
 arithmetic to bound the exact orbit.
-However, \irram can be used to compute the exact orbit and thus getting a
+However, \irram can be used to compute the exact orbit which thus yields a
 simplified version of their algorithm.
 
 The second case-study deals with analytic functions. 
-Analytic functions have been thoroughly studied in real complexity theory, as a
-subset of real functions where many problems that are computationally hard in
-the general case become feasible. 
+Analytic functions have been thoroughly studied in real complexity theory as a
+subset of real functions where many in general computationally hard problems become feasible. 
 To show how well those complexity claims compare with practical
 implementations, data-types to represent analytic functions have been written.
 The implementation is meant as an extension to the \irram framework, that
