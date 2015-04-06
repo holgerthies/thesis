@@ -333,13 +333,18 @@ Unfortunately, the same does not hold for the derivative
 \begin{theorem}[Myhill 1971]
 There is a computable function $f: [0,1] \to \R$ with continuous but uncomputable derivative. 
 \end{theorem}
-For continuously differentiable functions, however, computability of the
-derivative is given. 
+However, if the function is two times continuously differentiable, the
+following holds
 \begin{theorem}
-The operator 
-$$ D: C^1[0,1] \to C[0,1], f \to f'$$
-is computable.
+  Every computable function $f \in C^2([0,1])$ has a computable derivative.
 \end{theorem}
+Note, that this does not mean that the operator is computable, but only that
+a computable derivative exists. 
+In fact, the derivative operator is still uncomputable when restricting the
+input to functions in $C^2([0,1])$ unless some additional discrete information
+is supplied. 
+
+This difference will be further explained in the next section.
 \subsection{Uniformity and Non-Uniformity}
 In computability theory, one has to distinguish two modes of computability, \textbf{uniform} and \textbf{non-uniform}.
 
