@@ -405,7 +405,7 @@
     Note however, that iterating this process will break the polynomial time
     computability, as will be shown in the next
 		section.
-	\section{Complexity Analysis}
+	\section{Runtime Analysis}
 		The previous section gave an overview of the representations and how they can be used to yield efficient 
     (in the sense of polynomial time computability)	operations on analytic functions.
 		Since for practical applications polynomial time computability is too coarse a measure for efficiency, 
@@ -426,10 +426,10 @@
     \begin{theorem}
 			Given a series name of $f \in C^\omega(D)$.
 			To evaluate $f$ with error less than $2^{-n}$ 
-			$$N = k(n+\lceil log_2(log_2 (e^2) kA \rceil)$$
+			$$N = k(n+\lceil \log_2(\log_2 (e^2) kA \rceil)$$
 			coefficients of the Taylor series are sufficient. \\
 			This yields evaluation computable in time 
-			$$ O(N\M(N)+N \cdot T(a_N, n+log_2(N)+1)) $$ 
+			$$ O(N\M(N)+N \cdot T(a_N, n+\log_2(N)+1)) $$ 
 		\end{theorem}
 
 		\begin{theorem}
@@ -441,13 +441,13 @@
 
 		\begin{theorem}
 			Given a series name of $f \in C^\omega(D)$, the number of coefficients of the series of the $d$-fold derivative computed from $f$ as in Theorem \ref{thm:polytime_on_ball} needed to evaluate this derivative, is given by 
-			$$N_d = k\left(n+\lceil log_2(log_2 (e^4) kA \rceil+\left \lceil d\left(\log_2(d)+\log_2(\log_2(e)k+1)-\frac{1}{k}\right)\right\rceil\right).$$
+			$$N_d = k\left(n+\lceil \log_2(\log_2 (e^4) kA \rceil+\left \lceil d\left(\log_2(d)+\log_2(\log_2(e)k+1)-\frac{1}{k}\right)\right\rceil\right).$$
 			Thus, evaluating the $d$-fold derivative of $f$ is possible in time bound by
 			$$ O(N_d\M(N_d)+N_d \cdot T(a_{N_d+d}, n+d\log_2(d+N_d)))+d\M(d \log_2 (d+N_d)+n) $$ 
 		\end{theorem}
 		For computing the $m$-th coefficient of a Taylor series around some point the $m$-th derivative 
 		has to be divided by $m!$. This division reduces the needed precision leading to 
-		$$N_{coeff}(m) = 2k\left( n+\lceil log_2(\log_2 (e^4) kA) + m \log_2(log_2(e)k+1)\rceil \right)$$
+		$$N_{coeff}(m) = 2k\left( n+\lceil \log_2(\log_2 (e^4) kA) + m \log_2(\log_2(e)k+1)\rceil \right)$$
 		as the number of coefficients that are needed to compute the $m$-th coefficients of the Taylor series 
 		around another point. 
     
@@ -461,7 +461,8 @@
 		relation 
 		\begin{eqnarray*}
 			N^{(0)} &=& N \\
-			N^{(l+1)} &=& 2k\left( n+\lceil log_2(\log_2 (e^4) kA) + N^{(l)} \log_2(log_2(e)k+1)\rceil \right)
+			N^{(l+1)} &=& 2k\left( n+\lceil \log_2(\log_2 (e^4) kA) + N^{(l)}
+      \log_2(\log_2(e)k+1)\rceil \right)
 		\end{eqnarray*}
 		further leading to
 		\begin{theorem}

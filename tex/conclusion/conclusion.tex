@@ -24,12 +24,12 @@ Apart from that some possible extensions are listed below.
 
 For the dynamical systems case studies the following is possible
 \begin{enumerate}
-  \item \textbf{Forward algorithm}
+  \item \textbf{Forward algorithm}.
     An alternative to the algorithm implemented in the case study can be found in \cite{chow1991}.
     Instead of starting from the last point in the pseudo orbit and going backwards, this algorithm proceeds in forward direction.
     This algorithm could also be implemented in \irram and the results compared
     to the ones obtained in this thesis.
-  \item \textbf{Multi-dimensional shadowing}
+  \item \textbf{Multi-dimensional shadowing}.
     Hammel, Yorke and Grebogi also briefly mention their results obtained for
     the two-dimensional case in their paper.
     They examined the Henon map
@@ -47,7 +47,8 @@ For the dynamical systems case studies the following is possible
 
 The data-type for analytic functions could be extended in the following ways
 \begin{enumerate}
-  \item \textbf{Improvement of Running Time}
+  \setcounter{enumi}{2}
+  \item \textbf{Improvement of Running Time}.
     The current implementation of the data type for functions analytic on
     $[0,1]$ uses iterated analytic continuation to evaluate the function at points where
     the given Taylor series is not valid. 
@@ -58,14 +59,14 @@ The data-type for analytic functions could be extended in the following ways
     Additional theoretical investigation should be done to find out, if it is
     possible to improve the running time, or if a high computational complexity
     is inherent to the problem.
-  \item \textbf{Multi-dimensional functions}
+  \item \textbf{Multi-dimensional functions}.
     The implementation presented in this thesis only works with 1-dimensional
     functions. 
     For many applications, however, the analytic functions are
     more-dimensional.
     The data-type should be extended to work with multi-dimensional Taylor
     series.
-  \item \textbf{Applications}
+  \item \textbf{Applications}.
     It would also be interesting, to use the implementation to solve a
     practical problem involving analytic functions.
     Such problems could for example be found in the theory of Ordinary
