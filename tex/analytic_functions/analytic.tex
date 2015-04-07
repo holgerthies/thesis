@@ -63,10 +63,10 @@
 			\item If the domain is connected, an analytic function is uniquely defined by a single Taylor-series around one point in its domain.
 		\end{enumerate}
 
-    The next theorem shows, that the property of being analytic is very useful when it comes to computability and complexity considerations.
+    The next theorem shows that the property of being analytic is very useful when it comes to computability and complexity considerations.
 
     \begin{theorem}[Pour-El, Richards, Ko, Friedman \cite{pour1989computability}]\label{theorem:computable equiv series computable} 
-      Let $f \in C^\infty(B(x_0, \varepsilon)$ and $(a_n)_{n \in \NN}$ the Taylor series
+      Let $f \in C^\infty(B(x_0, \varepsilon))$ and $(a_n)_{n \in \NN}$ the Taylor series
       valid on $B(x_0, \varepsilon)$. 
 			Then the following are equivalent
 			\begin{enumerate}
@@ -75,7 +75,7 @@
  			\end{enumerate}
 		\end{theorem}
     \begin{theorem}[M\"uller \cite{mueller1987uniform}]\label{theorem:computable equiv series computable polytime}
-			The equivalence in Theorem \ref{theorem:computable equiv series computable} also holds, when the word computable is replaced by polynomial time computable.
+			The equivalence in Theorem \ref{theorem:computable equiv series computable} also holds when the word computable is replaced by polynomial time computable.
 		\end{theorem}
 		
     Many operations on functions, like addition, multiplication, differentiation or anti-differentiation, can 
@@ -100,7 +100,7 @@
 		and the existence of such a sequence implies that there exists some algorithm computing $f$ in polynomial time. \\
 		In no way, however, do they say, how to compute the sequence from a given representation of the function and vice versa.
 
-		In fact the following shows, that this is not a problem of those theorems, but it's inherently impossible to do so.
+		In fact the following shows that this is not a problem of those theorems, but it's inherently impossible to do so.
 		\begin{theorem}[M\"uller \cite{mueller1987uniform}]
       Let $f$ given as in Definition \ref{def:representation} then the operator
       $f \to (a_n)_{n \in \NN}$, computing the Taylor series around $0$ (or any
@@ -114,7 +114,7 @@
       corresponding function at that point, is not computable.
 		\end{theorem} 
 
-		The reason for the non-uniformity is, that any algorithm can only read a finite number of 
+		The reason for the non-uniformity is that any algorithm can only read a finite number of 
 		coefficients from the series.
     But from the power series alone, it is impossible to know how many coefficients are needed to make
 		a good enough approximation.
@@ -402,7 +402,7 @@
     of Theorem \ref{thm:representation_conversion} or by directly computing the
     derivatives at an other point using Theorem \ref{thm:polytime_on_ball}.
 
-    Note however, that iterating this process will break the polynomial time
+    Note, however, that iterating this process will break the polynomial time
     computability, as will be shown in the next
 		section.
 	\section{Runtime Analysis}
@@ -551,7 +551,7 @@
 		This would in most cases be a huge overestimation and therefore lead to longer computation times.
 
 		Secondly, the memory issue does not play such a big role in this case. 
-		Usually, operations like differentiation or analytic continuation, that increase the size of the DAG 
+		Usually, operations like differentiation or analytic continuation that increase the size of the DAG 
 		are not applied hundred thousands of times, but orders of magnitude less. 
 		Thus, the DAGs stay rather small and easily fit into the main memory of a modern computer.
 
@@ -559,7 +559,7 @@
 		be computed every time it is needed and thus the same work might have to be done many times. 
 		Depending on the algorithm, this can lead to very poor performance.
 
-		To prevent this, a form of caching was implemented. The coefficient function is only called the first time, when a 
+		To prevent this, a form of caching was implemented. The coefficient function is only called the first time when a 
 		coefficient needs to be computed and then saved to the cache. The next time the coefficient is accessed it is taken from 
 		the cache instead of calling the function again. 
     Thus the coefficient is only recomputed when the precision is not sufficient and \irram reiterates the computation.
@@ -569,9 +569,9 @@
 	\section{Class Overview}
 		In addition to the two classes for analytic functions, several helper classes were implemented.
     The design of the implementation is very close to the interface given by the theoretical framework, i.e.
-    there are classes for different mathematical objects, that work on representation classes for that object.
+    there are classes for different mathematical objects that work on representation classes for that object.
 
-		All classes were implemented with generic types using Templates, whenever it made sense.
+		All classes were implemented with generic types using Templates whenever it made sense.
 
 		The following classes exist
 		
@@ -826,9 +826,9 @@
 
 		The plot also contains the information on how many iterations \irram performed and the maximum internal 
 		precision (text above the bars). 
-		Every bar is broken down into smaller bars, that show how much time was spent in each iteration of the \irram.
+		Every bar is broken down into smaller bars that show how much time was spent in each iteration of the \irram.
 
-		The reason for the running time going down again between $75$ and $100$ decimals is, that
+		The reason for the running time going down again between $75$ and $100$ decimals is that
 		the iterations do not always have the same size, but \irram makes estimates on a good step size.
 		The internal precision in the end is $-375$ for both $n=75$ and $n=100$, but 
 		for $75$ the first estimate is too small, leading to a total number of $3$ iterations instead of only $2$ iterations for $n=100$.
@@ -902,7 +902,7 @@
 		\end{table}
 
     Table \ref{fig:xinv coeff 0 dep on n} shows the number $N^{(l)}$ of
-    coefficients accessed from the original series, when evaluated at a point
+    coefficients accessed from the original series when evaluated at a point
     where $l$ analytic continuations are necessary depending on the internal
     precision of \irram.
 

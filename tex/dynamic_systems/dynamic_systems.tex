@@ -98,15 +98,15 @@
     \end{theorem} 
     In other words, in the uniformly hyperbolic case, every numerically computed orbit is close to a true orbit with a slightly changed initial point.
 
-    Unfortunately, many maps including the logistic map, are not uniformly hyperbolic. 
+    Unfortunately, many maps (including the logistic map) are not uniformly hyperbolic. 
 
-    For non-hyperbolic $f$, it can not be expected, that there is a real orbit that stays close to the pseudo orbit forever.
+    For non-hyperbolic $f$, it can not be expected that there is a real orbit that stays close to the pseudo orbit forever.
     Instead, there will be an orbit staying close to $(x_i)$ for some time (say up to some point $n_0$) and then starting to diverge. 
 
-    The goal of this the case study is to investigate such orbits, in
+    The goal of this case study is to investigate such orbits, and in
     particular to find out how long there is an orbit staying close to the
     pseudo orbit. 
-    The basis for this case study is a paper by Hammel, Yorke
+    The basis for the case study is a paper by Hammel, Yorke
     and Grebogi from 1987 \cite{Hammel1987}.
     The paper deals with the question, how long numerical orbits of the logistic map can be shadowed by true orbits.
 
@@ -115,11 +115,11 @@
     Their proof method is to compute bounds on the points of the true orbit with a computer by using a form of interval arithmetics. 
     All their computations were done on a Cray X-MP supercomputer. 
 
-    For the case study, first their algorithm was implemented on a modern
+    For the case study, their algorithm was first reimplemented on a modern
     computer in the \cc programming language, both using fixed precision
     floating point numbers and \irram. 
 
-    As a second step \irram was used to compute the shadowing orbit exactly.
+    As a second step, \irram was used to compute the shadowing orbit exactly.
   \subsection{The Algorithm}
     In their paper Hammel, Yorke and Grebogi give an algorithm to compute a
     shadowing orbit $(y_i)_{i \in \NN}$ of size $N$ for a given pseudo orbit
@@ -242,8 +242,8 @@
   the implementation of the algorithm straight forward.
 
   Instead of only implementing the algorithm in the original form, generic
-  types where used such that different floating point precisions could be
-  tried.
+  types where used such that experiments with different floating point precisions could be
+  done.
 
   The second implementation made is very similar to the first one but instead
   of using intervals with fixed precision floating point end points, \irram's
@@ -264,10 +264,10 @@
   computed and the maximum of all those distances taken to find the shadowing
   distance.
 
-  One advantage of the last approach is, that the \irram code to compute the exact orbit is extremely simple. 
-  Since all operations can be performed exactly there is no need for intervals
+  One advantage of the last approach is that the \irram code to compute the exact orbit is extremely simple. 
+  Since all operations can be performed exactly, there is no need for intervals
   or other complicated structures. 
-  The data type real takes care of everything.
+  The data type \real takes care of everything.
 
   Again, the implementation uses generic types, to make it possible to compute
   the shadowing distance for various different floating point precisions.
@@ -281,7 +281,7 @@
   The breakdown point depends on the precision that is used to compute the pseudo orbit. 
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/dynamic_systems/breakdown}
+    \includegraphics[width=0.8\textwidth]{img/dynamic_systems/breakdown}
     \caption{Breakdown points depending on $N$ for different parameters $a$ and
     $p_0$}\label{fig:breakdown}
   \end{figure}
@@ -349,6 +349,6 @@
   %the Appendix. 
 
   In the original paper it is conjectured that for $2M$-digit
-  accuracy, that the orbit stays close to $10^{-M}$ for around $10^M$ iterates.
+  accuracy the orbit stays close to $10^{-M}$ for around $10^M$ iterates.
 
   As can be seen in the graph, for up to $10^7$ iterates the conjecture holds. 
