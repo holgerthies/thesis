@@ -39,9 +39,10 @@
 			the function given by the Taylor-series around $x_0$ converges to $f(x)$ for every $x$ in a neighborhood of 
 			$x_0$. 
 
-			That is, for every $x_0 \in D$ there is an $\varepsilon > 0$, such that for all $x \in B(x_0, \varepsilon)$ and there is a series
+			That is, for every $x_0 \in D$ there is an $\varepsilon > 0$, there is a
+      series
 			$$ T(x) := \sum_{n=0}^{\infty} a_n(x-x_0)^n$$
-			such that $T(x) \rightarrow f(x)$.
+			such that $T(x) \rightarrow f(x)$ for all $x \in B(x_0, \varepsilon)$.
 
 		\end{definition}
 		The above definition can also be generalized to higher dimension. 
@@ -122,7 +123,7 @@
     be given some additional information.
 
 		The goal of this case study was to write a general data type for analytic functions. 
-		Due to the above any such data type will need more information than only the series of Taylor coefficients. 
+		Due to the above, any such data type will need more information than only the series of Taylor coefficients. 
 
 		The next section will deal with the question, what additional information is needed to get uniform versions of the above theorems.
 
@@ -188,6 +189,11 @@
     expansion from a function name, i.e. from the function and the parameters $l$ and $B$.
 
 	 	In \cite{Muller1993} M\"uller describes an algorithm for this task.
+
+    Let $\M(n)$ denote  the time needed to multiply two $n$-bit numbers
+    (e.g. $\M(n) = O(n\log n \log \log n)$ when using the Schoenhage-Strassen
+    Algorithm \cite{Schonhage1971}). 	
+
 	 	To approximate the coefficient $a_k$ with precision at least $2^{-n}$ $f$ is approximated by the Lagrangian interpolation
 	 	polynomial
 	 	\begin{equation}\label{eqn:interpolation_polynomial}
@@ -419,9 +425,6 @@
 		less than $2^{-n}$.
 		The running time of all operations on the Taylor series will depend on this factor.
 
-    Let further denote $\M(n)$ the time needed to multiply two $n$-bit numbers
-    (e.g. $\M(n) = O(n\log n \log \log n)$ when using the Schoenhage-Strassen
-    Algorithm \cite{Schonhage1971}). 	
     The following theorems have been shown in \cite{analyticpaper}
     \begin{theorem}
 			Given a series name of $f \in C^\omega(D)$.
@@ -716,13 +719,24 @@
     \anarect can be used similarly.
     \lstinputlisting[numbers=left,stepnumber=1,firstnumber=1,numberfirstline=true,frame=L,xleftmargin=\parindent]
     {code/analytic_example.cc}
-   The snippet defines a \baana object for the sine function.\\ 
-   Lines 5 to 15 define a function that returns with input an integer $n$ the coefficient $a_n$ of the sine series.\\
-   Instead of defining a function it is also possible to use {\ccx}'s lambda feature to define a function object. \\
-   The main part of the program happens in {\irram}'s compute function. \\
-   Line 18 defines a \powerseries object from the series function. \\
-   In Line 19 the \baana object is defined from the power series and the parameters $A=2$ and $k=2$.\\
-   This object is then differentiated two times (line 20) and then evaluated at $0.2$ (line 21). \\
+   The snippet defines a \baana object for the sine function.
+
+   Lines 5 to 15 define a function that returns with input an integer $n$ the
+   coefficient $a_n$ of the sine series.
+
+   Instead of defining a function it is also possible to use {\ccx}'s lambda
+   feature to define a function object. 
+
+   The main part of the program happens in {\irram}'s compute function. 
+
+   Line 18 defines a \powerseries object from the series function. 
+
+   In Line 19 the \baana object is defined from the power series and the
+   parameters $A=2$ and $k=2$.
+
+   This object is then differentiated two times (line 20) and then evaluated at
+   $0.2$ (line 21). 
+
    The \code{rwrite} function is used to output the resulting real number with 20 valid decimal digits.
 
    Note that there are much faster ways to implement the power series for the sine function, but for the example
@@ -758,15 +772,16 @@
     the average of the two runs taken.
 
     Below the results for both the evaluations performed on the both the \baana and the \anarect data-type are shown. 
+    \vfill
 		\subsection{\baana}
 
-			\begin{figure}[h]
+			\begin{figure}[H]
 				\centering
 				\includegraphics[width=0.5\textwidth]{img/analytic/ba_ana_dep_on_n_bar.png}
 				\caption{running time evaluating \baana at fixed point $x=0.8$ depending on the desired number of valid decimals}
 				\label{fig:ba_ana dep on n}
 			\end{figure}
-			\begin{figure}[h]
+			\begin{figure}[H]
 				\centering
 				\includegraphics[width=0.7\textwidth]{img/analytic/ba_ana_dep_on_diff_sin.png}
 				\caption{running time evaluating differentiated \baana with series for $\sin(x)$ at fixed point $x=0.8$ with different number
@@ -920,7 +935,7 @@
 			\label{fig:baana dep on series}
 		\end{figure}
     
-    \begin{table}
+    \begin{table}[h]
       \centering
       \begin{tabular}{|c||c|c|c|c|c|c|c|}
         \hline
