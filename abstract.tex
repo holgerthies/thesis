@@ -1,0 +1,203 @@
+
+\documentclass[]{article}
+\usepackage{hyperref}
+  \usepackage[utf8]{inputenc}
+  \usepackage[thmmarks]{ntheorem}
+  \usepackage{xspace,cleveref,xcolor}
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{graphicx,url}
+  \usepackage[font=small]{caption}
+ \usepackage{subcaption}
+ \usepackage[parfill]{parskip}
+ \usepackage{newclude}
+\usepackage{listings}
+\usepackage{float}
+\usepackage[all]{xy}
+\usepackage{tikz}
+\usepackage{hhline}
+
+% new commands
+  \newcommand{\QQ}{\mathbb Q}
+  \newcommand{\RR}{\mathbb R}
+  \newcommand{\CC}{\mathbb C}
+  \newcommand{\NN}{\mathbb N}
+  \newcommand{\ZZ}{\mathbb Z}
+  \newcommand{\DD}{\mathbb D}
+  \newcommand{\A}{\mathcal A}
+  \newcommand{\B}{\mathcal B}
+  \newcommand{\C}{\mathcal C}
+  \newcommand{\D}{\mathcal D}
+  \newcommand{\R}{\mathcal R}
+  \newcommand{\M}{\mathcal M}
+  \newcommand{\laplace}{\operatorname\Delta}
+  \bibliographystyle{alpha}
+
+  \newcommand{\p}{\ensuremath{\mathcal P}\xspace}
+  \newcommand{\np}{\ensuremath{\mathcal{NP}}\xspace}
+  \newcommand{\fp}{\ensuremath{\mathcal{FP}}\xspace}
+  \newcommand{\abs}[1]{\left|#1\right|}
+  \newcommand{\sharpp}{\ensuremath{\# \mathcal{P}}\xspace}
+  \newcommand{\code}{\texttt}
+  \newcommand{\cc}{\code{C++}\xspace}
+  \newcommand{\ccx}{\code{C++11}\xspace}
+  \newcommand{\irram}{\code{iRRAM}\xspace}
+  \newcommand{\MPFR}{\code{MPFR}\xspace}
+  \newcommand{\baana}{\code{BA\_ANA}\xspace}
+  \newcommand{\anarect}{\code{ANA\_RECT}\xspace}
+  \newcommand{\powerseries}{\code{POWERSERIES}\xspace}
+  \newcommand{\poly}{\code{POLY}\xspace}
+  \newcommand{\func}{\code{FUNC}\xspace}
+  \newcommand{\real}{\code{REAL}\xspace}
+  \newcommand{\complex}{\code{COMPLEX}\xspace}
+  \newcommand{\temp}{\textcolor{red}}
+  \newcommand{\seq}{\mathbf}
+  \DeclareMathOperator{\lb}{lb}
+  \DeclareMathOperator{\bigo}{O}
+  \newcommand{\sprec}{prec\xspace}
+  \newcommand{\demph}{\textbf}
+  \newcommand{\sdzero}{\texttt{0}}
+% ntheorem environments
+  \renewenvironment{abstract}{%
+    \hfill\begin{minipage}{0.95\textwidth}
+      \small \textbf{\abstractname.}}
+      {\end{minipage}}
+  \theoremseparator{:}
+  \theorembodyfont{\itshape}
+  \newtheorem{definition}{Definition}[section]
+  \theorembodyfont{\upshape}
+  \newtheorem{theorem}[definition]{Theorem}
+  \newtheorem{corollary}[definition]{Corollary}
+  \newtheorem{example}[definition]{Example}
+  \newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
+  \newenvironment{proofsketch}{\paragraph{Proof (Sketch):}}{\hfill$\square$}
+\lstset{language={C++},
+                basicstyle=\ttfamily,
+                keywordstyle=\color{red}\ttfamily,
+                stringstyle=\color{blue}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\title{Case Studies in Exact Real Arithmetic - Implementations and empirical
+Evaluations}
+\author{Holger Thies}
+\date{}
+\begin{document}
+\maketitle
+The most common way to represent real numbers on a computer is the use of floating point
+arithmetic.
+The floating point representation of a real number is a finite word, consisting
+of a mantissa and an exponent of fixed length.
+Due to the finiteness of the representation, it is unavoidable that errors
+occur.
+While in many cases the error stays small, there are also several examples
+where computations with floating point numbers yield results that are
+completely wrong and far off from the correct value.
+
+In any case, the error is not visible from the representation, thus without
+additional analysis it is impossible to know if the error is too big for a
+particular application or not.
+Floating point arithmetic is therefore not a reliable way to perform real number
+computations.
+
+This thesis deals with computations on real numbers that are reliable in the
+sense that there are algorithms that can compute the result with guaranteed
+user-defined error bounds.
+This is known as \textbf{exact real arithmetic}.
+
+Computable Analysis gives a sound theoretical foundations for such
+computations.
+In Computable Analysis, a real number $x$ is called \textbf{computable} if there is
+an algorithm (e.g. formalized via Turing-machines) that outputs on input $n$ a rational number $q$ such that
+$\abs{x-q} \leq 2^{-n}$. 
+By this definition, it is obvious that uncomputable real numbers exist, since
+the set of real numbers is uncountable, while the set of algorithms is
+countable.
+
+The so called Type-2 Theory of Effectivity (TTE) extends this definition
+further, to make it possible to talk about computability and complexity of more
+general continuous objects like real functions.
+
+There already exists a vast theory of computability and complexity built on
+TTE.
+It is an important task to compare the claims made in theory to actual
+implementations in exact real arithmetic.
+
+Algorithms for exact real arithmetic can be implemented in modern programming
+languages and there are already some frameworks that provide functionality to
+simplify such computations.
+
+This thesis uses Norbert M\"{u}ller's \cc package \irram for implementations.
+\irram extends \cc by classes and functions for error-free computations with
+real numbers.
+The most important class is the class \real. An object of type \real is meant
+to behave like a  real number that can be manipulated without rounding errors.
+Objects of type \real can for example be multiplied, added or subtracted.
+An approximation to a real number represented by such an object can also be
+printed with any desired precision.
+It is guaranteed that the error of the approximation will be small enough to
+ensure said precision.
+The \irram package takes care of the steps necessary for this. 
+It does so by iteratively increasing the precision of the computations.
+That is, in a computation instead of a real number $x$ an interval $I = [d-e,
+d+e]$ with $x \in I$ is used.
+Interval arithmetic is used to bound the error on the result of the performed
+operations.
+If an approximation to a real number is needed at some point and the precision
+does not suffice, the whole computation is started from the beginning with
+higher precision, i.e., the intervals are made smaller. 
+This process is repeated until the precision is sufficient.
+
+The thesis first gives an introduction to the theory of computability and
+complexity on real numbers and an overview of ways to deal with real numbers on
+a computer with a detailed view on the \irram package.
+
+It then proceeds by presenting two case studies in exact real arithmetic, i.e.,
+two numerical problems are considered in detail from the viewpoint of real
+complexity theory and implemented in \cc using the \irram package. 
+The results from theory are compared with time measurements obtained from
+empirical evaluation.
+
+The first case-study shows how exact real arithmetic can be used to get simpler
+algorithms for classical problems in numerical analysis.
+The particular problem considered is to compute the shadowing distance for a chaotic
+dynamic systems.
+The simplest case of a discrete dynamical system is when the state space is 1-dimensional (say $X \subseteq \RR$) and 
+the transition function only depends on the previous value,
+formally $\Phi(1,x) = f(x)$ for some $f : \RR \to \RR$. 
+In this case it can be written by the recurrence relation $x_{n+1} = f(x_n)$ with initial condition $x_0 \in \RR$.
+The set of the $x_n$ is called \textbf{orbit} of the map $f$.
+
+When computing an orbit of a chaotic system numerically, i.e., using floating-point
+approximations, the computed orbit is usually far off from the real (exactly
+computed) orbit. 
+A shadowing orbit is a real orbit that stays close to a numerically computed
+orbit.
+The case study empirically checks how long such shadowing orbits exist
+depending on the starting point and on the approximation precision and how
+close the numerical and the shadowing orbit are.
+The chaotic system considered is the logistic map.
+
+This problem was originally considered by Hammel, Yorke and Grebogi in 1987
+\cite{Hammel1987}. 
+Since they could not compute real numbers exactly, they used a form of interval
+arithmetic to bound the exact orbit.
+However, \irram can be used to compute the exact orbit which thus yields a
+simplified version of their algorithm.
+Additionally a multi-precision arithmetic version is presented using
+\code{MPFR}.
+
+The second case-study deals with analytic functions in is based on theoretical
+analysis by Kawamura, M\"{u}ller, R\"{o}snick and Ziegler.
+Analytic functions have been thoroughly studied in real complexity theory as a
+subset of real functions where many in general computationally hard problems become feasible. 
+An analytic function is locally defined by its Taylor series.
+
+To show how well those complexity claims compare with practical
+implementations, data-types to represent analytic functions have been written.
+The implementation is meant as an extension to the \irram framework, that
+provides user-friendly classes for computations with analytic functions.
+Empirical evaluation was done on the running time of those classes and compared
+with the expected running times from the theoretical examination.
+
+\end{document}
