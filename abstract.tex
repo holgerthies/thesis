@@ -114,7 +114,7 @@ By this definition, it is obvious that uncomputable real numbers exist, since
 the set of real numbers is uncountable, while the set of algorithms is
 countable.
 
-The so called Type-2 Theory of Effectivity (TTE) extends this definition
+The so called Type-2 Theory of Effectivity (TTE) \cite{Wei} extends this definition
 further, to make it possible to talk about computability and complexity of more
 general continuous objects like real functions.
 
@@ -127,7 +127,7 @@ Algorithms for exact real arithmetic can be implemented in modern programming
 languages and there are already some frameworks that provide functionality to
 simplify such computations.
 
-This thesis uses Norbert M\"{u}ller's \cc package \irram for implementations.
+This thesis uses Norbert M\"{u}ller's \cc package \irram \cite{irram} for implementations.
 \irram extends \cc by classes and functions for error-free computations with
 real numbers.
 The most important class is the class \real. An object of type \real is meant
@@ -187,17 +187,55 @@ simplified version of their algorithm.
 Additionally a multi-precision arithmetic version is presented using
 \code{MPFR}.
 
-The second case-study deals with analytic functions in is based on theoretical
-analysis by Kawamura, M\"{u}ller, R\"{o}snick and Ziegler.
+The second case-study deals with analytic functions and is based on the work 
+of Kawamura, M\"{u}ller, R\"{o}snick and Ziegler \cite{Kawamura}.
 Analytic functions have been thoroughly studied in real complexity theory as a
 subset of real functions where many in general computationally hard problems become feasible. 
 An analytic function is locally defined by its Taylor series.
+It has been shown that a function $f: \RR \to \RR$ is computable if and only if its Taylor
+series is computable \cite{pour1989computability}.
+The same holds for polynomial time computability \cite{mueller1987uniform}.
+Many operations on functions, like addition, multiplication, differentiation or
+anti-differentiation, can be reduced to simple manipulations on the Taylor
+series. Thus, those operations can easily seen to be polynomial time computable for polynomial
+time computable analytic functions.
 
-To show how well those complexity claims compare with practical
-implementations, data-types to represent analytic functions have been written.
-The implementation is meant as an extension to the \irram framework, that
+However, the above theorems are non-uniform in the sense that 
+they only say that $f$ being polynomial time computable implies the existence of a polynomial time computable 
+coefficient sequence and the existence of such a sequence implies that there exists some algorithm computing $f$ in polynomial time.
+In no way, however, do they say, how to compute the sequence from a given representation of the function and vice versa.
+In fact it can be shown that when given only the Taylor series, not even evaluation of the corresponding function is computable  \cite{mueller1987uniform}. 
+For uniform computability, some additional information has to be provided.
+The thesis discusses two possible ways to represent analytic functions that yield uniform polynomial
+time computability of many important operations.
+The first is for functions $f \in C^\omega(\overline{B_r(x_0)})$, i.e., functions analytic on the closed disc of radius r around $x_0$.
+The additional information needed in this case are two integer parameters $k$ and $A$, such that
+$\sqrt[k]{2} \leq r$ and $|a_j|r^j \leq A$ for all $j \in \NN$ where $r = (\limsup |a_j|^{\frac{1}{j}})^{-1}$ denotes the radius of convergence of the series.
+
+More general domains can be covered by balls and for each such ball a series and parameters as above can be given. 
+This is, however, cumbersome to find for complicated domains. 
+For functions analytic on a real line $[a,b]$ it was thus also considered to choose parameters $A$ and $k$ that hold globally for all the series used to cover the domain and only save one of the coefficient series.
+The other series can be found by analytic continuation, which has been shown to be polynomial time computable as well  \cite{Muller1993}. 
+It should be noted however, that normally analytic continuation has to be iterated several times until the right series is computed and that this process is not polynomial time in the number of iterations.
+
+The above has been implemented using the \irram package.
+The implementation is meant as an extension to \irram, that
 provides user-friendly classes for computations with analytic functions.
-Empirical evaluation was done on the running time of those classes and compared
-with the expected running times from the theoretical examination.
+The implementation consists of two main classes, \baana and \anarect that are used for functions analytic on $B_r(x_0)$ 
+and $[a,b]$, respectively.
 
+Both classes provide a common set of operators and methods, in particular
+\begin{enumerate}
+  \item It is possible to add, multiply and subtract two objects using the overloaded operators $+$, $*$, $-$.
+  \item It is possible to evaluate the function at $x \in D$ using the overloaded operator $()$
+  \item There is a function \code{differentiate (unsigned int n)} to get a new object representing the $d$-th derivative of the analytic function.
+  \item There is a function \code{integrate (unsigned int n)} to get a new object representing the $d$-th anti-derivative of the analytic function.
+  \item It is possible to get the coefficients of the underlying Taylor series.
+\end{enumerate}
+
+Empirical evaluation was performed on the running time of those classes and compared
+with the expected running times from the theoretical examination.
+The results of this evaluation coincide well with the theoretical running time bounds.
+
+\bibliography{thesis}
 \end{document}
